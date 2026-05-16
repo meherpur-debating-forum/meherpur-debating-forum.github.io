@@ -1,0 +1,2415 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MDF Control Center</title>
+<meta property="og:title" content="Meherpur Debating Forum">
+<meta property="og:description" content="Official website of Meherpur Debating Forum">
+<meta property="og:image" content="https://meherpur-debating-forum/thumb2.jpg">
+<meta property="og:url" content="https://meherpur-debating-forum/">
+<meta property="og:type" content="website">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&family=JetBrains+Mono:wght@400;500;600&family=Playfair+Display:wght@700&display=swap');
+
+:root {
+  --bg: #060A12;
+  --panel: #0D1422;
+  --panel2: #111928;
+  --panel3: #161F30;
+  --border: rgba(200,162,74,0.14);
+  --border2: rgba(255,255,255,0.06);
+  --border3: rgba(255,255,255,0.03);
+  --gold: #C8A24A;
+  --gold2: #E0B95A;
+  --gold-dim: rgba(200,162,74,0.12);
+  --gold-glow: rgba(200,162,74,0.25);
+  --blue: #3B6FFF;
+  --blue-dim: rgba(59,111,255,0.14);
+  --cyan: #00D4FF;
+  --danger: #FF4444;
+  --danger-dim: rgba(255,68,68,0.12);
+  --success: #22C55E;
+  --success-dim: rgba(34,197,94,0.12);
+  --warning: #F59E0B;
+  --text: #EEF0F4;
+  --text-dim: #7A8499;
+  --text-faint: #3D4A5C;
+  --sidebar-w: 248px;
+  --topbar-h: 58px;
+  --radius: 8px;
+  --radius-lg: 12px;
+  --shadow: 0 8px 32px rgba(0,0,0,0.5);
+  --tr: 0.18s cubic-bezier(0.4,0,0.2,1);
+}
+
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden;font-size:14px;line-height:1.5;}
+body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse 80% 50% at 50% -10%,rgba(200,162,74,0.04),transparent);pointer-events:none;z-index:0;}
+
+::-webkit-scrollbar{width:4px;height:4px;}
+::-webkit-scrollbar-track{background:transparent;}
+::-webkit-scrollbar-thumb{background:rgba(200,162,74,0.2);border-radius:2px;}
+::-webkit-scrollbar-thumb:hover{background:rgba(200,162,74,0.4);}
+
+/* SIDEBAR */
+#sidebar{position:fixed;top:0;left:0;width:var(--sidebar-w);height:100vh;background:var(--panel);border-right:1px solid var(--border);display:flex;flex-direction:column;z-index:1000;transition:transform var(--tr),width var(--tr);overflow:hidden;}
+.sidebar-logo{padding:16px 18px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:12px;min-height:var(--topbar-h);}
+.logo-mark{width:34px;height:34px;background:linear-gradient(135deg,var(--gold2),#7A5C18);border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0;box-shadow:0 4px 12px rgba(200,162,74,0.3);}
+.logo-text{font-family:'Rajdhani',sans-serif;font-size:18px;font-weight:700;letter-spacing:3px;color:var(--gold);white-space:nowrap;}
+.logo-sub{font-size:9px;color:var(--text-dim);letter-spacing:1.5px;text-transform:uppercase;white-space:nowrap;margin-top:1px;opacity:0.7;}
+.sidebar-nav{flex:1;overflow-y:auto;padding:10px 0;}
+.nav-section-label{font-size:9px;letter-spacing:2.5px;text-transform:uppercase;color:var(--text-faint);padding:14px 18px 5px;font-weight:600;}
+.nav-item{display:flex;align-items:center;gap:11px;padding:9px 18px;cursor:pointer;color:var(--text-dim);transition:all var(--tr);position:relative;border:none;background:none;width:100%;text-align:left;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:500;white-space:nowrap;user-select:none;border-radius:0;}
+.nav-item:hover{color:var(--text);background:rgba(255,255,255,0.03);}
+.nav-item.active{color:var(--gold);background:linear-gradient(90deg,rgba(200,162,74,0.1),transparent);}
+.nav-item.active::before{content:'';position:absolute;left:0;top:50%;transform:translateY(-50%);height:60%;width:2px;background:var(--gold);border-radius:0 2px 2px 0;box-shadow:0 0 8px var(--gold-glow);}
+.nav-item .nav-icon{width:15px;height:15px;flex-shrink:0;opacity:0.6;transition:opacity var(--tr);}
+.nav-item.active .nav-icon,.nav-item:hover .nav-icon{opacity:1;}
+.nav-badge{margin-left:auto;background:var(--gold-dim);border:1px solid var(--border);color:var(--gold);font-size:10px;padding:1px 6px;border-radius:10px;font-family:'JetBrains Mono',monospace;}
+.nav-badge-red{margin-left:auto;background:var(--danger-dim);border:1px solid rgba(255,68,68,0.3);color:var(--danger);font-size:10px;padding:1px 6px;border-radius:10px;font-family:'JetBrains Mono',monospace;min-width:18px;text-align:center;}
+.sidebar-footer{padding:14px 18px;border-top:1px solid var(--border);}
+.status-pill{display:inline-flex;align-items:center;gap:7px;font-size:11px;color:var(--text-dim);background:var(--panel2);border:1px solid var(--border2);padding:5px 10px;border-radius:20px;}
+.status-dot{width:6px;height:6px;border-radius:50%;background:var(--success);box-shadow:0 0 6px var(--success);animation:blink 2s infinite;}
+.status-dot.offline{background:var(--danger);box-shadow:0 0 6px var(--danger);animation:none;}
+@keyframes blink{0%,100%{opacity:1;}50%{opacity:0.3;}}
+
+/* TOPBAR */
+#topbar{position:fixed;top:0;left:var(--sidebar-w);right:0;height:var(--topbar-h);background:rgba(13,20,34,0.92);backdrop-filter:blur(16px);border-bottom:1px solid var(--border);display:flex;align-items:center;padding:0 20px;gap:14px;z-index:900;transition:left var(--tr);}
+.hamburger{display:none;background:none;border:none;color:var(--text);cursor:pointer;padding:4px;}
+.search-wrap{flex:1;max-width:420px;position:relative;}
+.search-wrap svg{position:absolute;left:11px;top:50%;transform:translateY(-50%);color:var(--text-faint);width:14px;height:14px;}
+#globalSearch{width:100%;background:var(--panel2);border:1px solid var(--border2);border-radius:var(--radius);padding:8px 12px 8px 34px;color:var(--text);font-family:'DM Sans',sans-serif;font-size:13px;outline:none;transition:border-color var(--tr),box-shadow var(--tr);}
+#globalSearch::placeholder{color:var(--text-faint);}
+#globalSearch:focus{border-color:rgba(200,162,74,0.4);box-shadow:0 0 0 3px rgba(200,162,74,0.06);}
+.topbar-right{margin-left:auto;display:flex;align-items:center;gap:10px;}
+.admin-pill{display:flex;align-items:center;gap:9px;padding:5px 12px 5px 5px;background:var(--panel2);border:1px solid var(--border2);border-radius:24px;cursor:pointer;transition:all var(--tr);}
+.admin-pill:hover{border-color:var(--border);}
+.admin-avatar{width:26px;height:26px;background:linear-gradient(135deg,var(--gold2),#7A5C18);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;font-family:'Rajdhani',sans-serif;color:#060A12;}
+.admin-name{font-size:12px;font-weight:500;color:var(--text-dim);}
+.btn-logout{background:transparent;border:1px solid rgba(255,68,68,0.2);border-radius:var(--radius);padding:6px 13px;color:var(--danger);font-size:12px;cursor:pointer;display:flex;align-items:center;gap:6px;font-family:'DM Sans',sans-serif;transition:all var(--tr);}
+.btn-logout:hover{background:var(--danger-dim);border-color:rgba(255,68,68,0.4);}
+.btn-logout svg{width:12px;height:12px;}
+
+/* MAIN */
+#main{margin-left:var(--sidebar-w);margin-top:var(--topbar-h);padding:24px;min-height:calc(100vh - var(--topbar-h));transition:margin-left var(--tr);position:relative;z-index:1;}
+.page{display:none;animation:fadeUp 0.25s ease;}
+.page.active{display:block;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
+
+/* PAGE HEADERS */
+.page-header{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:24px;flex-wrap:wrap;gap:12px;}
+.page-title{font-family:'Rajdhani',sans-serif;font-size:26px;font-weight:700;letter-spacing:1.5px;color:var(--text);line-height:1.1;}
+.page-subtitle{font-size:12px;color:var(--text-dim);margin-top:3px;letter-spacing:0.2px;}
+
+/* BUTTONS */
+.btn{display:inline-flex;align-items:center;gap:7px;padding:9px 18px;border-radius:var(--radius);font-family:'DM Sans',sans-serif;font-size:13px;font-weight:500;cursor:pointer;border:none;transition:all var(--tr);white-space:nowrap;letter-spacing:0.1px;}
+.btn svg{width:13px;height:13px;}
+.btn-primary{background:linear-gradient(135deg,var(--gold2),var(--gold));color:#060A12;font-weight:600;box-shadow:0 2px 12px rgba(200,162,74,0.2);}
+.btn-primary:hover{box-shadow:0 4px 20px rgba(200,162,74,0.35);transform:translateY(-1px);}
+.btn-secondary{background:var(--panel2);color:var(--text);border:1px solid var(--border2);}
+.btn-secondary:hover{border-color:var(--border);background:var(--panel3);}
+.btn-danger{background:var(--danger-dim);color:var(--danger);border:1px solid rgba(255,68,68,0.2);}
+.btn-danger:hover{background:rgba(255,68,68,0.18);}
+.btn-success{background:var(--success-dim);color:var(--success);border:1px solid rgba(34,197,94,0.2);}
+.btn-sm{padding:5px 11px;font-size:12px;}
+.btn-sm svg{width:11px;height:11px;}
+.btn-icon{padding:6px;background:var(--panel2);border:1px solid var(--border2);border-radius:6px;color:var(--text-dim);cursor:pointer;transition:all var(--tr);display:inline-flex;align-items:center;justify-content:center;}
+.btn-icon:hover{color:var(--text);border-color:var(--border);background:var(--panel3);}
+.btn-icon svg{width:12px;height:12px;}
+
+/* STAT CARDS */
+.stats-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:14px;margin-bottom:24px;}
+.stat-card{background:var(--panel);border:1px solid var(--border2);border-radius:var(--radius-lg);padding:18px;position:relative;overflow:hidden;transition:border-color var(--tr),transform var(--tr);}
+.stat-card:hover{border-color:var(--border);transform:translateY(-1px);}
+.stat-card::after{content:'';position:absolute;top:-30px;right:-30px;width:90px;height:90px;border-radius:50%;opacity:0.06;}
+.stat-card.gold::after{background:var(--gold);}
+.stat-card.blue::after{background:var(--blue);}
+.stat-card.cyan::after{background:var(--cyan);}
+.stat-card.success::after{background:var(--success);}
+.stat-card.warning::after{background:var(--warning);}
+.stat-icon{width:34px;height:34px;border-radius:8px;display:flex;align-items:center;justify-content:center;margin-bottom:14px;}
+.stat-icon svg{width:16px;height:16px;}
+.stat-card.gold .stat-icon{background:var(--gold-dim);color:var(--gold);}
+.stat-card.blue .stat-icon{background:var(--blue-dim);color:var(--blue);}
+.stat-card.cyan .stat-icon{background:rgba(0,212,255,0.1);color:var(--cyan);}
+.stat-card.success .stat-icon{background:var(--success-dim);color:var(--success);}
+.stat-card.warning .stat-icon{background:rgba(245,158,11,0.1);color:var(--warning);}
+.stat-value{font-family:'Rajdhani',sans-serif;font-size:30px;font-weight:700;color:var(--text);line-height:1;margin-bottom:4px;}
+.stat-label{font-size:11px;color:var(--text-dim);text-transform:uppercase;letter-spacing:1.2px;}
+
+/* PANEL CARD */
+.panel-card{background:var(--panel);border:1px solid var(--border2);border-radius:var(--radius-lg);overflow:hidden;margin-bottom:20px;}
+.panel-head{display:flex;align-items:center;justify-content:space-between;padding:15px 18px;border-bottom:1px solid var(--border2);flex-wrap:wrap;gap:10px;background:rgba(255,255,255,0.01);}
+.panel-title{font-family:'Rajdhani',sans-serif;font-size:13px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--text-dim);}
+.panel-body{padding:18px;}
+
+/* TABLE */
+.table-wrap{overflow-x:auto;}
+table{width:100%;border-collapse:collapse;font-size:13px;}
+thead tr{border-bottom:1px solid var(--border);}
+th{padding:9px 14px;text-align:left;font-size:9.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.8px;color:var(--text-faint);white-space:nowrap;background:rgba(255,255,255,0.01);}
+td{padding:11px 14px;border-bottom:1px solid var(--border3);color:var(--text);vertical-align:middle;}
+tr:last-child td{border-bottom:none;}
+tbody tr{transition:background var(--tr);}
+tbody tr:hover{background:rgba(255,255,255,0.02);}
+.code-badge{font-family:'JetBrains Mono',monospace;font-size:11px;background:rgba(200,162,74,0.08);border:1px solid rgba(200,162,74,0.2);padding:3px 8px;border-radius:4px;color:var(--gold);letter-spacing:0.5px;}
+.badge{display:inline-flex;align-items:center;padding:3px 9px;border-radius:20px;font-size:11px;font-weight:500;letter-spacing:0.3px;}
+.badge-gold{background:rgba(200,162,74,0.1);color:var(--gold);border:1px solid rgba(200,162,74,0.2);}
+.badge-blue{background:rgba(59,111,255,0.1);color:#7B9FFF;border:1px solid rgba(59,111,255,0.2);}
+.badge-success{background:var(--success-dim);color:var(--success);border:1px solid rgba(34,197,94,0.2);}
+.badge-danger{background:var(--danger-dim);color:var(--danger);border:1px solid rgba(255,68,68,0.2);}
+.badge-dim{background:rgba(255,255,255,0.04);color:var(--text-dim);border:1px solid var(--border2);}
+.action-group{display:flex;gap:5px;align-items:center;}
+
+/* FILTERS */
+.filter-row{display:flex;gap:8px;flex-wrap:wrap;align-items:center;padding:12px 18px;border-bottom:1px solid var(--border2);}
+.filter-input{background:var(--panel2);border:1px solid var(--border2);border-radius:var(--radius);padding:7px 11px;color:var(--text);font-family:'DM Sans',sans-serif;font-size:13px;outline:none;transition:border-color var(--tr);min-width:150px;}
+.filter-input:focus{border-color:rgba(200,162,74,0.4);}
+.filter-input::placeholder{color:var(--text-faint);}
+select.filter-input{cursor:pointer;}
+
+/* PAGINATION */
+.pagination{display:flex;align-items:center;gap:5px;padding:12px 18px;border-top:1px solid var(--border2);justify-content:flex-end;flex-wrap:wrap;}
+.page-info{color:var(--text-dim);font-size:11px;margin-right:auto;font-family:'JetBrains Mono',monospace;}
+.pg-btn{min-width:30px;height:30px;padding:0 7px;background:var(--panel2);border:1px solid var(--border2);border-radius:6px;color:var(--text-dim);font-size:12px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all var(--tr);font-family:'DM Sans',sans-serif;}
+.pg-btn:hover{color:var(--text);border-color:var(--border);}
+.pg-btn.active{background:var(--gold);color:#060A12;border-color:var(--gold);font-weight:700;}
+.pg-btn:disabled{opacity:0.25;pointer-events:none;}
+
+/* MODAL */
+.modal-overlay{position:fixed;inset:0;background:rgba(6,10,18,0.88);backdrop-filter:blur(8px);z-index:2000;display:flex;align-items:center;justify-content:center;padding:20px;opacity:0;pointer-events:none;transition:opacity 0.22s ease;}
+.modal-overlay.open{opacity:1;pointer-events:all;}
+.modal{background:var(--panel);border:1px solid var(--border);border-radius:var(--radius-lg);width:100%;max-width:600px;max-height:90vh;overflow-y:auto;transform:scale(0.95) translateY(8px);transition:transform 0.22s cubic-bezier(0.34,1.56,0.64,1);}
+.modal-overlay.open .modal{transform:scale(1) translateY(0);}
+.modal-head{display:flex;align-items:center;justify-content:space-between;padding:16px 20px;border-bottom:1px solid var(--border2);position:sticky;top:0;background:var(--panel);z-index:1;}
+.modal-title{font-family:'Rajdhani',sans-serif;font-size:16px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--text);}
+.modal-close{background:none;border:none;color:var(--text-dim);cursor:pointer;padding:4px;transition:color var(--tr);border-radius:4px;}
+.modal-close:hover{color:var(--danger);}
+.modal-close svg{width:16px;height:16px;}
+.modal-body{padding:20px;}
+.modal-footer{padding:14px 20px;border-top:1px solid var(--border2);display:flex;gap:8px;justify-content:flex-end;}
+
+/* FORM */
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:13px;}
+.form-grid.cols-1{grid-template-columns:1fr;}
+.form-group{display:flex;flex-direction:column;gap:6px;}
+.form-group.full{grid-column:1/-1;}
+label{font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--text-faint);}
+.form-input{background:var(--panel2);border:1px solid var(--border2);border-radius:var(--radius);padding:9px 12px;color:var(--text);font-family:'DM Sans',sans-serif;font-size:13px;outline:none;transition:border-color var(--tr),box-shadow var(--tr);width:100%;}
+.form-input:focus{border-color:rgba(200,162,74,0.5);box-shadow:0 0 0 3px rgba(200,162,74,0.07);}
+.form-input::placeholder{color:var(--text-faint);}
+textarea.form-input{resize:vertical;min-height:78px;}
+select.form-input{cursor:pointer;}
+.form-hint{font-size:10px;color:var(--text-faint);margin-top:2px;}
+
+/* TOGGLE */
+.toggle-wrap{display:flex;align-items:center;gap:10px;cursor:pointer;}
+.toggle{width:38px;height:20px;background:var(--border2);border-radius:10px;position:relative;transition:background var(--tr);flex-shrink:0;cursor:pointer;border:none;}
+.toggle.on{background:var(--gold);}
+.toggle::after{content:'';position:absolute;top:2px;left:2px;width:16px;height:16px;background:white;border-radius:50%;transition:left var(--tr);box-shadow:0 1px 4px rgba(0,0,0,0.3);}
+.toggle.on::after{left:20px;}
+
+/* SKELETON */
+.skeleton{background:linear-gradient(90deg,var(--panel2) 25%,rgba(255,255,255,0.03) 50%,var(--panel2) 75%);background-size:200% 100%;animation:shimmer 1.5s infinite;border-radius:4px;}
+@keyframes shimmer{0%{background-position:200% 0;}100%{background-position:-200% 0;}}
+
+/* CHARTS */
+.chart-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:24px;}
+.chart-card{background:var(--panel);border:1px solid var(--border2);border-radius:var(--radius-lg);padding:18px;}
+.chart-title{font-size:9px;letter-spacing:2.5px;text-transform:uppercase;color:var(--text-faint);margin-bottom:14px;font-weight:700;}
+.bar-row{display:flex;align-items:center;gap:9px;margin-bottom:9px;}
+.bar-label{font-size:11px;color:var(--text-dim);width:68px;flex-shrink:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.bar-track{flex:1;height:6px;background:var(--panel2);border-radius:3px;overflow:hidden;}
+.bar-fill{height:100%;border-radius:3px;transition:width 0.9s cubic-bezier(0.4,0,0.2,1);}
+.bar-val{font-size:11px;color:var(--text-dim);width:26px;text-align:right;font-family:'JetBrains Mono',monospace;}
+
+/* PRIORITY ARROWS */
+.priority-btn{background:none;border:1px solid var(--border2);border-radius:4px;color:var(--text-faint);cursor:pointer;width:20px;height:20px;display:inline-flex;align-items:center;justify-content:center;transition:all var(--tr);}
+.priority-btn:hover{border-color:var(--gold);color:var(--gold);}
+.priority-btn svg{width:9px;height:9px;}
+
+/* ACTIVITY LIST */
+.activity-list{display:flex;flex-direction:column;gap:8px;}
+.activity-row{background:var(--panel2);border:1px solid var(--border2);border-radius:var(--radius);padding:12px;display:flex;align-items:center;gap:12px;cursor:grab;transition:border-color var(--tr),background var(--tr);user-select:none;}
+.activity-row:hover{border-color:var(--border);}
+.activity-row.drag-over{border-color:var(--gold);background:var(--gold-dim);}
+.drag-handle{color:var(--text-faint);flex-shrink:0;}
+.drag-handle svg{width:13px;height:13px;}
+.activity-img{width:46px;height:46px;border-radius:6px;object-fit:cover;background:var(--panel);border:1px solid var(--border2);flex-shrink:0;}
+.activity-info{flex:1;min-width:0;}
+.activity-title{font-weight:600;font-size:13px;margin-bottom:2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.activity-meta{font-size:11px;color:var(--text-dim);}
+
+/* COMMITTEE */
+.hierarchy-list{display:flex;flex-direction:column;gap:7px;}
+.hierarchy-item{display:flex;align-items:center;gap:11px;background:var(--panel2);border:1px solid var(--border2);border-radius:var(--radius);padding:11px 13px;transition:border-color var(--tr);}
+.hierarchy-item:hover{border-color:var(--border);}
+.rank-badge{width:28px;height:28px;background:rgba(200,162,74,0.08);border:1px solid rgba(200,162,74,0.25);border-radius:6px;display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--gold);font-weight:700;flex-shrink:0;}
+.rank-info{flex:1;}
+.rank-name{font-size:13px;font-weight:600;}
+.rank-desig{font-size:11px;color:var(--text-dim);margin-top:1px;}
+
+/* SIDEBAR BACKDROP */
+#sidebarBackdrop{display:none;position:fixed;inset:0;background:rgba(6,10,18,0.7);z-index:999;}
+
+/* CONFIRM */
+.confirm-body{padding:24px 20px;text-align:center;}
+.confirm-icon{width:46px;height:46px;background:var(--danger-dim);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 14px;border:1px solid rgba(255,68,68,0.2);}
+.confirm-icon svg{width:20px;height:20px;color:var(--danger);}
+.confirm-title{font-family:'Rajdhani',sans-serif;font-size:18px;font-weight:700;margin-bottom:8px;}
+.confirm-msg{color:var(--text-dim);font-size:13px;line-height:1.6;}
+
+/* TOAST */
+#toastContainer{position:fixed;bottom:22px;right:22px;z-index:9999;display:flex;flex-direction:column;gap:8px;}
+.toast{background:var(--panel);border:1px solid var(--border2);border-radius:var(--radius);padding:11px 14px;display:flex;align-items:center;gap:9px;box-shadow:0 8px 32px rgba(0,0,0,0.5);min-width:240px;max-width:340px;animation:toastIn 0.25s cubic-bezier(0.34,1.56,0.64,1);transition:opacity 0.25s ease;}
+@keyframes toastIn{from{transform:translateX(20px);opacity:0;}to{transform:translateX(0);opacity:1;}}
+.toast-icon{width:15px;height:15px;flex-shrink:0;}
+.toast-msg{font-size:13px;flex:1;}
+.toast.success{border-left:2px solid var(--success);}
+.toast.error{border-left:2px solid var(--danger);}
+.toast.info{border-left:2px solid var(--blue);}
+.toast.success .toast-icon{color:var(--success);}
+.toast.error .toast-icon{color:var(--danger);}
+.toast.info .toast-icon{color:var(--blue);}
+
+/* SEARCH RESULTS */
+.search-result-section{margin-bottom:18px;}
+.search-result-title{font-size:9px;letter-spacing:2.5px;text-transform:uppercase;color:var(--text-faint);margin-bottom:8px;font-weight:700;}
+.result-item{background:var(--panel2);border:1px solid var(--border2);border-radius:var(--radius);padding:11px 13px;margin-bottom:5px;cursor:pointer;transition:border-color var(--tr);}
+.result-item:hover{border-color:var(--border);}
+.result-item-head{display:flex;gap:8px;align-items:center;margin-bottom:3px;}
+.result-item-title{font-weight:600;color:var(--text);font-size:13px;}
+.result-item-body{color:var(--text-dim);font-size:11px;}
+
+/* LOADING / EMPTY */
+.spinner{width:18px;height:18px;border:2px solid var(--border2);border-top-color:var(--gold);border-radius:50%;animation:spin 0.65s linear infinite;display:inline-block;}
+@keyframes spin{to{transform:rotate(360deg);}}
+.loading-row{padding:40px;text-align:center;color:var(--text-dim);font-size:13px;}
+.loading-row .spinner{margin:0 auto 12px;display:block;}
+.empty-state{padding:44px 20px;text-align:center;color:var(--text-dim);}
+.empty-state svg{width:36px;height:36px;opacity:0.2;margin:0 auto 14px;display:block;}
+.empty-state-title{font-size:14px;font-weight:600;margin-bottom:6px;color:var(--text);}
+.empty-state-sub{font-size:12px;}
+
+/* DASHBOARD */
+.recent-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+.photo-preview{width:80px;height:80px;border-radius:var(--radius);object-fit:cover;border:1px solid var(--border);margin-top:8px;display:none;}
+.photo-preview.visible{display:block;}
+
+/* LOGIN */
+#loginPage{position:fixed;inset:0;background:var(--bg);display:flex;align-items:center;justify-content:center;z-index:9990;}
+#loginPage::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 60% 60% at 50% 0%,rgba(200,162,74,0.06),transparent);}
+.login-box{background:var(--panel);border:1px solid var(--border);border-radius:16px;padding:38px 34px;width:100%;max-width:370px;box-shadow:0 32px 80px rgba(0,0,0,0.6);position:relative;}
+.login-logo{text-align:center;margin-bottom:26px;}
+.login-logo-mark{width:52px;height:52px;background:linear-gradient(135deg,var(--gold2),#7A5C18);border-radius:12px;display:flex;align-items:center;justify-content:center;margin:0 auto 12px;box-shadow:0 8px 24px rgba(200,162,74,0.3);}
+.login-title{font-family:'Rajdhani',sans-serif;font-size:22px;font-weight:700;letter-spacing:4px;color:var(--gold);}
+.login-sub{font-size:10px;color:var(--text-faint);letter-spacing:2.5px;text-transform:uppercase;margin-top:4px;}
+.login-form{display:flex;flex-direction:column;gap:13px;}
+.login-error{color:var(--danger);font-size:12px;text-align:center;min-height:16px;}
+
+/* MEMBER SEARCH DROPDOWN */
+.member-search-wrap{position:relative;}
+.member-dropdown{position:absolute;top:calc(100% + 4px);left:0;right:0;background:var(--panel);border:1px solid var(--border);border-radius:var(--radius);z-index:9999;max-height:220px;overflow-y:auto;box-shadow:0 8px 32px rgba(0,0,0,0.5);display:none;}
+.member-dropdown.open{display:block;}
+.member-drop-item{padding:9px 13px;cursor:pointer;display:flex;align-items:center;gap:10px;transition:background var(--tr);}
+.member-drop-item:hover{background:var(--panel2);}
+.member-drop-item .code{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--gold);}
+.member-drop-item .name{font-size:13px;}
+
+/* ==============================
+   ID CARD MAKER
+   ============================== */
+.id-search-bar{display:flex;gap:10px;margin-bottom:24px;flex-wrap:wrap;align-items:center;}
+.id-card-preview-wrap{display:flex;flex-direction:column;gap:32px;align-items:center;margin-bottom:24px;}
+.id-card-side-label{font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--text-faint);margin-bottom:10px;text-align:center;font-weight:700;}
+
+/* Card shell — ISO 7810 ID-1: 85.6mm × 54mm */
+.id-card-shell{
+  width:338px;
+  height:213px;
+  border-radius:14px;
+  overflow:hidden;
+  box-shadow:0 24px 80px rgba(0,0,0,0.7),0 0 0 1px rgba(200,162,74,0.15),inset 0 1px 0 rgba(255,255,255,0.04);
+  flex-shrink:0;
+  position:relative;
+}
+
+/* FRONT */
+.id-front{width:100%;height:100%;background:linear-gradient(135deg,#050C1A 0%,#0B1526 55%,#0F1C32 100%);display:flex;flex-direction:column;position:relative;overflow:hidden;font-family:'DM Sans',sans-serif;}
+.id-front-noise{position:absolute;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");opacity:0.6;pointer-events:none;}
+.id-front-glare{position:absolute;top:-60px;right:-60px;width:220px;height:220px;background:radial-gradient(circle,rgba(200,162,74,0.08) 0%,transparent 65%);border-radius:50%;pointer-events:none;}
+.id-front-glare2{position:absolute;bottom:-40px;left:-40px;width:130px;height:130px;background:radial-gradient(circle,rgba(59,111,255,0.07) 0%,transparent 70%);border-radius:50%;pointer-events:none;}
+.id-top-stripe{height:4px;width:100%;flex-shrink:0;background:linear-gradient(90deg,#7A5C18,#E0B95A,#C8A24A,#8B6820,#E0B95A,#7A5C18);background-size:200% 100%;animation:goldShimmer 4s linear infinite;}
+@keyframes goldShimmer{0%{background-position:200% 0;}100%{background-position:-200% 0;}}
+.id-body{display:flex;flex:1;padding:10px 12px 9px;gap:10px;position:relative;z-index:2;}
+.id-photo-col{flex-shrink:0;display:flex;flex-direction:column;align-items:center;gap:5px;}
+.id-photo-box{width:62px;height:62px;border-radius:8px;border:1.5px solid rgba(200,162,74,0.4);overflow:hidden;background:#0D1A2E;display:flex;align-items:center;justify-content:center;position:relative;}
+.id-photo-box img{width:100%;height:100%;object-fit:cover;object-position:center top;display:block;}
+.id-photo-placeholder{display:flex;flex-direction:column;align-items:center;justify-content:center;color:rgba(200,162,74,0.3);}
+.id-photo-placeholder svg{width:24px;height:24px;}
+.id-blood-badge{background:rgba(220,50,50,0.12);border:1px solid rgba(220,50,50,0.35);border-radius:4px;padding:2px 7px;font-size:8.5px;font-weight:700;color:#FF7070;letter-spacing:0.8px;font-family:'JetBrains Mono',monospace;}
+.id-info-col{flex:1;display:flex;flex-direction:column;justify-content:center;gap:0;min-width:0;}
+.id-org-name{font-family:'Rajdhani',sans-serif;font-size:7.5px;letter-spacing:2.5px;color:rgba(200,162,74,0.8);text-transform:uppercase;font-weight:600;margin-bottom:5px;}
+.id-member-name{font-family:'Rajdhani',sans-serif;font-size:16px;font-weight:700;color:#F0F4FF;line-height:1.1;word-break:break-word;margin-bottom:5px;text-shadow:0 1px 8px rgba(0,0,0,0.5);}
+.id-divider{height:1px;margin:4px 0 5px;background:linear-gradient(90deg,rgba(200,162,74,0.4),rgba(200,162,74,0.1),transparent);}
+.id-field{display:flex;align-items:baseline;gap:5px;margin-bottom:3px;}
+.id-field-key{font-size:7px;color:rgba(200,162,74,0.6);text-transform:uppercase;letter-spacing:1.2px;font-weight:700;min-width:38px;flex-shrink:0;font-family:'DM Sans',sans-serif;}
+.id-field-val{font-size:9px;color:#B8C4D4;font-family:'JetBrains Mono',monospace;letter-spacing:0.3px;}
+.id-field-val.large{font-family:'DM Sans',sans-serif;font-size:8px;color:#A8B8CC;}
+.id-bottom-bar{height:20px;flex-shrink:0;background:linear-gradient(90deg,rgba(200,162,74,0.06),rgba(200,162,74,0.02));border-top:1px solid rgba(200,162,74,0.12);display:flex;align-items:center;padding:0 12px;gap:8px;position:relative;z-index:2;}
+.id-bottom-bar span{font-size:6.5px;color:rgba(200,162,74,0.45);letter-spacing:1.5px;text-transform:uppercase;font-family:'DM Sans',sans-serif;}
+
+/* BACK */
+.id-back{width:100%;height:100%;background:linear-gradient(135deg,#050C1A 0%,#0A1420 100%);display:flex;flex-direction:column;position:relative;overflow:hidden;}
+.id-back-pattern{position:absolute;inset:0;background:repeating-linear-gradient(45deg,transparent,transparent 22px,rgba(200,162,74,0.012) 22px,rgba(200,162,74,0.012) 23px),repeating-linear-gradient(-45deg,transparent,transparent 22px,rgba(59,111,255,0.012) 22px,rgba(59,111,255,0.012) 23px);pointer-events:none;}
+.id-back-glow{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:200px;height:200px;background:radial-gradient(circle,rgba(200,162,74,0.05) 0%,transparent 70%);pointer-events:none;}
+.id-back-top-stripe{height:4px;width:100%;flex-shrink:0;background:linear-gradient(90deg,#7A5C18,#E0B95A,#C8A24A,#8B6820,#E0B95A,#7A5C18);background-size:200% 100%;animation:goldShimmer 4s linear infinite;}
+.id-back-body{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:7px;position:relative;z-index:1;padding:8px 16px;}
+.id-qr-frame{width:72px;height:72px;background:#FFFFFF;border-radius:6px;padding:3px;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 16px rgba(0,0,0,0.4),0 0 0 1px rgba(200,162,74,0.2);}
+.id-qr-frame canvas{border-radius:2px;width:100%!important;height:100%!important;}
+.id-scan-label{font-size:6.5px;color:rgba(200,162,74,0.5);letter-spacing:2.5px;text-transform:uppercase;font-family:'DM Sans',sans-serif;font-weight:700;}
+.id-back-code{font-family:'JetBrains Mono',monospace;font-size:9px;color:rgba(200,162,74,0.65);letter-spacing:2px;}
+.id-back-bottom{height:24px;flex-shrink:0;background:rgba(200,162,74,0.04);border-top:1px solid rgba(200,162,74,0.12);display:flex;align-items:center;justify-content:center;}
+.id-back-bottom span{font-size:6px;color:rgba(200,162,74,0.35);letter-spacing:2px;text-transform:uppercase;font-family:'DM Sans',sans-serif;}
+
+/* RESPONSIVE */
+@media(max-width:1024px){.chart-grid{grid-template-columns:1fr;}}
+@media(max-width:768px){
+  :root{--sidebar-w:0px;}
+  #sidebar{width:248px;transform:translateX(-100%);}
+  #sidebar.open{transform:translateX(0);}
+  #sidebarBackdrop{display:block;opacity:0;pointer-events:none;transition:opacity 0.22s;}
+  #sidebarBackdrop.open{opacity:1;pointer-events:all;}
+  #topbar{left:0;}
+  .hamburger{display:flex;}
+  #main{margin-left:0;padding:14px;}
+  .form-grid{grid-template-columns:1fr;}
+  .stats-grid{grid-template-columns:1fr 1fr;}
+  .page-header{flex-direction:column;}
+  .modal{max-width:100%;}
+  .recent-grid{grid-template-columns:1fr;}
+  .chart-grid{grid-template-columns:1fr;}
+}
+@media(max-width:480px){.stats-grid{grid-template-columns:1fr;}.topbar-right .admin-name{display:none;}}
+</style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div id="loginPage">
+  <div class="login-box">
+    <div class="login-logo">
+      <div class="login-logo-mark">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#060A12" stroke-width="2.5" width="26" height="26">
+          <path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/>
+        </svg>
+      </div>
+      <div class="login-title">MDF</div>
+      <div class="login-sub">Control Center</div>
+    </div>
+    <div class="login-form">
+      <div class="form-group"><label>Username</label><input class="form-input" id="loginUser" type="text" placeholder="Enter username" autocomplete="off"></div>
+      <div class="form-group"><label>Password</label><input class="form-input" id="loginPass" type="password" placeholder="Enter password"></div>
+      <div class="login-error" id="loginError"></div>
+      <button class="btn btn-primary" onclick="doLogin()" style="width:100%;justify-content:center;padding:11px;">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg>
+        Access Control Center
+      </button>
+    </div>
+  </div>
+</div>
+
+<div id="sidebarBackdrop" onclick="closeSidebar()"></div>
+
+<!-- SIDEBAR -->
+<nav id="sidebar">
+  <div class="sidebar-logo">
+    <div class="logo-mark">
+      <svg viewBox="0 0 24 24" fill="none" stroke="#060A12" stroke-width="2.5" width="17" height="17">
+        <path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/>
+      </svg>
+    </div>
+    <div><div class="logo-text">MDF</div><div class="logo-sub">Meherpur Debating Forum</div></div>
+  </div>
+  <div class="sidebar-nav">
+    <div class="nav-section-label">Overview</div>
+    <button class="nav-item active" onclick="showPage('dashboard')">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>Dashboard
+    </button>
+    <div class="nav-section-label">Management</div>
+    <button class="nav-item" onclick="showPage('members')">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>Members
+    </button>
+    <button class="nav-item" onclick="showPage('teams')">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>Teams
+    </button>
+    <button class="nav-item" onclick="showPage('participations')">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89L17 22l-5-3-5 3 1.523-9.11"/></svg>Participations
+    </button>
+    <button class="nav-item" onclick="showPage('activities')">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>Activities
+    </button>
+    <button class="nav-item" onclick="showPage('committees')">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>Committees
+    </button>
+    <div class="nav-section-label">Tools</div>
+    <button class="nav-item" onclick="showPage('idcard')">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>ID Card Maker
+    </button>
+    <div class="nav-section-label">System</div>
+    <button class="nav-item" onclick="showPage('contacts')">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>Contacts
+      <span class="nav-badge-red" id="contactsNavBadge" style="display:none;">0</span>
+    </button>
+    <button class="nav-item" onclick="showPage('approvals')">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>Approvals
+    </button>
+    <button class="nav-item" onclick="showPage('settings')">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93l-1.41 1.41M4.93 4.93l1.41 1.41M12 2v2M12 20v2M20 12h2M2 12h2M19.07 19.07l-1.41-1.41M4.93 19.07l1.41-1.41"/></svg>Settings
+    </button>
+  </div>
+  <div class="sidebar-footer">
+    <div class="status-pill"><span class="status-dot" id="statusDot"></span><span id="statusText">Connecting...</span></div>
+  </div>
+</nav>
+
+<!-- TOPBAR -->
+<header id="topbar">
+  <button class="hamburger" onclick="toggleSidebar()">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20">
+      <line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/>
+    </svg>
+  </button>
+  <div class="search-wrap">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+    <input id="globalSearch" type="text" placeholder="Search by MDF code, team code, tournament..." oninput="debounceSearch(this.value)">
+  </div>
+  <div class="topbar-right">
+    <div class="admin-pill">
+      <div class="admin-avatar" id="adminAvatar">AD</div>
+      <span class="admin-name" id="adminLabel">Admin</span>
+    </div>
+    <button class="btn-logout" onclick="doLogout()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+      Logout
+    </button>
+  </div>
+</header>
+
+<!-- MAIN -->
+<main id="main">
+
+<!-- DASHBOARD -->
+<section id="page-dashboard" class="page active">
+  <div class="page-header">
+    <div><div class="page-title">Control Center</div><div class="page-subtitle">Meherpur Debating Forum — System Overview</div></div>
+  </div>
+  <div class="stats-grid" id="dashStats">
+    <div class="stat-card gold"><div class="stat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg></div><div class="stat-value" id="statMembers">—</div><div class="stat-label">Total Members</div></div>
+    <div class="stat-card blue"><div class="stat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div><div class="stat-value" id="statTeams">—</div><div class="stat-label">Total Teams</div></div>
+    <div class="stat-card cyan"><div class="stat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89L17 22l-5-3-5 3 1.523-9.11"/></svg></div><div class="stat-value" id="statParticipations">—</div><div class="stat-label">Participations</div></div>
+    <div class="stat-card success"><div class="stat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></div><div class="stat-value" id="statActivities">—</div><div class="stat-label">Activities</div></div>
+    <div class="stat-card warning"><div class="stat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></div><div class="stat-value" id="statCommittee">—</div><div class="stat-label">Committee Members</div></div>
+  </div>
+  <div class="chart-grid">
+    <div class="chart-card"><div class="chart-title">Members by Institution</div><div id="institutionChart"><div class="skeleton" style="height:12px;margin-bottom:9px;border-radius:3px;"></div><div class="skeleton" style="height:12px;margin-bottom:9px;border-radius:3px;"></div><div class="skeleton" style="height:12px;border-radius:3px;"></div></div></div>
+    <div class="chart-card"><div class="chart-title">Teams by Type</div><div id="teamTypeChart"><div class="skeleton" style="height:12px;margin-bottom:9px;border-radius:3px;"></div><div class="skeleton" style="height:12px;border-radius:3px;"></div></div></div>
+  </div>
+  <div class="recent-grid">
+    <div class="panel-card"><div class="panel-head"><div class="panel-title">Recent Members</div></div><div id="recentMembers"><div class="loading-row"><div class="spinner"></div>Loading...</div></div></div>
+    <div class="panel-card"><div class="panel-head"><div class="panel-title">Recent Activities</div></div><div id="recentActivities"><div class="loading-row"><div class="spinner"></div>Loading...</div></div></div>
+  </div>
+</section>
+
+<!-- MEMBERS -->
+<section id="page-members" class="page">
+  <div class="page-header">
+    <div><div class="page-title">Members</div><div class="page-subtitle">Manage all registered members and priority ordering</div></div>
+    <button class="btn btn-primary" onclick="openMemberModal()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>Add Member</button>
+  </div>
+  <div class="panel-card">
+    <div class="filter-row">
+      <input class="filter-input" type="text" placeholder="Search MDF code or phone..." oninput="debounce(()=>loadMembers(),300,'msearch')" id="memberSearch">
+      <input class="filter-input" type="text" placeholder="Filter by institution..." oninput="debounce(()=>loadMembers(),300,'minst')" id="memberInstFilter">
+      <select class="filter-input" onchange="loadMembers()" id="memberSortBy">
+        <option value="created_at">Sort: Newest</option><option value="mdf_code">Sort: MDF Code</option><option value="priority">Sort: Priority</option>
+      </select>
+    </div>
+    <div class="table-wrap"><table><thead><tr><th>MDF Code</th><th>Full Name</th><th>Phone</th><th>Institution</th><th>Blood</th><th>Priority</th><th>Actions</th></tr></thead><tbody id="membersBody"></tbody></table></div>
+    <div class="pagination" id="membersPagination"></div>
+  </div>
+</section>
+
+<!-- TEAMS -->
+<section id="page-teams" class="page">
+  <div class="page-header">
+    <div><div class="page-title">Teams</div><div class="page-subtitle">Manage debate teams and member assignments</div></div>
+    <button class="btn btn-primary" onclick="openTeamModal()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>Create Team</button>
+  </div>
+  <div class="panel-card">
+    <div class="filter-row">
+      <input class="filter-input" type="text" placeholder="Search team name or code..." oninput="debounce(()=>loadTeams(),300,'tsearch')" id="teamSearch">
+      <select class="filter-input" onchange="loadTeams()" id="teamTypeFilter"><option value="">All Types</option><option value="ISC">ISC</option><option value="IV">IV</option></select>
+      <select class="filter-input" onchange="loadTeams()" id="teamSkillFilter"><option value="">All Skills</option><option>Asian Parliamentary</option><option>British Parliamentary</option><option>Sonaotic</option><option>Moot Court</option><option>Political Debate</option><option>Religious Debate</option><option>Astrals</option><option>Baroyari</option><option>Regional</option><option>Rural Debate</option></select>
+    </div>
+    <div class="table-wrap"><table><thead><tr><th>Team Code</th><th>Team Name</th><th>Type</th><th>Skill</th><th>Season</th><th>Members</th><th>Actions</th></tr></thead><tbody id="teamsBody"></tbody></table></div>
+    <div class="pagination" id="teamsPagination"></div>
+  </div>
+</section>
+
+<!-- PARTICIPATIONS -->
+<section id="page-participations" class="page">
+  <div class="page-header">
+    <div><div class="page-title">Participations</div><div class="page-subtitle">Track tournament participation records</div></div>
+    <button class="btn btn-primary" onclick="openParticipationModal()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>Add Participation</button>
+  </div>
+  <div class="panel-card">
+    <div class="filter-row"><input class="filter-input" type="text" placeholder="Search tournament..." oninput="debounce(()=>loadParticipations(),300,'psearch')" id="partSearch"></div>
+    <div class="table-wrap"><table><thead><tr><th>Code</th><th>Tournament</th><th>Team</th><th>Date</th><th>Actions</th></tr></thead><tbody id="participationsBody"></tbody></table></div>
+    <div class="pagination" id="participationsPagination"></div>
+  </div>
+</section>
+
+<!-- ACTIVITIES -->
+<section id="page-activities" class="page">
+  <div class="page-header">
+    <div><div class="page-title">Activities</div><div class="page-subtitle">Manage event slider content — drag to reorder</div></div>
+    <button class="btn btn-primary" onclick="openActivityModal()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>Add Activity</button>
+  </div>
+  <div class="panel-card"><div class="panel-body"><div class="activity-list" id="activityList"></div></div></div>
+</section>
+
+<!-- COMMITTEES -->
+<section id="page-committees" class="page">
+  <div class="page-header">
+    <div><div class="page-title">Committees</div><div class="page-subtitle">Executive committee seasons and member hierarchy</div></div>
+    <button class="btn btn-primary" onclick="openCommitteeModal()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>New Committee</button>
+  </div>
+  <div class="panel-card">
+    <div class="filter-row">
+      <select class="filter-input" onchange="loadCommitteeMembers(this.value)" id="committeeSelect"><option value="">Select committee...</option></select>
+      <button class="btn btn-secondary btn-sm" onclick="openAddCommMemberModal()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>Add Member</button>
+    </div>
+    <div class="panel-body"><div class="hierarchy-list" id="hierarchyList"><div class="empty-state"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><div class="empty-state-title">No Committee Selected</div><div class="empty-state-sub">Select a committee to view hierarchy</div></div></div></div>
+  </div>
+</section>
+
+<!-- ID CARD MAKER -->
+<section id="page-idcard" class="page">
+  <div class="page-header">
+    <div><div class="page-title">ID Card Maker</div><div class="page-subtitle">Generate premium ISO 7810 ID-1 member identity cards</div></div>
+  </div>
+  <div class="panel-card">
+    <div class="panel-body">
+      <div class="id-search-bar">
+        <div class="member-search-wrap" style="flex:1;max-width:420px;">
+          <input class="filter-input" id="idCardSearch" type="text" placeholder="Search member by MDF code or name..." oninput="searchMemberForID(this.value)" style="width:100%;" autocomplete="off">
+          <div class="member-dropdown" id="idCardDropdown"></div>
+        </div>
+        <button class="btn btn-primary" onclick="downloadIDCardPDF()" id="downloadIDBtn" style="display:none;">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          Download PDF
+        </button>
+      </div>
+
+      <div id="idCardPreviewSection" style="display:none;">
+        <div style="font-size:9px;letter-spacing:2.5px;text-transform:uppercase;color:var(--text-faint);margin-bottom:20px;font-weight:700;">Preview — Front & Back (ISO 7810 ID-1)</div>
+        <div class="id-card-preview-wrap">
+          <!-- FRONT -->
+          <div>
+            <div class="id-card-side-label">FRONT SIDE</div>
+            <div class="id-card-shell">
+              <div class="id-front" id="idFrontPreview">
+                <div class="id-front-noise"></div>
+                <div class="id-front-glare"></div>
+                <div class="id-front-glare2"></div>
+                <div class="id-top-stripe"></div>
+                <div class="id-body">
+                  <div class="id-photo-col">
+                    <div class="id-photo-box">
+                      <img id="idPreviewPhoto" src="" alt="" style="display:none;">
+                      <div class="id-photo-placeholder" id="idPhotoPlaceholder">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                      </div>
+                    </div>
+                    <div class="id-blood-badge" id="idPreviewBlood">—</div>
+                  </div>
+                  <div class="id-info-col">
+                    <div class="id-org-name">Meherpur Debating Forum</div>
+                    <div class="id-member-name" id="idPreviewName">Member Name</div>
+                    <div class="id-divider"></div>
+                    <div class="id-field"><span class="id-field-key">ID</span><span class="id-field-val" id="idPreviewCode">—</span></div>
+                    <div class="id-field"><span class="id-field-key">Mobile</span><span class="id-field-val" id="idPreviewPhone">—</span></div>
+                    <div class="id-field"><span class="id-field-key">Inst.</span><span class="id-field-val large" id="idPreviewInst">—</span></div>
+                  </div>
+                </div>
+                <div class="id-bottom-bar">
+                  <span>MEMBER IDENTITY CARD</span>
+                  <span style="margin-left:auto;">Official · Authorized</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- BACK -->
+          <div>
+            <div class="id-card-side-label">BACK SIDE</div>
+            <div class="id-card-shell">
+              <div class="id-back">
+                <div class="id-back-pattern"></div>
+                <div class="id-back-glow"></div>
+                <div class="id-back-top-stripe"></div>
+                <div class="id-back-body">
+                  <div class="id-qr-frame"><div id="idQRPreview"></div></div>
+                  <div class="id-scan-label">Scan to Verify Membership</div>
+                  <div class="id-back-code" id="idBackCode">MDF-XXXXX</div>
+                </div>
+                <div class="id-back-bottom"><span>meherpur-debating-forum.com · Official Member Card</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div style="color:var(--text-faint);font-size:11px;text-align:center;margin-top:12px;">PDF exports front and back as separate pages — sized exactly to card dimensions (85.6mm × 54mm)</div>
+      </div>
+
+      <div id="idCardEmpty" style="padding:48px 20px;text-align:center;color:var(--text-dim);">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="40" height="40" style="margin:0 auto 16px;display:block;opacity:0.15;"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>
+        <div style="font-size:15px;font-weight:600;margin-bottom:6px;color:var(--text);">Search a Member</div>
+        <div style="font-size:13px;">Type a member name or MDF code above to generate their ID card</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACTS -->
+<section id="page-contacts" class="page">
+  <div class="page-header">
+    <div>
+      <div class="page-title">Contact Messages</div>
+      <div class="page-subtitle">Messages received through the public contact form</div>
+    </div>
+    <div id="contactsTotalBadge" style="display:none;align-items:center;gap:8px;background:var(--panel2);border:1px solid var(--border2);border-radius:var(--radius-lg);padding:10px 16px;">
+      <svg viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="2" width="16" height="16"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+      <span style="font-family:'JetBrains Mono',monospace;font-size:20px;font-weight:700;color:var(--gold);" id="contactsTotalCount">0</span>
+      <span style="font-size:11px;color:var(--text-dim);text-transform:uppercase;letter-spacing:1px;">Total Messages</span>
+    </div>
+  </div>
+  <div class="panel-card">
+    <div class="table-wrap"><table><thead><tr><th>Name</th><th>Phone</th><th>Email</th><th>Message</th><th>Received</th><th>Actions</th></tr></thead><tbody id="contactsBody"></tbody></table></div>
+    <div class="pagination" id="contactsPagination"></div>
+  </div>
+</section>
+
+<!-- APPROVALS -->
+<section id="page-approvals" class="page">
+  <div class="page-header">
+    <div><div class="page-title">Skill Approvals</div><div class="page-subtitle">Manage approved skills per member</div></div>
+    <button class="btn btn-primary" onclick="openApprovalModal()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>Add Approval</button>
+  </div>
+  <div class="panel-card">
+    <div class="filter-row"><input class="filter-input" type="text" placeholder="Search member code..." oninput="debounce(()=>loadApprovals(),300,'appsearch')" id="approvalSearch"></div>
+    <div class="table-wrap"><table><thead><tr><th>Member Code</th><th>Member Name</th><th>Approved Skill</th><th>Actions</th></tr></thead><tbody id="approvalsBody"></tbody></table></div>
+    <div class="pagination" id="approvalsPagination"></div>
+  </div>
+</section>
+
+<!-- SETTINGS -->
+<section id="page-settings" class="page">
+  <div class="page-header"><div><div class="page-title">Settings</div><div class="page-subtitle">System configuration and admin management</div></div></div>
+  <div class="panel-card" style="max-width:480px;">
+    <div class="panel-head"><div class="panel-title">Admin Accounts</div></div>
+    <div class="panel-body">
+      <div class="table-wrap"><table><thead><tr><th>Username</th><th>Actions</th></tr></thead><tbody id="adminsBody"></tbody></table></div>
+      <div style="margin-top:14px;"><button class="btn btn-primary btn-sm" onclick="openAdminModal()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>Add Admin</button></div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<!-- ===== MODALS ===== -->
+
+<!-- Member Modal -->
+<div class="modal-overlay" id="memberModal">
+  <div class="modal">
+    <div class="modal-head"><div class="modal-title" id="memberModalTitle">Add Member</div><button class="modal-close" onclick="closeModal('memberModal')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button></div>
+    <div class="modal-body">
+      <div class="form-grid">
+        <div class="form-group"><label>MDF Code</label><input class="form-input" id="fMdfCode" placeholder="Auto-generated" maxlength="5"><div class="form-hint">Leave blank for auto-generation</div></div>
+        <div class="form-group"><label>Full Name</label><input class="form-input" id="fFullName" placeholder="Member full name"></div>
+        <div class="form-group"><label>Father Name</label><input class="form-input" id="fFatherName" placeholder="Father name"></div>
+        <div class="form-group"><label>Mother Name</label><input class="form-input" id="fMotherName" placeholder="Mother name"></div>
+        <div class="form-group"><label>Phone</label><input class="form-input" id="fPhone" placeholder="01XXXXXXXXX" maxlength="11"></div>
+        <div class="form-group"><label>Father Phone</label><input class="form-input" id="fFatherPhone" placeholder="01XXXXXXXXX" maxlength="11"></div>
+        <div class="form-group"><label>Password</label><input class="form-input" id="fPassword" type="password" placeholder="Member password"></div>
+        <div class="form-group"><label>Blood Group</label><select class="form-input" id="fBlood"><option value="">Select...</option><option>A+</option><option>A-</option><option>B+</option><option>B-</option><option>AB+</option><option>AB-</option><option>O+</option><option>O-</option></select></div>
+        <div class="form-group"><label>Class / Semester</label><input class="form-input" id="fClass" placeholder="e.g. Class 10, Semester 3"></div>
+        <div class="form-group"><label>Institution</label><input class="form-input" id="fInstitution" placeholder="School / College name"></div>
+        <div class="form-group full"><label>Address</label><input class="form-input" id="fAddress" placeholder="Full address"></div>
+        <div class="form-group full"><label>Birth Registration No</label><input class="form-input" id="fBirthReg" placeholder="Birth registration number"></div>
+        <div class="form-group full"><label>Achievements (comma separated)</label><textarea class="form-input" id="fAchievements" placeholder="Award 1, Award 2, ..."></textarea></div>
+        <div class="form-group full"><label>Photo URL</label><input class="form-input" id="fPhotoUrl" placeholder="https://..." oninput="previewPhoto()"><img class="photo-preview" id="photoPreview" src="" alt="Photo"></div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary" onclick="closeModal('memberModal')">Cancel</button>
+      <button class="btn btn-primary" onclick="saveMember()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>Save Member</button>
+    </div>
+  </div>
+</div>
+
+<!-- Team Modal -->
+<div class="modal-overlay" id="teamModal">
+  <div class="modal">
+    <div class="modal-head"><div class="modal-title" id="teamModalTitle">Create Team</div><button class="modal-close" onclick="closeModal('teamModal')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button></div>
+    <div class="modal-body">
+      <div class="form-grid">
+        <div class="form-group"><label>Team Name</label><input class="form-input" id="fTeamName" placeholder="Team name"></div>
+        <div class="form-group"><label>Team Type</label><select class="form-input" id="fTeamType"><option value="">Select...</option><option>ISC</option><option>IV</option></select></div>
+        <div class="form-group"><label>Participant Type</label><select class="form-input" id="fParticipantType"><option value="">Select...</option><option>Open</option><option>Institutional</option></select></div>
+        <div class="form-group"><label>Skill Type</label><select class="form-input" id="fSkillType"><option value="">Select...</option><option>Asian Parliamentary</option><option>British Parliamentary</option><option>Sonaotic</option><option>Moot Court</option><option>Political Debate</option><option>Religious Debate</option><option>Astrals</option><option>Baroyari</option><option>Regional</option><option>Rural Debate</option></select></div>
+        <div class="form-group"><label>Season Start</label><input class="form-input" id="fTeamSeasonStart" type="date"></div>
+        <div class="form-group"><label>Season End</label><input class="form-input" id="fTeamSeasonEnd" type="date"></div>
+      </div>
+      <div style="margin-top:18px;">
+        <div style="font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--text-faint);margin-bottom:10px;font-weight:700;">Team Members</div>
+        <div id="teamMembersList" style="display:flex;flex-direction:column;gap:7px;margin-bottom:10px;"></div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:flex-end;">
+          <div class="member-search-wrap" style="flex:1;min-width:160px;">
+            <input class="filter-input" id="tmMdfCode" placeholder="Type MDF code or name..." style="width:100%;" oninput="searchTeamMember(this.value)" autocomplete="off">
+            <div class="member-dropdown" id="teamMemberDropdown"></div>
+          </div>
+          <div class="toggle-wrap"><button class="toggle" id="tmBench" onclick="this.classList.toggle('on')"></button><span style="font-size:12px;color:var(--text-dim);">Bench</span></div>
+          <button class="btn btn-secondary btn-sm" onclick="addTeamMemberRow()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>Add</button>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary" onclick="closeModal('teamModal')">Cancel</button>
+      <button class="btn btn-primary" onclick="saveTeam()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>Save Team</button>
+    </div>
+  </div>
+</div>
+
+<!-- Participation Modal -->
+<div class="modal-overlay" id="participationModal">
+  <div class="modal" style="max-width:440px;">
+    <div class="modal-head"><div class="modal-title" id="partModalTitle">Add Participation</div><button class="modal-close" onclick="closeModal('participationModal')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button></div>
+    <div class="modal-body">
+      <div class="form-grid cols-1">
+        <div class="form-group"><label>Tournament Name</label><input class="form-input" id="fTournament" placeholder="Tournament name"></div>
+        <div class="form-group"><label>Team Code</label><select class="form-input" id="fPartTeam"></select></div>
+        <div class="form-group"><label>Participation Date</label><input class="form-input" id="fPartDate" type="date"></div>
+      </div>
+    </div>
+    <div class="modal-footer"><button class="btn btn-secondary" onclick="closeModal('participationModal')">Cancel</button><button class="btn btn-primary" onclick="saveParticipation()">Save</button></div>
+  </div>
+</div>
+
+<!-- Activity Modal -->
+<div class="modal-overlay" id="activityModal">
+  <div class="modal">
+    <div class="modal-head"><div class="modal-title" id="actModalTitle">Add Activity</div><button class="modal-close" onclick="closeModal('activityModal')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button></div>
+    <div class="modal-body">
+      <div class="form-grid">
+        <div class="form-group full"><label>Title</label><input class="form-input" id="fActTitle" placeholder="Activity title"></div>
+        <div class="form-group"><label>Event Type</label><select class="form-input" id="fActType" onchange="toggleVenue()"><option value="">Select...</option><option>Online</option><option>Offline</option></select></div>
+        <div class="form-group" id="venueGroup" style="display:none;"><label>Venue</label><input class="form-input" id="fActVenue" placeholder="Venue name"></div>
+        <div class="form-group"><label>Engaged People</label><input class="form-input" id="fActPeople" type="number" placeholder="0" min="0"></div>
+        <div class="form-group full"><label>Details</label><textarea class="form-input" id="fActDetails" rows="3" placeholder="Event description..."></textarea></div>
+        <div class="form-group full"><label>Image URL</label><input class="form-input" id="fActImg" placeholder="https://..." oninput="previewActImg()"><img class="photo-preview" id="actImgPreview" src="" alt="Preview"></div>
+      </div>
+    </div>
+    <div class="modal-footer"><button class="btn btn-secondary" onclick="closeModal('activityModal')">Cancel</button><button class="btn btn-primary" onclick="saveActivity()">Save Activity</button></div>
+  </div>
+</div>
+
+<!-- Committee Modal -->
+<div class="modal-overlay" id="committeeModal">
+  <div class="modal" style="max-width:440px;">
+    <div class="modal-head"><div class="modal-title" id="commModalTitle">New Committee</div><button class="modal-close" onclick="closeModal('committeeModal')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button></div>
+    <div class="modal-body">
+      <div class="form-grid cols-1">
+        <div class="form-group"><label>Committee ID</label><input class="form-input" id="fCommId" placeholder="e.g. COMM2025A" maxlength="10"></div>
+        <div class="form-group"><label>Season Start</label><input class="form-input" id="fCommStart" type="date"></div>
+        <div class="form-group"><label>Season End</label><input class="form-input" id="fCommEnd" type="date"></div>
+        <div class="form-group"><label>Is Current Committee</label><div class="toggle-wrap" style="margin-top:4px;"><button class="toggle" id="fCommCurrent" onclick="this.classList.toggle('on')"></button><span style="font-size:12px;color:var(--text-dim);">Active / Current</span></div></div>
+      </div>
+    </div>
+    <div class="modal-footer"><button class="btn btn-secondary" onclick="closeModal('committeeModal')">Cancel</button><button class="btn btn-primary" onclick="saveCommittee()">Save Committee</button></div>
+  </div>
+</div>
+
+<!-- Committee Member Modal — designation is now a free text input -->
+<div class="modal-overlay" id="commMemberModal">
+  <div class="modal" style="max-width:440px;">
+    <div class="modal-head"><div class="modal-title">Add Committee Member</div><button class="modal-close" onclick="closeModal('commMemberModal')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button></div>
+    <div class="modal-body">
+      <div class="form-grid cols-1">
+        <div class="form-group">
+          <label>Search Member</label>
+          <div class="member-search-wrap">
+            <input class="form-input" id="fCommMemberSearch" placeholder="Type name or MDF code..." oninput="searchCommMember(this.value)" autocomplete="off">
+            <div class="member-dropdown" id="commMemberDropdown"></div>
+          </div>
+          <div class="form-hint">Selected: <span id="commMemberSelectedLabel" style="color:var(--gold);">none</span></div>
+          <input type="hidden" id="fCommMemberCode">
+        </div>
+        <!-- CHANGED: free text input instead of select -->
+        <div class="form-group">
+          <label>Designation</label>
+          <input class="form-input" id="fCommDesig" placeholder="e.g. President, সেক্রেটারি, Treasurer..." autocomplete="off">
+          <div class="form-hint">Type any designation — English or Bengali</div>
+        </div>
+        <div class="form-group"><label>Rank Order</label><input class="form-input" id="fCommRank" type="number" value="1" min="1"></div>
+      </div>
+    </div>
+    <div class="modal-footer"><button class="btn btn-secondary" onclick="closeModal('commMemberModal')">Cancel</button><button class="btn btn-primary" onclick="saveCommitteeMember()">Add Member</button></div>
+  </div>
+</div>
+
+<!-- Approval Modal -->
+<div class="modal-overlay" id="approvalModal">
+  <div class="modal" style="max-width:440px;">
+    <div class="modal-head"><div class="modal-title">Add Skill Approval</div><button class="modal-close" onclick="closeModal('approvalModal')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button></div>
+    <div class="modal-body">
+      <div class="form-grid cols-1">
+        <div class="form-group">
+          <label>Search Member</label>
+          <div class="member-search-wrap">
+            <input class="form-input" id="fApprovalSearch" placeholder="Type name or MDF code..." oninput="searchApprovalMember(this.value)" autocomplete="off">
+            <div class="member-dropdown" id="approvalMemberDropdown"></div>
+          </div>
+          <div class="form-hint">Selected: <span id="approvalMemberLabel" style="color:var(--gold);">none</span></div>
+          <input type="hidden" id="fApprovalCode">
+        </div>
+        <div class="form-group"><label>Approved Skill</label><select class="form-input" id="fApprovalSkill"><option value="">Select...</option><option>Asian Parliamentary</option><option>British Parliamentary</option><option>Sonaotic</option><option>Moot Court</option><option>Political Debate</option><option>Religious Debate</option><option>Astrals</option><option>Baroyari</option><option>Regional</option><option>Rural Debate</option></select></div>
+      </div>
+    </div>
+    <div class="modal-footer"><button class="btn btn-secondary" onclick="closeModal('approvalModal')">Cancel</button><button class="btn btn-primary" onclick="saveApproval()">Save Approval</button></div>
+  </div>
+</div>
+
+<!-- Admin Modal -->
+<div class="modal-overlay" id="adminModal">
+  <div class="modal" style="max-width:380px;">
+    <div class="modal-head"><div class="modal-title">Add Admin</div><button class="modal-close" onclick="closeModal('adminModal')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button></div>
+    <div class="modal-body"><div class="form-grid cols-1"><div class="form-group"><label>Username</label><input class="form-input" id="fAdminUser" placeholder="Username"></div><div class="form-group"><label>Password</label><input class="form-input" id="fAdminPass" type="password" placeholder="Password"></div></div></div>
+    <div class="modal-footer"><button class="btn btn-secondary" onclick="closeModal('adminModal')">Cancel</button><button class="btn btn-primary" onclick="saveAdmin()">Create Admin</button></div>
+  </div>
+</div>
+
+<!-- Member View Modal -->
+<div class="modal-overlay" id="viewMemberModal">
+  <div class="modal"><div class="modal-head"><div class="modal-title">Member Profile</div><button class="modal-close" onclick="closeModal('viewMemberModal')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button></div><div class="modal-body" id="viewMemberContent"></div></div>
+</div>
+
+<!-- Global Search Modal -->
+<div class="modal-overlay" id="searchModal">
+  <div class="modal" style="max-width:680px;"><div class="modal-head"><div class="modal-title">Search Results</div><button class="modal-close" onclick="closeModal('searchModal')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button></div><div class="modal-body" id="searchResultContent"></div></div>
+</div>
+
+<!-- Confirm Modal -->
+<div class="modal-overlay" id="confirmModal">
+  <div class="modal" style="max-width:380px;">
+    <div class="modal-head"><div class="modal-title">Confirm Delete</div><button class="modal-close" onclick="closeModal('confirmModal')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button></div>
+    <div class="confirm-body">
+      <div class="confirm-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/><line x1="10" y1="11" x2="10" y2="17"/><line x1="14" y1="11" x2="14" y2="17"/></svg></div>
+      <div class="confirm-title">Delete Record</div>
+      <div class="confirm-msg" id="confirmMsg">This action is permanent and cannot be undone.</div>
+    </div>
+    <div class="modal-footer" style="justify-content:center;gap:12px;"><button class="btn btn-secondary" onclick="closeModal('confirmModal')">Cancel</button><button class="btn btn-danger" id="confirmBtn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/></svg>Confirm Delete</button></div>
+  </div>
+</div>
+
+<div id="toastContainer"></div>
+
+<script>
+// ===== CONFIG =====
+const SUPABASE_URL = "https://ecvvadtwhbxnorzhowal.supabase.co";
+const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVjdnZhZHR3aGJ4bm9yemhvd2FsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzg4Njc5MzYsImV4cCI6MjA5NDQ0MzkzNn0.TZyG8cXV3CgExPr16v8qn-DyMbZC51b3SoVrCAwMcEw";
+const PAGE_SIZE = 20;
+
+let state = {
+  currentPage: 'dashboard',
+  currentAdmin: null,
+  pages: {},
+  editId: null,
+  editTeamCode: null,
+  teamMembers: [],
+  currentCommitteeId: null,
+  idCardMember: null,
+};
+
+// ===== SUPABASE =====
+async function supa(table, method='GET', body=null, query='') {
+  const url = `${SUPABASE_URL}/rest/v1/${table}${query}`;
+  const opts = {
+    method,
+    headers: {
+      'apikey': SUPABASE_ANON_KEY,
+      'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
+      'Content-Type': 'application/json',
+      'Prefer': method === 'POST' ? 'return=representation' : (method === 'PATCH' ? 'return=representation' : ''),
+    }
+  };
+  if (body) opts.body = JSON.stringify(body);
+  const res = await fetch(url, opts);
+  if (!res.ok) { const err = await res.text(); throw new Error(err); }
+  if (method === 'DELETE' || res.status === 204) return null;
+  return res.json();
+}
+
+async function supaCount(table, query='') {
+  const url = `${SUPABASE_URL}/rest/v1/${table}${query}`;
+  const res = await fetch(url, {
+    headers: { 'apikey': SUPABASE_ANON_KEY, 'Authorization': `Bearer ${SUPABASE_ANON_KEY}`, 'Prefer': 'count=exact', 'Range': '0-0' }
+  });
+  const cr = res.headers.get('content-range');
+  if (cr) { const m = cr.match(/\/(\d+)/); if (m) return parseInt(m[1]); }
+  return 0;
+}
+
+async function supaRpc(fn, params={}) {
+  const res = await fetch(`${SUPABASE_URL}/rest/v1/rpc/${fn}`, {
+    method: 'POST',
+    headers: { 'apikey': SUPABASE_ANON_KEY, 'Authorization': `Bearer ${SUPABASE_ANON_KEY}`, 'Content-Type': 'application/json' },
+    body: JSON.stringify(params)
+  });
+  return res.json();
+}
+
+// ===== VALIDATION =====
+const ENG_REGEX = /^[A-Za-z0-9\s@._,\-'#&()/]*$/;
+const PHONE_REGEX = /^01[0-9]{9}$/;
+function validateEng(val) { return !val || ENG_REGEX.test(val); }
+function validatePhone(val) { return !val || PHONE_REGEX.test(val); }
+function validateInput(el, label) {
+  const v = el.value.trim();
+  if (!validateEng(v)) { toast(`${label}: Only English characters allowed`, 'error'); el.focus(); return false; }
+  return true;
+}
+
+// ===== TOAST =====
+function toast(msg, type='info') {
+  const icons = {
+    success: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>`,
+    error: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>`,
+    info: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>`
+  };
+  const el = document.createElement('div');
+  el.className = `toast ${type}`;
+  el.innerHTML = `<span class="toast-icon">${icons[type]||icons.info}</span><span class="toast-msg">${esc(msg)}</span>`;
+  document.getElementById('toastContainer').appendChild(el);
+  setTimeout(() => { el.style.opacity='0'; setTimeout(()=>el.remove(),300); }, 3800);
+}
+
+function esc(s) { return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+
+const debounceTimers = {};
+function debounce(fn, delay=300, key='default') {
+  clearTimeout(debounceTimers[key]);
+  debounceTimers[key] = setTimeout(fn, delay);
+}
+function debounceSearch(val) {
+  debounce(() => { if (val.trim().length >= 2) runGlobalSearch(val.trim()); }, 500, 'search');
+}
+
+// ===== LOGIN =====
+function doLogin() {
+  const user = document.getElementById('loginUser').value.trim();
+  const pass = document.getElementById('loginPass').value.trim();
+  if (!user || !pass) { document.getElementById('loginError').textContent = 'Enter credentials'; return; }
+  supa('admins','GET',null,`?username=eq.${encodeURIComponent(user)}&password=eq.${encodeURIComponent(pass)}&select=id,username`)
+    .then(data => {
+      if (data && data.length > 0) {
+        state.currentAdmin = data[0];
+        document.getElementById('loginPage').style.display = 'none';
+        document.getElementById('adminLabel').textContent = data[0].username;
+        document.getElementById('adminAvatar').textContent = data[0].username.substring(0,2).toUpperCase();
+        checkConnection(); loadDashboard(); loadContactsBadge();
+      } else { document.getElementById('loginError').textContent = 'Invalid username or password'; }
+    }).catch(() => { document.getElementById('loginError').textContent = 'Connection error. Check network.'; });
+}
+document.getElementById('loginPass').addEventListener('keydown', e => { if (e.key==='Enter') doLogin(); });
+
+function doLogout() {
+  state.currentAdmin = null;
+  document.getElementById('loginPage').style.display = 'flex';
+  document.getElementById('loginUser').value = '';
+  document.getElementById('loginPass').value = '';
+  document.getElementById('loginError').textContent = '';
+}
+
+async function checkConnection() {
+  try {
+    await supa('members','GET',null,'?limit=1&select=id');
+    document.getElementById('statusDot').classList.remove('offline');
+    document.getElementById('statusText').textContent = 'Connected';
+  } catch {
+    document.getElementById('statusDot').classList.add('offline');
+    document.getElementById('statusText').textContent = 'Offline';
+  }
+}
+
+// ===== CONTACTS BADGE =====
+async function loadContactsBadge() {
+  try {
+    const total = await supaCount('contacts');
+    const badge = document.getElementById('contactsNavBadge');
+    const totalBadge = document.getElementById('contactsTotalBadge');
+    const totalCount = document.getElementById('contactsTotalCount');
+    if (total > 0) {
+      badge.textContent = total > 99 ? '99+' : total;
+      badge.style.display = 'inline-block';
+    } else {
+      badge.style.display = 'none';
+    }
+    if (totalBadge) {
+      totalCount.textContent = total;
+      totalBadge.style.display = 'flex';
+    }
+  } catch {}
+}
+
+// ===== NAV =====
+function showPage(name) {
+  document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+  document.querySelectorAll(`[onclick="showPage('${name}')"]`).forEach(el => el.classList.add('active'));
+  document.querySelectorAll('.page').forEach(el => el.classList.remove('active'));
+  const pg = document.getElementById(`page-${name}`);
+  if (pg) pg.classList.add('active');
+  state.currentPage = name; closeSidebar();
+  if (name==='dashboard') loadDashboard();
+  else if (name==='members') { state.pages.members=1; loadMembers(); }
+  else if (name==='teams') { state.pages.teams=1; loadTeams(); }
+  else if (name==='participations') { state.pages.participations=1; loadParticipations(); }
+  else if (name==='activities') loadActivities();
+  else if (name==='committees') loadCommittees();
+  else if (name==='contacts') { state.pages.contacts=1; loadContacts(); loadContactsBadge(); }
+  else if (name==='approvals') { state.pages.approvals=1; loadApprovals(); }
+  else if (name==='settings') loadAdmins();
+  else if (name==='idcard') initIDCard();
+}
+
+function toggleSidebar() { document.getElementById('sidebar').classList.toggle('open'); document.getElementById('sidebarBackdrop').classList.toggle('open'); }
+function closeSidebar() { document.getElementById('sidebar').classList.remove('open'); document.getElementById('sidebarBackdrop').classList.remove('open'); }
+function openModal(id) { document.getElementById(id).classList.add('open'); }
+function closeModal(id) { document.getElementById(id).classList.remove('open'); }
+document.querySelectorAll('.modal-overlay').forEach(o => o.addEventListener('click', e => { if (e.target===o) o.classList.remove('open'); }));
+
+function confirmDelete(msg, onConfirm) {
+  document.getElementById('confirmMsg').textContent = msg || 'This action is permanent.';
+  document.getElementById('confirmBtn').onclick = () => { closeModal('confirmModal'); onConfirm(); };
+  openModal('confirmModal');
+}
+
+// ===== PAGINATION =====
+function renderPagination(containerId, total, currentPg, onPage) {
+  const container = document.getElementById(containerId);
+  const pages = Math.ceil(total / PAGE_SIZE);
+  container.innerHTML = '';
+  if (pages <= 1) return;
+  const info = document.createElement('span'); info.className='page-info'; info.textContent=`${total} records`; container.appendChild(info);
+  const prev = document.createElement('button'); prev.className='pg-btn'; prev.textContent='←'; prev.disabled=currentPg===1; prev.onclick=()=>onPage(currentPg-1); container.appendChild(prev);
+  let start=Math.max(1,currentPg-2), end=Math.min(pages,currentPg+2);
+  if (start>1) { addPgBtn(container,1,onPage,currentPg); if (start>2) container.appendChild(makeDots()); }
+  for (let i=start;i<=end;i++) addPgBtn(container,i,onPage,currentPg);
+  if (end<pages) { if (end<pages-1) container.appendChild(makeDots()); addPgBtn(container,pages,onPage,currentPg); }
+  const next=document.createElement('button'); next.className='pg-btn'; next.textContent='→'; next.disabled=currentPg===pages; next.onclick=()=>onPage(currentPg+1); container.appendChild(next);
+}
+function addPgBtn(c,i,onPage,cur) { const b=document.createElement('button'); b.className=`pg-btn${i===cur?' active':''}`; b.textContent=i; b.onclick=()=>onPage(i); c.appendChild(b); }
+function makeDots() { const s=document.createElement('span'); s.textContent='…'; s.style.cssText='color:var(--text-faint);font-size:12px;padding:0 4px;'; return s; }
+
+function showSkeleton(tbody, cols) {
+  const frag=document.createDocumentFragment();
+  for (let i=0;i<5;i++) { const tr=document.createElement('tr'); for (let j=0;j<cols;j++) { const td=document.createElement('td'); td.innerHTML='<div class="skeleton" style="height:14px;border-radius:3px;"></div>'; tr.appendChild(td); } frag.appendChild(tr); }
+  tbody.innerHTML=''; tbody.appendChild(frag);
+}
+function showEmpty(tbody, cols, msg) {
+  tbody.innerHTML=`<tr><td colspan="${cols}"><div class="empty-state"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="36" height="36"><rect x="3" y="3" width="18" height="18" rx="2"/></svg><div class="empty-state-title">No Records</div><div class="empty-state-sub">${msg||'No data found'}</div></div></td></tr>`;
+}
+
+// ===== MEMBER SEARCH HELPER =====
+const dropdownCallbacks = {};
+
+async function searchMembers(query, dropdownId, onSelect) {
+  const dropdown = document.getElementById(dropdownId);
+  if (!query || query.length < 1) { dropdown.classList.remove('open'); return; }
+  try {
+    const data = await supa('members','GET',null,`?or=(mdf_code.ilike.*${encodeURIComponent(query)}*,full_name.ilike.*${encodeURIComponent(query)}*)&select=mdf_code,full_name&limit=10`);
+    if (!data.length) {
+      dropdown.innerHTML='<div class="member-drop-item" style="color:var(--text-faint);cursor:default;">No members found</div>';
+      dropdown.classList.add('open'); return;
+    }
+    dropdownCallbacks[dropdownId] = onSelect;
+    dropdown.innerHTML = '';
+    data.forEach(m => {
+      const item = document.createElement('div');
+      item.className = 'member-drop-item';
+      item.innerHTML = `<span class="code">${esc(m.mdf_code)}</span><span class="name">${esc(m.full_name||'—')}</span>`;
+      item.addEventListener('mousedown', (e) => {
+        e.preventDefault();
+        const cb = dropdownCallbacks[dropdownId];
+        if (cb) cb(m.mdf_code, m.full_name||'');
+      });
+      dropdown.appendChild(item);
+    });
+    dropdown.classList.add('open');
+  } catch(err) { console.error(err); dropdown.classList.remove('open'); }
+}
+
+document.addEventListener('click', e => {
+  document.querySelectorAll('.member-dropdown').forEach(d => {
+    if (!d.parentElement.contains(e.target)) d.classList.remove('open');
+  });
+});
+
+function searchCommMember(val) {
+  searchMembers(val, 'commMemberDropdown', (code, name) => {
+    document.getElementById('fCommMemberCode').value = code;
+    document.getElementById('fCommMemberSearch').value = `${name} (${code})`;
+    document.getElementById('commMemberSelectedLabel').textContent = `${code} — ${name}`;
+    document.getElementById('commMemberDropdown').classList.remove('open');
+  });
+}
+
+function searchApprovalMember(val) {
+  searchMembers(val, 'approvalMemberDropdown', (code, name) => {
+    document.getElementById('fApprovalCode').value = code;
+    document.getElementById('fApprovalSearch').value = `${name} (${code})`;
+    document.getElementById('approvalMemberLabel').textContent = `${code} — ${name}`;
+    document.getElementById('approvalMemberDropdown').classList.remove('open');
+  });
+}
+
+function searchTeamMember(val) {
+  searchMembers(val, 'teamMemberDropdown', (code, name) => {
+    document.getElementById('tmMdfCode').value = code;
+    document.getElementById('teamMemberDropdown').classList.remove('open');
+  });
+}
+
+function searchMemberForID(val) {
+  searchMembers(val, 'idCardDropdown', (code, name) => {
+    document.getElementById('idCardSearch').value = `${name} (${code})`;
+    document.getElementById('idCardDropdown').classList.remove('open');
+    loadMemberForIDCard(code);
+  });
+}
+
+// ===== DASHBOARD =====
+async function loadDashboard() {
+  try {
+    const [members, teams, participations, activities, commMembers] = await Promise.all([
+      supaCount('members'), supaCount('teams'), supaCount('participations'),
+      supaCount('activities'), supaCount('committee_members'),
+    ]);
+    countUp('statMembers', members); countUp('statTeams', teams); countUp('statParticipations', participations);
+    countUp('statActivities', activities); countUp('statCommittee', commMembers);
+    loadInstitutionChart(); loadTeamTypeChart(); loadRecentMembers(); loadRecentActivities();
+  } catch (e) { toast('Failed to load dashboard', 'error'); }
+}
+
+function countUp(id, target) {
+  const el = document.getElementById(id); let cur = 0;
+  const step = Math.max(1, Math.ceil(target/30));
+  const timer = setInterval(() => { cur=Math.min(cur+step,target); el.textContent=cur; if (cur>=target) clearInterval(timer); }, 30);
+}
+
+async function loadInstitutionChart() {
+  try {
+    const data = await supa('members','GET',null,'?select=institution&limit=1000');
+    const counts = {}; data.forEach(m => { const k=m.institution||'Unknown'; counts[k]=(counts[k]||0)+1; });
+    const sorted = Object.entries(counts).sort((a,b)=>b[1]-a[1]).slice(0,6);
+    const max = sorted[0]?.[1]||1;
+    const colors = ['#C8A24A','#3B6FFF','#00D4FF','#22C55E','#F59E0B','#8B6A1F'];
+    const html = sorted.map(([k,v],i) => `<div class="bar-row"><div class="bar-label" title="${esc(k)}">${esc(k.length>10?k.substring(0,10)+'…':k)}</div><div class="bar-track"><div class="bar-fill" style="width:${Math.round(v/max*100)}%;background:${colors[i%colors.length]};"></div></div><div class="bar-val">${v}</div></div>`).join('');
+    document.getElementById('institutionChart').innerHTML = html || '<div style="padding:16px;text-align:center;color:var(--text-faint);font-size:12px;">No data</div>';
+  } catch {}
+}
+
+async function loadTeamTypeChart() {
+  try {
+    const data = await supa('teams','GET',null,'?select=team_type&limit=500');
+    const types = {ISC:0,IV:0};
+    data.forEach(t => { if (types[t.team_type]!==undefined) types[t.team_type]++; else types['other']=(types['other']||0)+1; });
+    const colors = {ISC:'#C8A24A',IV:'#3B6FFF',other:'#8892A4'};
+    const max = Math.max(...Object.values(types),1);
+    const html = Object.entries(types).map(([k,v]) => `<div class="bar-row"><div class="bar-label">${esc(k)}</div><div class="bar-track"><div class="bar-fill" style="width:${Math.round(v/max*100)}%;background:${colors[k]||'#8892A4'};"></div></div><div class="bar-val">${v}</div></div>`).join('');
+    document.getElementById('teamTypeChart').innerHTML = html;
+  } catch {}
+}
+
+async function loadRecentMembers() {
+  try {
+    const data = await supa('members','GET',null,'?select=mdf_code,full_name,institution,created_at&order=created_at.desc&limit=5');
+    const el = document.getElementById('recentMembers');
+    if (!data.length) { el.innerHTML='<div class="empty-state"><div class="empty-state-sub">No members yet</div></div>'; return; }
+    el.innerHTML=`<table><tbody>${data.map(m=>`<tr><td><span class="code-badge">${esc(m.mdf_code)}</span></td><td style="font-weight:500;">${esc(m.full_name||'—')}</td><td style="color:var(--text-dim);font-size:12px;">${esc(m.institution||'—')}</td></tr>`).join('')}</tbody></table>`;
+  } catch {}
+}
+
+async function loadRecentActivities() {
+  try {
+    const data = await supa('activities','GET',null,'?select=title,event_type,created_at&order=created_at.desc&limit=5');
+    const el = document.getElementById('recentActivities');
+    if (!data.length) { el.innerHTML='<div class="empty-state"><div class="empty-state-sub">No activities yet</div></div>'; return; }
+    el.innerHTML=`<table><tbody>${data.map(a=>`<tr><td style="font-weight:500;">${esc(a.title)}</td><td><span class="badge ${a.event_type==='Online'?'badge-blue':'badge-gold'}">${esc(a.event_type||'—')}</span></td></tr>`).join('')}</tbody></table>`;
+  } catch {}
+}
+
+// ===== MEMBERS =====
+let allPriorities = [];
+
+async function loadMembers() {
+  const tbody = document.getElementById('membersBody');
+  showSkeleton(tbody, 7);
+  const pg = state.pages.members||1;
+  const search = document.getElementById('memberSearch')?.value.trim()||'';
+  const inst = document.getElementById('memberInstFilter')?.value.trim()||'';
+  const sortBy = document.getElementById('memberSortBy')?.value||'created_at';
+  let query = `?select=mdf_code,full_name,phone,institution,blood_group,created_at`;
+  let filters = [];
+  if (search) filters.push(`or=(mdf_code.ilike.*${encodeURIComponent(search)}*,phone.ilike.*${encodeURIComponent(search)}*)`);
+  if (inst) filters.push(`institution=ilike.*${encodeURIComponent(inst)}*`);
+  if (filters.length) query += '&' + filters.join('&');
+  query += sortBy==='mdf_code' ? '&order=mdf_code.asc' : '&order=created_at.desc';
+  try {
+    const [data, total, priorities] = await Promise.all([
+      supa('members','GET',null,query+`&limit=${PAGE_SIZE}&offset=${(pg-1)*PAGE_SIZE}`),
+      supaCount('members', query),
+      supa('member_priority','GET',null,'?select=member_code,priority&order=priority.asc'),
+    ]);
+    allPriorities = priorities||[];
+    const priorityMap = {}; allPriorities.forEach(p => { priorityMap[p.member_code]=p.priority; });
+    if (!data.length) { showEmpty(tbody,7,'No members found'); return; }
+    const frag = document.createDocumentFragment();
+    data.forEach(m => {
+      const tr = document.createElement('tr');
+      const prio = priorityMap[m.mdf_code]??'—';
+      const code = m.mdf_code;
+      tr.innerHTML = `
+        <td><span class="code-badge">${esc(code)}</span></td>
+        <td style="font-weight:500;">${esc(m.full_name||'—')}</td>
+        <td style="font-family:'JetBrains Mono',monospace;font-size:12px;">${esc(m.phone||'—')}</td>
+        <td style="font-size:13px;">${esc(m.institution||'—')}</td>
+        <td>${m.blood_group?`<span class="badge badge-danger">${esc(m.blood_group)}</span>`:'—'}</td>
+        <td><div style="display:flex;align-items:center;gap:5px;">
+          <span style="font-family:'JetBrains Mono',monospace;font-size:11px;min-width:22px;color:var(--text-dim);">${esc(String(prio))}</span>
+          <button class="priority-btn" data-code="${esc(code)}" data-dir="up" title="Move Up"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="18 15 12 9 6 15"/></svg></button>
+          <button class="priority-btn" data-code="${esc(code)}" data-dir="down" title="Move Down"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></button>
+        </div></td>
+        <td><div class="action-group">
+          <button class="btn-icon" title="View" data-action="view" data-code="${esc(code)}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button>
+          <button class="btn-icon" title="ID Card" data-action="idcard" data-code="${esc(code)}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg></button>
+          <button class="btn-icon" title="Edit" data-action="edit" data-code="${esc(code)}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>
+          <button class="btn-icon" title="Delete" style="color:var(--danger)" data-action="delete" data-code="${esc(code)}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg></button>
+        </div></td>`;
+      frag.appendChild(tr);
+    });
+    tbody.innerHTML=''; tbody.appendChild(frag);
+    tbody.querySelectorAll('.priority-btn').forEach(btn => {
+      btn.addEventListener('click', () => changePriority(btn.dataset.code, btn.dataset.dir));
+    });
+    tbody.querySelectorAll('[data-action]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const code = btn.dataset.code; const action = btn.dataset.action;
+        if (action==='view') viewMember(code);
+        else if (action==='idcard') generateIDForMember(code);
+        else if (action==='edit') openMemberModal(code);
+        else if (action==='delete') deleteMember(code);
+      });
+    });
+    renderPagination('membersPagination', total, pg, p => { state.pages.members=p; loadMembers(); });
+  } catch (e) { toast('Failed to load members: '+e.message,'error'); showEmpty(tbody,7,'Load error'); }
+}
+
+async function changePriority(code, dir) {
+  try {
+    const existing = allPriorities.find(p => p.member_code===code);
+    if (!existing) {
+      const maxP = allPriorities.length ? Math.max(...allPriorities.map(p=>p.priority)) : 0;
+      await supa('member_priority','POST',{member_code:code,priority:maxP+1});
+    }
+    const sorted = [...allPriorities].sort((a,b)=>a.priority-b.priority);
+    const idx = sorted.findIndex(p => p.member_code===code);
+    if (dir==='up' && idx>0) {
+      await Promise.all([
+        supa('member_priority','PATCH',{priority:sorted[idx-1].priority},`?member_code=eq.${code}`),
+        supa('member_priority','PATCH',{priority:sorted[idx].priority},`?member_code=eq.${sorted[idx-1].member_code}`),
+      ]);
+    } else if (dir==='down' && idx<sorted.length-1) {
+      await Promise.all([
+        supa('member_priority','PATCH',{priority:sorted[idx+1].priority},`?member_code=eq.${code}`),
+        supa('member_priority','PATCH',{priority:sorted[idx].priority},`?member_code=eq.${sorted[idx+1].member_code}`),
+      ]);
+    }
+    loadMembers();
+  } catch (e) { toast('Priority update failed','error'); }
+}
+
+async function openMemberModal(mdfCode=null) {
+  state.editId = mdfCode;
+  const fields = ['fMdfCode','fFullName','fFatherName','fMotherName','fPhone','fFatherPhone','fPassword','fBlood','fClass','fInstitution','fAddress','fBirthReg','fAchievements','fPhotoUrl'];
+  fields.forEach(f => { const el=document.getElementById(f); if(el) el.value=''; });
+  document.getElementById('memberModalTitle').textContent = mdfCode?'Edit Member':'Add Member';
+  document.getElementById('fMdfCode').readOnly = !!mdfCode;
+  document.getElementById('photoPreview').classList.remove('visible');
+  document.getElementById('photoPreview').src='';
+  if (mdfCode) {
+    try {
+      const data = await supa('members','GET',null,`?mdf_code=eq.${mdfCode}&limit=1`);
+      if (data && data[0]) {
+        const m = data[0];
+        document.getElementById('fMdfCode').value=m.mdf_code||'';
+        document.getElementById('fFullName').value=m.full_name||'';
+        document.getElementById('fFatherName').value=m.father_name||'';
+        document.getElementById('fMotherName').value=m.mother_name||'';
+        document.getElementById('fPhone').value=m.phone||'';
+        document.getElementById('fFatherPhone').value=m.father_phone||'';
+        document.getElementById('fPassword').value=m.password||'';
+        document.getElementById('fBlood').value=m.blood_group||'';
+        document.getElementById('fClass').value=m.class_semester||'';
+        document.getElementById('fInstitution').value=m.institution||'';
+        document.getElementById('fAddress').value=m.address||'';
+        document.getElementById('fBirthReg').value=m.birth_reg_no||'';
+        document.getElementById('fAchievements').value=(m.achievements||[]).join(', ');
+        document.getElementById('fPhotoUrl').value=m.photo_url||'';
+        if (m.photo_url) { document.getElementById('photoPreview').src=m.photo_url; document.getElementById('photoPreview').classList.add('visible'); }
+      }
+    } catch (e) { toast('Failed to load member','error'); return; }
+  }
+  openModal('memberModal');
+}
+
+function previewPhoto() {
+  const url = document.getElementById('fPhotoUrl').value.trim();
+  const img = document.getElementById('photoPreview');
+  if (url) { img.src=url; img.classList.add('visible'); } else img.classList.remove('visible');
+}
+
+async function saveMember() {
+  const textFields = [
+    {id:'fFullName',key:'Full Name'},{id:'fFatherName',key:'Father Name'},{id:'fMotherName',key:'Mother Name'},
+    {id:'fClass',key:'Class/Semester'},{id:'fInstitution',key:'Institution'},{id:'fAddress',key:'Address'},{id:'fBirthReg',key:'Birth Reg No'},
+  ];
+  for (const f of textFields) { if (!validateInput(document.getElementById(f.id), f.key)) return; }
+  const phone = document.getElementById('fPhone').value.trim();
+  const fPhone = document.getElementById('fFatherPhone').value.trim();
+  if (phone && !validatePhone(phone)) { toast('Invalid phone format. Use 01XXXXXXXXX','error'); return; }
+  if (fPhone && !validatePhone(fPhone)) { toast('Invalid father phone format. Use 01XXXXXXXXX','error'); return; }
+  if (!phone) { toast('Phone is required','error'); return; }
+  const pass = document.getElementById('fPassword').value.trim();
+  if (!state.editId && !pass) { toast('Password is required','error'); return; }
+  const achArr = document.getElementById('fAchievements').value.trim()
+    ? document.getElementById('fAchievements').value.trim().split(',').map(s=>s.trim()).filter(Boolean) : [];
+  const payload = {
+    full_name: document.getElementById('fFullName').value.trim()||null,
+    father_name: document.getElementById('fFatherName').value.trim()||null,
+    mother_name: document.getElementById('fMotherName').value.trim()||null,
+    phone: phone||null, father_phone: fPhone||null,
+    class_semester: document.getElementById('fClass').value.trim()||null,
+    institution: document.getElementById('fInstitution').value.trim()||null,
+    address: document.getElementById('fAddress').value.trim()||null,
+    birth_reg_no: document.getElementById('fBirthReg').value.trim()||null,
+    blood_group: document.getElementById('fBlood').value||null,
+    achievements: achArr,
+    photo_url: document.getElementById('fPhotoUrl').value.trim()||null,
+  };
+  if (pass) payload.password = pass;
+  try {
+    if (state.editId) {
+      await supa('members','PATCH',payload,`?mdf_code=eq.${state.editId}`);
+      toast('Member updated','success');
+    } else {
+      let mdfCode = document.getElementById('fMdfCode').value.trim().toUpperCase();
+      if (!mdfCode) {
+        let attempts = 0;
+        while (!mdfCode && attempts < 10) {
+          const candidate = await supaRpc('generate_mdf_code');
+          const existing = await supa('members','GET',null,`?mdf_code=eq.${candidate}&select=mdf_code&limit=1`);
+          if (!existing || existing.length === 0) mdfCode = candidate;
+          attempts++;
+        }
+        if (!mdfCode) { toast('Failed to generate unique MDF code','error'); return; }
+      }
+      payload.mdf_code = mdfCode;
+      await supa('members','POST',payload);
+      try {
+        const prioData = await supa('member_priority','GET',null,'?select=priority&order=priority.desc&limit=1');
+        const maxP = prioData && prioData[0] ? prioData[0].priority : 0;
+        await supa('member_priority','POST',{member_code: mdfCode, priority: maxP+1});
+      } catch {}
+      toast('Member created — Code: ' + mdfCode,'success');
+    }
+    closeModal('memberModal'); loadMembers();
+  } catch (e) { toast('Save failed: '+e.message,'error'); }
+}
+
+async function deleteMember(code) {
+  confirmDelete(`Permanently delete member ${code} and all related records?`, async () => {
+    try {
+      await supa('member_priority','DELETE',null,`?member_code=eq.${code}`);
+      await supa('members','DELETE',null,`?mdf_code=eq.${code}`);
+      toast('Member deleted','success'); loadMembers();
+    } catch (e) { toast('Delete failed: '+e.message,'error'); }
+  });
+}
+
+async function viewMember(code) {
+  try {
+    const [member, approvals] = await Promise.all([
+      supa('members','GET',null,`?mdf_code=eq.${code}&limit=1`),
+      supa('approvals','GET',null,`?member_code=eq.${code}&select=approved_skill`),
+    ]);
+    const m = member[0]; if (!m) { toast('Member not found','error'); return; }
+    const skills = approvals.map(a=>`<span class="badge badge-gold">${esc(a.approved_skill)}</span>`).join(' ');
+    const achs = (m.achievements||[]).map(a=>`<span class="badge badge-dim">${esc(a)}</span>`).join(' ');
+    document.getElementById('viewMemberContent').innerHTML = `
+      <div style="display:flex;gap:18px;align-items:flex-start;flex-wrap:wrap;">
+        ${m.photo_url?`<img src="${esc(m.photo_url)}" style="width:80px;height:80px;border-radius:8px;object-fit:cover;border:1px solid var(--border);flex-shrink:0;" onerror="this.style.display='none'">`:''}
+        <div style="flex:1;min-width:200px;">
+          <div style="font-family:'Rajdhani',sans-serif;font-size:22px;font-weight:700;margin-bottom:6px;">${esc(m.full_name||'—')}</div>
+          <div style="display:flex;gap:7px;flex-wrap:wrap;">
+            <span class="code-badge">${esc(m.mdf_code)}</span>
+            ${m.blood_group?`<span class="badge badge-danger">${esc(m.blood_group)}</span>`:''}
+          </div>
+        </div>
+      </div>
+      <div class="form-grid" style="margin-top:18px;">
+        ${infoRow('Father',m.father_name)}${infoRow('Mother',m.mother_name)}
+        ${infoRow('Phone',m.phone)}${infoRow('Father Phone',m.father_phone)}
+        ${infoRow('Institution',m.institution)}${infoRow('Class/Sem',m.class_semester)}
+        ${infoRow('Address',m.address)}${infoRow('Birth Reg',m.birth_reg_no)}
+      </div>
+      ${skills?`<div style="margin-top:16px;"><div style="font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--text-faint);margin-bottom:8px;font-weight:700;">Approved Skills</div><div style="display:flex;gap:6px;flex-wrap:wrap;">${skills}</div></div>`:''}
+      ${achs?`<div style="margin-top:16px;"><div style="font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--text-faint);margin-bottom:8px;font-weight:700;">Achievements</div><div style="display:flex;gap:6px;flex-wrap:wrap;">${achs}</div></div>`:''}
+    `;
+    openModal('viewMemberModal');
+  } catch (e) { toast('Failed to load member profile','error'); }
+}
+
+function infoRow(label, val) {
+  return `<div class="form-group"><label>${esc(label)}</label><div style="color:${val?'var(--text)':'var(--text-faint)'};font-size:13px;padding-top:2px;">${esc(val||'—')}</div></div>`;
+}
+
+// ===== TEAMS =====
+async function loadTeams() {
+  const tbody = document.getElementById('teamsBody');
+  showSkeleton(tbody,7);
+  const pg = state.pages.teams||1;
+  const search = document.getElementById('teamSearch')?.value.trim()||'';
+  const type = document.getElementById('teamTypeFilter')?.value||'';
+  const skill = document.getElementById('teamSkillFilter')?.value||'';
+  let query = `?select=team_code,team_name,team_type,skill_type,season_start,season_end`;
+  let filters = [];
+  if (search) filters.push(`or=(team_name.ilike.*${encodeURIComponent(search)}*,team_code::text.ilike.*${encodeURIComponent(search)}*)`);
+  if (type) filters.push(`team_type=eq.${encodeURIComponent(type)}`);
+  if (skill) filters.push(`skill_type=eq.${encodeURIComponent(skill)}`);
+  if (filters.length) query += '&' + filters.join('&');
+  query += '&order=team_code.desc';
+  try {
+    const [data, total] = await Promise.all([
+      supa('teams','GET',null,query+`&limit=${PAGE_SIZE}&offset=${(pg-1)*PAGE_SIZE}`),
+      supaCount('teams',query),
+    ]);
+    const memberCounts = await Promise.all(data.map(t=>supaCount('team_members',`?team_code=eq.${t.team_code}`)));
+    if (!data.length) { showEmpty(tbody,7,'No teams found'); return; }
+    const frag = document.createDocumentFragment();
+    data.forEach((t,i) => {
+      const tr = document.createElement('tr');
+      const tc = t.team_code;
+      tr.innerHTML = `
+        <td><span class="code-badge">#${esc(String(tc))}</span></td>
+        <td style="font-weight:500;">${esc(t.team_name)}</td>
+        <td><span class="badge ${t.team_type==='ISC'?'badge-gold':'badge-blue'}">${esc(t.team_type||'—')}</span></td>
+        <td style="font-size:12px;color:var(--text-dim);">${esc(t.skill_type||'—')}</td>
+        <td style="font-size:12px;color:var(--text-dim);">${t.season_start?esc(t.season_start):''} ${t.season_end?'– '+esc(t.season_end):''}</td>
+        <td><span class="badge badge-dim">${memberCounts[i]} members</span></td>
+        <td><div class="action-group">
+          <button class="btn-icon" title="Edit" data-action="edit" data-tc="${tc}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>
+          <button class="btn-icon" title="Delete" style="color:var(--danger)" data-action="delete" data-tc="${tc}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg></button>
+        </div></td>`;
+      frag.appendChild(tr);
+    });
+    tbody.innerHTML=''; tbody.appendChild(frag);
+    tbody.querySelectorAll('[data-action]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const tc = parseInt(btn.dataset.tc);
+        if (btn.dataset.action==='edit') openTeamModal(tc);
+        else if (btn.dataset.action==='delete') deleteTeam(tc);
+      });
+    });
+    renderPagination('teamsPagination',total,pg,p=>{state.pages.teams=p;loadTeams();});
+  } catch (e) { toast('Failed to load teams','error'); showEmpty(tbody,7,'Load error'); }
+}
+
+async function openTeamModal(teamCode=null) {
+  state.editTeamCode = teamCode; state.teamMembers = [];
+  ['fTeamName','fTeamType','fParticipantType','fSkillType','fTeamSeasonStart','fTeamSeasonEnd'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
+  document.getElementById('teamMembersList').innerHTML='';
+  document.getElementById('teamModalTitle').textContent = teamCode?'Edit Team':'Create Team';
+  document.getElementById('tmMdfCode').value='';
+  document.getElementById('tmBench').classList.remove('on');
+  if (teamCode) {
+    try {
+      const [team,members] = await Promise.all([
+        supa('teams','GET',null,`?team_code=eq.${teamCode}&limit=1`),
+        supa('team_members','GET',null,`?team_code=eq.${teamCode}&select=member_code,is_bench`),
+      ]);
+      if (team && team[0]) {
+        const t=team[0];
+        document.getElementById('fTeamName').value=t.team_name||'';
+        document.getElementById('fTeamType').value=t.team_type||'';
+        document.getElementById('fParticipantType').value=t.participant_type||'';
+        document.getElementById('fSkillType').value=t.skill_type||'';
+        document.getElementById('fTeamSeasonStart').value=t.season_start||'';
+        document.getElementById('fTeamSeasonEnd').value=t.season_end||'';
+      }
+      state.teamMembers = members.map(m=>({member_code:m.member_code,is_bench:m.is_bench}));
+      renderTeamMembers();
+    } catch (e) { toast('Failed to load team','error'); return; }
+  }
+  openModal('teamModal');
+}
+
+function addTeamMemberRow() {
+  const code = document.getElementById('tmMdfCode').value.trim().toUpperCase();
+  if (!code) { toast('Enter MDF code','error'); return; }
+  if (!validateEng(code)) { toast('Only English characters','error'); return; }
+  if (state.teamMembers.find(m=>m.member_code===code)) { toast('Member already added','error'); return; }
+  const bench = document.getElementById('tmBench').classList.contains('on');
+  state.teamMembers.push({member_code:code,is_bench:bench});
+  document.getElementById('tmMdfCode').value='';
+  document.getElementById('tmBench').classList.remove('on');
+  renderTeamMembers();
+}
+
+function renderTeamMembers() {
+  const list = document.getElementById('teamMembersList');
+  if (!state.teamMembers.length) { list.innerHTML=''; return; }
+  list.innerHTML = '';
+  state.teamMembers.forEach((m,i) => {
+    const div = document.createElement('div');
+    div.style.cssText='display:flex;align-items:center;gap:9px;background:var(--panel2);border:1px solid var(--border2);border-radius:6px;padding:7px 11px;';
+    div.innerHTML = `<span class="code-badge">${esc(m.member_code)}</span><span class="badge ${m.is_bench?'badge-dim':'badge-success'}">${m.is_bench?'Bench':'Main'}</span>`;
+    const btn = document.createElement('button');
+    btn.style.cssText='margin-left:auto;background:none;border:none;color:var(--danger);cursor:pointer;display:flex;align-items:center;';
+    btn.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="13" height="13"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>';
+    btn.addEventListener('click', () => { state.teamMembers.splice(i,1); renderTeamMembers(); });
+    div.appendChild(btn);
+    list.appendChild(div);
+  });
+}
+
+async function saveTeam() {
+  const name = document.getElementById('fTeamName').value.trim();
+  if (!name) { toast('Team name required','error'); return; }
+  if (!validateEng(name)) { toast('Only English in team name','error'); return; }
+  const payload = {
+    team_name: name,
+    team_type: document.getElementById('fTeamType').value||null,
+    participant_type: document.getElementById('fParticipantType').value||null,
+    skill_type: document.getElementById('fSkillType').value||null,
+    season_start: document.getElementById('fTeamSeasonStart').value||null,
+    season_end: document.getElementById('fTeamSeasonEnd').value||null,
+  };
+  try {
+    let teamCode = state.editTeamCode;
+    if (teamCode) {
+      await supa('teams','PATCH',payload,`?team_code=eq.${teamCode}`);
+      await supa('team_members','DELETE',null,`?team_code=eq.${teamCode}`);
+    } else {
+      const maxData = await supa('teams','GET',null,'?select=team_code&order=team_code.desc&limit=1');
+      const nextCode = maxData&&maxData[0] ? maxData[0].team_code+1 : 1;
+      payload.team_code = nextCode;
+      const result = await supa('teams','POST',payload);
+      teamCode = result[0]?.team_code||nextCode;
+    }
+    if (state.teamMembers.length) {
+      await supa('team_members','POST',state.teamMembers.map(m=>({team_code:teamCode,member_code:m.member_code,is_bench:m.is_bench})));
+    }
+    toast(state.editTeamCode?'Team updated':'Team created','success');
+    closeModal('teamModal'); loadTeams();
+  } catch (e) { toast('Save failed: '+e.message,'error'); }
+}
+
+async function deleteTeam(code) {
+  confirmDelete(`Permanently delete team #${code}?`, async () => {
+    try { await supa('teams','DELETE',null,`?team_code=eq.${code}`); toast('Team deleted','success'); loadTeams(); }
+    catch (e) { toast('Delete failed: '+e.message,'error'); }
+  });
+}
+
+// ===== PARTICIPATIONS =====
+async function loadParticipations() {
+  const tbody = document.getElementById('participationsBody');
+  showSkeleton(tbody,5);
+  const pg = state.pages.participations||1;
+  const search = document.getElementById('partSearch')?.value.trim()||'';
+  let query = `?select=participation_code,tournament_name,team_code,participation_date`;
+  if (search) query+=`&tournament_name=ilike.*${encodeURIComponent(search)}*`;
+  query+='&order=participation_code.desc';
+  try {
+    const [data,total] = await Promise.all([
+      supa('participations','GET',null,query+`&limit=${PAGE_SIZE}&offset=${(pg-1)*PAGE_SIZE}`),
+      supaCount('participations',query),
+    ]);
+    if (!data.length) { showEmpty(tbody,5,'No participations found'); return; }
+    const frag=document.createDocumentFragment();
+    data.forEach(p=>{
+      const tr=document.createElement('tr');
+      const pc = p.participation_code;
+      tr.innerHTML=`
+        <td><span class="code-badge">#${esc(String(pc))}</span></td>
+        <td style="font-weight:500;">${esc(p.tournament_name)}</td>
+        <td><span class="code-badge">#${esc(String(p.team_code||'—'))}</span></td>
+        <td style="font-size:12px;color:var(--text-dim);font-family:'JetBrains Mono',monospace;">${esc(p.participation_date||'—')}</td>
+        <td><div class="action-group">
+          <button class="btn-icon" title="Edit" data-action="edit" data-pc="${pc}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>
+          <button class="btn-icon" title="Delete" style="color:var(--danger)" data-action="delete" data-pc="${pc}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/></svg></button>
+        </div></td>`;
+      frag.appendChild(tr);
+    });
+    tbody.innerHTML=''; tbody.appendChild(frag);
+    tbody.querySelectorAll('[data-action]').forEach(btn=>{
+      btn.addEventListener('click',()=>{
+        const pc=parseInt(btn.dataset.pc);
+        if(btn.dataset.action==='edit') openParticipationModal(pc);
+        else if(btn.dataset.action==='delete') deleteParticipation(pc);
+      });
+    });
+    renderPagination('participationsPagination',total,pg,p=>{state.pages.participations=p;loadParticipations();});
+  } catch (e) { toast('Failed to load participations','error'); showEmpty(tbody,5,'Load error'); }
+}
+
+async function openParticipationModal(code=null) {
+  state.editId=code;
+  document.getElementById('partModalTitle').textContent=code?'Edit Participation':'Add Participation';
+  ['fTournament','fPartDate'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
+  const teams=await supa('teams','GET',null,'?select=team_code,team_name&order=team_code.desc&limit=200');
+  const sel=document.getElementById('fPartTeam');
+  sel.innerHTML='<option value="">Select team...</option>'+teams.map(t=>`<option value="${t.team_code}">#${esc(String(t.team_code))} — ${esc(t.team_name)}</option>`).join('');
+  if (code) {
+    const data=await supa('participations','GET',null,`?participation_code=eq.${code}&limit=1`);
+    if (data&&data[0]) { document.getElementById('fTournament').value=data[0].tournament_name||''; sel.value=data[0].team_code||''; document.getElementById('fPartDate').value=data[0].participation_date||''; }
+  }
+  openModal('participationModal');
+}
+
+async function saveParticipation() {
+  const tournament=document.getElementById('fTournament').value.trim();
+  if (!tournament) { toast('Tournament name required','error'); return; }
+  if (!validateEng(tournament)) { toast('Only English characters','error'); return; }
+  const payload={tournament_name:tournament,team_code:document.getElementById('fPartTeam').value?parseInt(document.getElementById('fPartTeam').value):null,participation_date:document.getElementById('fPartDate').value||null};
+  try {
+    if (state.editId) { await supa('participations','PATCH',payload,`?participation_code=eq.${state.editId}`); toast('Updated','success'); }
+    else { const maxData=await supa('participations','GET',null,'?select=participation_code&order=participation_code.desc&limit=1'); payload.participation_code=maxData&&maxData[0]?maxData[0].participation_code+1:1; await supa('participations','POST',payload); toast('Added','success'); }
+    closeModal('participationModal'); loadParticipations();
+  } catch (e) { toast('Save failed: '+e.message,'error'); }
+}
+
+async function deleteParticipation(code) {
+  confirmDelete(`Delete participation #${code}?`, async ()=>{
+    try { await supa('participations','DELETE',null,`?participation_code=eq.${code}`); toast('Deleted','success'); loadParticipations(); }
+    catch (e) { toast('Delete failed','error'); }
+  });
+}
+
+// ===== ACTIVITIES =====
+let activitiesData = [];
+let dragSrcIdx = null;
+
+async function loadActivities() {
+  const list=document.getElementById('activityList');
+  list.innerHTML='<div class="loading-row"><div class="spinner"></div>Loading...</div>';
+  try {
+    activitiesData=await supa('activities','GET',null,'?select=id,title,event_type,venue,engaged_people,image_url,details,created_at&order=created_at.asc');
+    renderActivityList();
+  } catch (e) { toast('Failed to load activities','error'); list.innerHTML=''; }
+}
+
+function renderActivityList() {
+  const list=document.getElementById('activityList');
+  if (!activitiesData.length) { list.innerHTML='<div class="empty-state"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg><div class="empty-state-title">No Activities</div><div class="empty-state-sub">Add your first activity</div></div>'; return; }
+  list.innerHTML='';
+  activitiesData.forEach((a,i)=>{
+    const row=document.createElement('div');
+    row.className='activity-row'; row.draggable=true; row.dataset.idx=i;
+    row.innerHTML=`
+      <div class="drag-handle"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg></div>
+      ${a.image_url?`<img class="activity-img" src="${esc(a.image_url)}" onerror="this.style.display='none'">`:'<div class="activity-img" style="display:flex;align-items:center;justify-content:center;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="18" height="18" style="opacity:0.25;"><rect x="3" y="3" width="18" height="18" rx="2"/></svg></div>'}
+      <div class="activity-info"><div class="activity-title">${esc(a.title)}</div><div class="activity-meta" style="display:flex;align-items:center;gap:7px;margin-top:3px;"><span class="badge ${a.event_type==='Online'?'badge-blue':'badge-gold'}">${esc(a.event_type||'—')}</span>${a.venue?`<span style="color:var(--text-faint);">·</span><span>${esc(a.venue)}</span>`:''}${a.engaged_people?`<span style="color:var(--text-faint);">·</span><span>${esc(String(a.engaged_people))} people</span>`:''}</div></div>
+      <div class="action-group" style="flex-shrink:0;">
+        <button class="btn-icon" title="Edit" data-action="edit" data-id="${esc(a.id)}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>
+        <button class="btn-icon" title="Delete" style="color:var(--danger)" data-action="delete" data-id="${esc(a.id)}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/></svg></button>
+      </div>`;
+    row.querySelectorAll('[data-action]').forEach(btn=>{
+      btn.addEventListener('click',e=>{e.stopPropagation();const id=btn.dataset.id;if(btn.dataset.action==='edit')openActivityModal(id);else deleteActivity(id);});
+    });
+    row.addEventListener('dragstart',e=>{dragSrcIdx=i;e.dataTransfer.effectAllowed='move';row.style.opacity='0.45';});
+    row.addEventListener('dragend',()=>{row.style.opacity='1';document.querySelectorAll('.activity-row').forEach(r=>r.classList.remove('drag-over'));});
+    row.addEventListener('dragover',e=>{e.preventDefault();row.classList.add('drag-over');});
+    row.addEventListener('dragleave',()=>row.classList.remove('drag-over'));
+    row.addEventListener('drop',e=>{e.preventDefault();const tIdx=parseInt(row.dataset.idx);if(dragSrcIdx!==null&&dragSrcIdx!==tIdx){const moved=activitiesData.splice(dragSrcIdx,1)[0];activitiesData.splice(tIdx,0,moved);renderActivityList();}});
+    list.appendChild(row);
+  });
+}
+
+async function openActivityModal(id=null) {
+  state.editId=id;
+  document.getElementById('actModalTitle').textContent=id?'Edit Activity':'Add Activity';
+  ['fActTitle','fActType','fActVenue','fActPeople','fActDetails','fActImg'].forEach(fid=>{const el=document.getElementById(fid);if(el)el.value='';});
+  document.getElementById('actImgPreview').classList.remove('visible');
+  document.getElementById('venueGroup').style.display='none';
+  if (id) {
+    const data=activitiesData.find(a=>a.id===id);
+    if (data) {
+      document.getElementById('fActTitle').value=data.title||'';
+      document.getElementById('fActType').value=data.event_type||'';
+      document.getElementById('fActVenue').value=data.venue||'';
+      document.getElementById('fActPeople').value=data.engaged_people||'';
+      document.getElementById('fActDetails').value=data.details||'';
+      document.getElementById('fActImg').value=data.image_url||'';
+      if (data.image_url) { document.getElementById('actImgPreview').src=data.image_url; document.getElementById('actImgPreview').classList.add('visible'); }
+      if (data.event_type==='Offline') document.getElementById('venueGroup').style.display='block';
+    }
+  }
+  openModal('activityModal');
+}
+
+function toggleVenue() {
+  document.getElementById('venueGroup').style.display=document.getElementById('fActType').value==='Offline'?'block':'none';
+}
+function previewActImg() {
+  const url=document.getElementById('fActImg').value.trim(); const img=document.getElementById('actImgPreview');
+  if (url) { img.src=url; img.classList.add('visible'); } else img.classList.remove('visible');
+}
+
+async function saveActivity() {
+  const title=document.getElementById('fActTitle').value.trim();
+  if (!title) { toast('Title required','error'); return; }
+  if (!validateEng(title)) { toast('Only English in title','error'); return; }
+  const payload={title,event_type:document.getElementById('fActType').value||null,venue:document.getElementById('fActType').value==='Offline'?document.getElementById('fActVenue').value.trim()||null:null,engaged_people:parseInt(document.getElementById('fActPeople').value)||null,details:document.getElementById('fActDetails').value.trim()||null,image_url:document.getElementById('fActImg').value.trim()||null};
+  try {
+    if (state.editId) { await supa('activities','PATCH',payload,`?id=eq.${state.editId}`); toast('Updated','success'); }
+    else { await supa('activities','POST',payload); toast('Added','success'); }
+    closeModal('activityModal'); loadActivities();
+  } catch (e) { toast('Save failed: '+e.message,'error'); }
+}
+
+async function deleteActivity(id) {
+  confirmDelete('Delete this activity?', async ()=>{
+    try { await supa('activities','DELETE',null,`?id=eq.${id}`); toast('Deleted','success'); loadActivities(); }
+    catch (e) { toast('Delete failed','error'); }
+  });
+}
+
+// ===== COMMITTEES =====
+async function loadCommittees() {
+  try {
+    const data=await supa('committees','GET',null,'?select=committee_id,season_start,season_end,is_current&order=season_start.desc');
+    const sel=document.getElementById('committeeSelect');
+    sel.innerHTML='<option value="">Select committee...</option>'+data.map(c=>`<option value="${esc(c.committee_id)}">${esc(c.committee_id)} ${c.is_current?'(Current)':''} ${c.season_start?'— '+esc(c.season_start.substring(0,4)):''}</option>`).join('');
+  } catch (e) { toast('Failed to load committees','error'); }
+}
+
+async function loadCommitteeMembers(committeeId) {
+  if (!committeeId) { document.getElementById('hierarchyList').innerHTML='<div class="empty-state"><div class="empty-state-sub">Select a committee</div></div>'; return; }
+  state.currentCommitteeId=committeeId;
+  const list=document.getElementById('hierarchyList');
+  list.innerHTML='<div class="loading-row"><div class="spinner"></div>Loading...</div>';
+  try {
+    const data=await supa('committee_members','GET',null,`?committee_id=eq.${committeeId}&select=id,designation,member_code,rank_order&order=rank_order.asc`);
+    const memberCodes=[...new Set(data.map(d=>d.member_code).filter(Boolean))];
+    let nameMap={};
+    if (memberCodes.length) {
+      const members=await supa('members','GET',null,`?mdf_code=in.(${memberCodes.map(c=>`"${c}"`).join(',')})&select=mdf_code,full_name`);
+      members.forEach(m=>{nameMap[m.mdf_code]=m.full_name;});
+    }
+    if (!data.length) { list.innerHTML='<div class="empty-state"><div class="empty-state-sub">No members in this committee</div></div>'; return; }
+    list.innerHTML='';
+    data.forEach(cm=>{
+      const el=document.createElement('div'); el.className='hierarchy-item';
+      el.innerHTML=`
+        <div class="rank-badge">${esc(String(cm.rank_order))}</div>
+        <div class="rank-info"><div class="rank-name">${esc(nameMap[cm.member_code]||cm.member_code||'Unknown')}</div><div class="rank-desig">${esc(cm.designation||'—')} · <span class="code-badge" style="font-size:9.5px;">${esc(cm.member_code||'—')}</span></div></div>
+        <div class="action-group" style="flex-shrink:0;margin-left:auto;">
+          <button class="priority-btn" data-id="${esc(cm.id)}" data-dir="up" title="Up"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="18 15 12 9 6 15"/></svg></button>
+          <button class="priority-btn" data-id="${esc(cm.id)}" data-dir="down" title="Down"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></button>
+          <button class="btn-icon" title="Delete" style="color:var(--danger)" data-id="${esc(cm.id)}" data-action="delete"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/></svg></button>
+        </div>`;
+      el.querySelectorAll('.priority-btn').forEach(btn=>{
+        btn.addEventListener('click',()=>moveCommMember(btn.dataset.id,btn.dataset.dir));
+      });
+      el.querySelector('[data-action="delete"]').addEventListener('click',()=>deleteCommMember(cm.id));
+      list.appendChild(el);
+    });
+  } catch (e) { toast('Failed to load committee members','error'); list.innerHTML=''; }
+}
+
+async function moveCommMember(id, dir) {
+  const committeeId=state.currentCommitteeId; if (!committeeId) return;
+  try {
+    const data=await supa('committee_members','GET',null,`?committee_id=eq.${committeeId}&select=id,rank_order&order=rank_order.asc`);
+    const idx=data.findIndex(m=>m.id===id);
+    if (dir==='up'&&idx>0) { await Promise.all([supa('committee_members','PATCH',{rank_order:data[idx-1].rank_order},`?id=eq.${id}`),supa('committee_members','PATCH',{rank_order:data[idx].rank_order},`?id=eq.${data[idx-1].id}`)]); }
+    else if (dir==='down'&&idx<data.length-1) { await Promise.all([supa('committee_members','PATCH',{rank_order:data[idx+1].rank_order},`?id=eq.${id}`),supa('committee_members','PATCH',{rank_order:data[idx].rank_order},`?id=eq.${data[idx+1].id}`)]); }
+    loadCommitteeMembers(committeeId);
+  } catch (e) { toast('Failed to reorder','error'); }
+}
+
+async function deleteCommMember(id) {
+  confirmDelete('Remove this member from committee?', async ()=>{
+    try { await supa('committee_members','DELETE',null,`?id=eq.${id}`); toast('Removed','success'); loadCommitteeMembers(state.currentCommitteeId); }
+    catch (e) { toast('Delete failed','error'); }
+  });
+}
+
+function openCommitteeModal() {
+  ['fCommId','fCommStart','fCommEnd'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
+  document.getElementById('fCommCurrent').classList.remove('on');
+  openModal('committeeModal');
+}
+
+async function saveCommittee() {
+  const id=document.getElementById('fCommId').value.trim().toUpperCase();
+  if (!id) { toast('Committee ID required','error'); return; }
+  if (!validateEng(id)) { toast('Only English characters','error'); return; }
+  const isCurrent=document.getElementById('fCommCurrent').classList.contains('on');
+  try {
+    if (isCurrent) await supa('committees','PATCH',{is_current:false},'?is_current=eq.true');
+    await supa('committees','POST',{committee_id:id,season_start:document.getElementById('fCommStart').value||null,season_end:document.getElementById('fCommEnd').value||null,is_current:isCurrent});
+    toast('Committee created','success'); closeModal('committeeModal'); loadCommittees();
+  } catch (e) { toast('Save failed: '+e.message,'error'); }
+}
+
+function openAddCommMemberModal() {
+  if (!state.currentCommitteeId) { toast('Select a committee first','error'); return; }
+  document.getElementById('fCommDesig').value='';
+  document.getElementById('fCommMemberCode').value='';
+  document.getElementById('fCommMemberSearch').value='';
+  document.getElementById('commMemberSelectedLabel').textContent='none';
+  document.getElementById('fCommRank').value='1';
+  openModal('commMemberModal');
+}
+
+async function saveCommitteeMember() {
+  const desig=document.getElementById('fCommDesig').value.trim();
+  const code=document.getElementById('fCommMemberCode').value.trim().toUpperCase();
+  const rank=parseInt(document.getElementById('fCommRank').value)||1;
+  if (!desig) { toast('Designation required','error'); return; }
+  if (!code) { toast('Select a member first','error'); return; }
+  try {
+    const exists=await supa('members','GET',null,`?mdf_code=eq.${code}&select=mdf_code&limit=1`);
+    if (!exists||exists.length===0) { toast(`Member ${code} not found in database`,'error'); return; }
+    await supa('committee_members','POST',{committee_id:state.currentCommitteeId,designation:desig,member_code:code,rank_order:rank});
+    toast('Member added','success'); closeModal('commMemberModal'); loadCommitteeMembers(state.currentCommitteeId);
+  } catch (e) { toast('Save failed: '+e.message,'error'); }
+}
+
+// ===== CONTACTS =====
+async function loadContacts() {
+  const tbody=document.getElementById('contactsBody'); showSkeleton(tbody,6);
+  const pg=state.pages.contacts||1;
+  const query=`?select=id,name,phone,email,message,created_at&order=created_at.desc&limit=${PAGE_SIZE}&offset=${(pg-1)*PAGE_SIZE}`;
+  try {
+    const [data,total]=await Promise.all([supa('contacts','GET',null,query),supaCount('contacts')]);
+    // Update badge counts
+    const badge=document.getElementById('contactsNavBadge');
+    const totalCount=document.getElementById('contactsTotalCount');
+    const totalBadge=document.getElementById('contactsTotalBadge');
+    if (totalCount) totalCount.textContent = total;
+    if (totalBadge) totalBadge.style.display = 'flex';
+    if (badge) { badge.textContent = total > 99 ? '99+' : total; badge.style.display = total > 0 ? 'inline-block' : 'none'; }
+    if (!data.length) { showEmpty(tbody,6,'No contact messages'); return; }
+    const frag=document.createDocumentFragment();
+    data.forEach(c=>{
+      const tr=document.createElement('tr');
+      const cid=c.id;
+      tr.innerHTML=`
+        <td style="font-weight:500;">${esc(c.name||'—')}</td>
+        <td style="font-family:'JetBrains Mono',monospace;font-size:12px;">${esc(c.phone||'—')}</td>
+        <td style="font-size:12px;color:var(--text-dim);">${esc(c.email||'—')}</td>
+        <td style="max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:12px;" title="${esc(c.message||'')}">${esc(c.message||'—')}</td>
+        <td style="font-size:11px;color:var(--text-dim);font-family:'JetBrains Mono',monospace;">${c.created_at?new Date(c.created_at).toLocaleDateString():'—'}</td>
+        <td><button class="btn-icon" title="Delete" style="color:var(--danger)" data-action="delete" data-id="${esc(cid)}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/></svg></button></td>`;
+      frag.appendChild(tr);
+    });
+    tbody.innerHTML=''; tbody.appendChild(frag);
+    tbody.querySelectorAll('[data-action="delete"]').forEach(btn=>{
+      btn.addEventListener('click',()=>deleteContact(btn.dataset.id));
+    });
+    renderPagination('contactsPagination',total,pg,p=>{state.pages.contacts=p;loadContacts();});
+  } catch (e) { toast('Failed to load contacts','error'); showEmpty(tbody,6,'Load error'); }
+}
+
+async function deleteContact(id) {
+  confirmDelete('Delete this contact message permanently?', async ()=>{
+    try { await supa('contacts','DELETE',null,`?id=eq.${id}`); toast('Deleted','success'); loadContacts(); }
+    catch (e) { toast('Delete failed','error'); }
+  });
+}
+
+// ===== APPROVALS =====
+async function loadApprovals() {
+  const tbody=document.getElementById('approvalsBody'); showSkeleton(tbody,4);
+  const pg=state.pages.approvals||1;
+  const search=document.getElementById('approvalSearch')?.value.trim()||'';
+  let query=`?select=id,member_code,approved_skill`;
+  if (search) query+=`&member_code=ilike.*${encodeURIComponent(search)}*`;
+  query+='&order=member_code.asc';
+  try {
+    const [data,total]=await Promise.all([supa('approvals','GET',null,query+`&limit=${PAGE_SIZE}&offset=${(pg-1)*PAGE_SIZE}`),supaCount('approvals',query)]);
+    const memberCodes=[...new Set(data.map(d=>d.member_code).filter(Boolean))];
+    let nameMap={};
+    if (memberCodes.length) {
+      const members=await supa('members','GET',null,`?mdf_code=in.(${memberCodes.map(c=>`"${c}"`).join(',')})&select=mdf_code,full_name`);
+      members.forEach(m=>{nameMap[m.mdf_code]=m.full_name;});
+    }
+    if (!data.length) { showEmpty(tbody,4,'No approvals found'); return; }
+    const frag=document.createDocumentFragment();
+    data.forEach(a=>{
+      const tr=document.createElement('tr');
+      const aid=a.id;
+      tr.innerHTML=`
+        <td><span class="code-badge">${esc(a.member_code||'—')}</span></td>
+        <td style="font-weight:500;">${esc(nameMap[a.member_code]||'—')}</td>
+        <td><span class="badge badge-gold">${esc(a.approved_skill||'—')}</span></td>
+        <td><button class="btn-icon" title="Delete" style="color:var(--danger)" data-action="delete" data-id="${esc(aid)}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/></svg></button></td>`;
+      frag.appendChild(tr);
+    });
+    tbody.innerHTML=''; tbody.appendChild(frag);
+    tbody.querySelectorAll('[data-action="delete"]').forEach(btn=>{
+      btn.addEventListener('click',()=>deleteApproval(btn.dataset.id));
+    });
+    renderPagination('approvalsPagination',total,pg,p=>{state.pages.approvals=p;loadApprovals();});
+  } catch (e) { toast('Failed to load approvals','error'); showEmpty(tbody,4,'Load error'); }
+}
+
+function openApprovalModal() {
+  document.getElementById('fApprovalCode').value='';
+  document.getElementById('fApprovalSearch').value='';
+  document.getElementById('fApprovalSkill').value='';
+  document.getElementById('approvalMemberLabel').textContent='none';
+  openModal('approvalModal');
+}
+
+async function saveApproval() {
+  const code=document.getElementById('fApprovalCode').value.trim().toUpperCase();
+  const skill=document.getElementById('fApprovalSkill').value;
+  if (!code||!skill) { toast('All fields required','error'); return; }
+  try {
+    await supa('approvals','POST',{member_code:code,approved_skill:skill});
+    toast('Approval saved','success'); closeModal('approvalModal'); loadApprovals();
+  } catch (e) { toast('Save failed: '+e.message,'error'); }
+}
+
+async function deleteApproval(id) {
+  confirmDelete('Delete this approval?', async ()=>{
+    try { await supa('approvals','DELETE',null,`?id=eq.${id}`); toast('Deleted','success'); loadApprovals(); }
+    catch (e) { toast('Delete failed','error'); }
+  });
+}
+
+// ===== ADMINS =====
+async function loadAdmins() {
+  const tbody=document.getElementById('adminsBody');
+  tbody.innerHTML='<tr><td colspan="2"><div class="loading-row" style="padding:20px;"><div class="spinner"></div>Loading...</div></td></tr>';
+  try {
+    const data=await supa('admins','GET',null,'?select=id,username');
+    if (!data.length) { tbody.innerHTML='<tr><td colspan="2">No admins</td></tr>'; return; }
+    tbody.innerHTML='';
+    data.forEach(a=>{
+      const tr=document.createElement('tr');
+      tr.innerHTML=`<td style="font-weight:500;">${esc(a.username)}</td><td></td>`;
+      if (a.username!=='admin') {
+        const btn=document.createElement('button');
+        btn.className='btn-icon'; btn.style.color='var(--danger)'; btn.title='Delete';
+        btn.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/></svg>';
+        btn.addEventListener('click',()=>deleteAdmin(a.id,a.username));
+        tr.cells[1].appendChild(btn);
+      } else {
+        tr.cells[1].innerHTML='<span style="font-size:11px;color:var(--text-faint);">Protected</span>';
+      }
+      tbody.appendChild(tr);
+    });
+  } catch (e) { toast('Failed to load admins','error'); }
+}
+
+function openAdminModal() { document.getElementById('fAdminUser').value=''; document.getElementById('fAdminPass').value=''; openModal('adminModal'); }
+async function saveAdmin() {
+  const user=document.getElementById('fAdminUser').value.trim(); const pass=document.getElementById('fAdminPass').value.trim();
+  if (!user||!pass) { toast('All fields required','error'); return; }
+  if (!validateEng(user)) { toast('Only English in username','error'); return; }
+  try { await supa('admins','POST',{username:user,password:pass}); toast('Admin created','success'); closeModal('adminModal'); loadAdmins(); }
+  catch (e) { toast('Save failed: '+e.message,'error'); }
+}
+
+async function deleteAdmin(id, username) {
+  confirmDelete(`Delete admin account "${username}"?`, async ()=>{
+    try { await supa('admins','DELETE',null,`?id=eq.${id}`); toast('Admin deleted','success'); loadAdmins(); }
+    catch (e) { toast('Delete failed','error'); }
+  });
+}
+
+// ===== GLOBAL SEARCH =====
+async function runGlobalSearch(query) {
+  const content=document.getElementById('searchResultContent');
+  content.innerHTML='<div class="loading-row"><div class="spinner"></div>Searching...</div>';
+  openModal('searchModal');
+  try {
+    const [members,teams,participations]=await Promise.all([
+      supa('members','GET',null,`?or=(mdf_code.ilike.*${encodeURIComponent(query)}*,full_name.ilike.*${encodeURIComponent(query)}*,phone.ilike.*${encodeURIComponent(query)}*)&select=mdf_code,full_name,phone,institution&limit=5`),
+      supa('teams','GET',null,`?or=(team_name.ilike.*${encodeURIComponent(query)}*,team_code::text.ilike.*${encodeURIComponent(query)}*)&select=team_code,team_name,team_type,skill_type&limit=5`),
+      supa('participations','GET',null,`?or=(tournament_name.ilike.*${encodeURIComponent(query)}*,participation_code::text.ilike.*${encodeURIComponent(query)}*)&select=participation_code,tournament_name,team_code,participation_date&limit=5`),
+    ]);
+    let html='';
+    if (members.length) html+=`<div class="search-result-section"><div class="search-result-title">Members (${members.length})</div>${members.map(m=>`<div class="result-item"><div class="result-item-head"><span class="code-badge">${esc(m.mdf_code)}</span><span class="result-item-title">${esc(m.full_name||'—')}</span></div><div class="result-item-body">${esc(m.phone||'')} · ${esc(m.institution||'')}</div></div>`).join('')}</div>`;
+    if (teams.length) html+=`<div class="search-result-section"><div class="search-result-title">Teams (${teams.length})</div>${teams.map(t=>`<div class="result-item"><div class="result-item-head"><span class="code-badge">#${esc(String(t.team_code))}</span><span class="result-item-title">${esc(t.team_name)}</span><span class="badge ${t.team_type==='ISC'?'badge-gold':'badge-blue'}">${esc(t.team_type||'')}</span></div><div class="result-item-body">${esc(t.skill_type||'—')}</div></div>`).join('')}</div>`;
+    if (participations.length) html+=`<div class="search-result-section"><div class="search-result-title">Participations (${participations.length})</div>${participations.map(p=>`<div class="result-item"><div class="result-item-head"><span class="code-badge">#${esc(String(p.participation_code))}</span><span class="result-item-title">${esc(p.tournament_name)}</span></div><div class="result-item-body">Team #${esc(String(p.team_code||'—'))} · ${esc(p.participation_date||'')}</div></div>`).join('')}</div>`;
+    if (!html) html=`<div class="empty-state"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg><div class="empty-state-title">No Results</div><div class="empty-state-sub">No records found for "${esc(query)}"</div></div>`;
+    content.innerHTML=html;
+  } catch (e) { content.innerHTML=`<div class="empty-state"><div class="empty-state-sub">Search failed: ${esc(e.message)}</div></div>`; }
+}
+
+// ===== ID CARD MAKER =====
+function initIDCard() {
+  document.getElementById('idCardSearch').value = '';
+  document.getElementById('idCardPreviewSection').style.display = 'none';
+  document.getElementById('idCardEmpty').style.display = 'block';
+  document.getElementById('downloadIDBtn').style.display = 'none';
+  document.getElementById('idCardDropdown').classList.remove('open');
+  state.idCardMember = null;
+}
+
+async function loadMemberForIDCard(code) {
+  try {
+    const data = await supa('members','GET',null,`?mdf_code=eq.${code}&limit=1`);
+    if (!data||!data[0]) { toast('Member not found','error'); return; }
+    const m = data[0];
+    state.idCardMember = m;
+    renderIDCardPreview(m);
+    document.getElementById('idCardPreviewSection').style.display = 'block';
+    document.getElementById('idCardEmpty').style.display = 'none';
+    document.getElementById('downloadIDBtn').style.display = 'inline-flex';
+  } catch (e) { toast('Failed to load member','error'); }
+}
+
+function generateIDForMember(code) {
+  showPage('idcard');
+  setTimeout(()=>loadMemberForIDCard(code), 150);
+}
+
+function renderIDCardPreview(m) {
+  document.getElementById('idPreviewName').textContent = m.full_name || '—';
+  document.getElementById('idPreviewCode').textContent = m.mdf_code || '—';
+  document.getElementById('idPreviewPhone').textContent = m.phone || '—';
+  document.getElementById('idPreviewInst').textContent = (m.institution||'—').substring(0,30);
+  document.getElementById('idPreviewBlood').textContent = m.blood_group || '—';
+
+  const photoEl = document.getElementById('idPreviewPhoto');
+  const placeholder = document.getElementById('idPhotoPlaceholder');
+  if (m.photo_url) {
+    photoEl.src = m.photo_url;
+    photoEl.style.display = 'block';
+    if (placeholder) placeholder.style.display = 'none';
+  } else {
+    photoEl.style.display = 'none';
+    if (placeholder) placeholder.style.display = 'flex';
+  }
+
+  // QR — smaller, cleaner
+  const qrContainer = document.getElementById('idQRPreview');
+  qrContainer.innerHTML = '';
+  const qrUrl = `https://meherpur-debating-forum/member/${m.mdf_code}`;
+  try {
+    new QRCode(qrContainer, {
+      text: qrUrl,
+      width: 64,
+      height: 64,
+      colorDark: '#000000',
+      colorLight: '#ffffff',
+      correctLevel: QRCode.CorrectLevel.M
+    });
+  } catch {}
+  document.getElementById('idBackCode').textContent = 'MDF-' + m.mdf_code;
+}
+
+// ===== PDF GENERATION — Fixed: proper card size, 1:1 photo, clean QR =====
+async function downloadIDCardPDF() {
+  const m = state.idCardMember;
+  if (!m) { toast('No member selected','error'); return; }
+  toast('Generating PDF…','info');
+
+  const { jsPDF } = window.jspdf;
+
+  // ISO 7810 ID-1: exactly 85.6 × 54mm
+  const CW = 85.6, CH = 54;
+
+  const doc = new jsPDF({ orientation: 'landscape', unit: 'mm', format: [CW, CH] });
+
+  // === PAGE 1: FRONT ===
+  await drawFront(doc, m, CW, CH);
+
+  // === PAGE 2: BACK ===
+  doc.addPage([CW, CH], 'landscape');
+  await drawBack(doc, m, CW, CH);
+
+  doc.save(`MDF-ID-${m.mdf_code}.pdf`);
+  toast('PDF downloaded!','success');
+}
+
+async function drawFront(doc, m, W, H) {
+  // Dark background
+  doc.setFillColor(5, 12, 26);
+  doc.rect(0, 0, W, H, 'F');
+
+  // Lighter section on right
+  doc.setFillColor(11, 21, 38);
+  doc.rect(W * 0.38, 0, W * 0.62, H, 'F');
+
+  // Gold top stripe — gradient effect with multiple rects
+  const stripeColors = [[122,92,24],[200,162,74],[224,185,90],[200,162,74],[139,104,32],[200,162,74],[224,185,90],[122,92,24]];
+  const sw = W / stripeColors.length;
+  stripeColors.forEach(([r,g,b], i) => {
+    doc.setFillColor(r, g, b);
+    doc.rect(i * sw, 0, sw + 0.5, 1.5, 'F');
+  });
+
+  // ORG NAME
+  doc.setFont('helvetica', 'bold');
+  doc.setFontSize(5.5);
+  doc.setTextColor(200, 162, 74);
+  doc.text('MEHERPUR DEBATING FORUM', W * 0.42, 7.5);
+
+  // Thin gold line under org name
+  doc.setDrawColor(200, 162, 74);
+  doc.setLineWidth(0.15);
+  doc.line(W * 0.42, 8.5, W - 2, 8.5);
+
+  // MEMBER NAME — large
+  doc.setFont('helvetica', 'bold');
+  doc.setFontSize(11);
+  doc.setTextColor(240, 244, 255);
+  const nameText = (m.full_name || '—').substring(0, 22);
+  doc.text(nameText, W * 0.42, 16);
+
+  // Divider line
+  doc.setDrawColor(200, 162, 74);
+  doc.setLineWidth(0.3);
+  doc.line(W * 0.42, 18, W - 2, 18);
+
+  // Fields
+  const fields = [
+    ['ID', m.mdf_code || '—'],
+    ['MOBILE', m.phone || '—'],
+    ['INST.', (m.institution || '—').substring(0, 26)],
+  ];
+  fields.forEach(([key, val], i) => {
+    const fy = 24 + i * 7;
+    // Key
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(4.5);
+    doc.setTextColor(150, 110, 40);
+    doc.text(key, W * 0.42, fy);
+    // Value
+    doc.setFont('helvetica', 'normal');
+    doc.setFontSize(6);
+    doc.setTextColor(190, 205, 220);
+    doc.text(val, W * 0.42 + 11, fy);
+  });
+
+  // PHOTO BOX — 1:1 aspect ratio (square), positioned left
+  const photoX = 2.5;
+  const photoY = 4;
+  const photoSize = 28; // square 1:1
+
+  // Photo background
+  doc.setFillColor(13, 26, 46);
+  doc.roundedRect(photoX, photoY, photoSize, photoSize, 1.5, 1.5, 'F');
+
+  // Gold border
+  doc.setDrawColor(200, 162, 74);
+  doc.setLineWidth(0.5);
+  doc.roundedRect(photoX, photoY, photoSize, photoSize, 1.5, 1.5, 'S');
+
+  if (m.photo_url) {
+    try {
+      const imgData = await loadImageAsBase64(m.photo_url);
+      if (imgData) {
+        // Clip image to square
+        doc.addImage(imgData, 'JPEG', photoX + 0.4, photoY + 0.4, photoSize - 0.8, photoSize - 0.8);
+      }
+    } catch {}
+  } else {
+    // Person silhouette placeholder
+    doc.setFillColor(25, 42, 68);
+    doc.circle(photoX + photoSize/2, photoY + photoSize*0.35, photoSize * 0.15, 'F');
+    doc.setFillColor(25, 42, 68);
+    doc.ellipse(photoX + photoSize/2, photoY + photoSize*0.72, photoSize * 0.22, photoSize * 0.16, 'F');
+  }
+
+  // Blood badge below photo
+  if (m.blood_group) {
+    const bx = photoX;
+    const by = photoY + photoSize + 1.5;
+    doc.setFillColor(50, 12, 12);
+    doc.roundedRect(bx, by, photoSize, 5.5, 1, 1, 'F');
+    doc.setDrawColor(180, 50, 50);
+    doc.setLineWidth(0.25);
+    doc.roundedRect(bx, by, photoSize, 5.5, 1, 1, 'S');
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(5.5);
+    doc.setTextColor(255, 110, 110);
+    doc.text(m.blood_group, photoX + photoSize / 2, by + 3.8, { align: 'center' });
+  }
+
+  // Bottom bar
+  doc.setFillColor(10, 18, 32);
+  doc.rect(0, H - 7, W, 7, 'F');
+  doc.setDrawColor(200, 162, 74);
+  doc.setLineWidth(0.2);
+  doc.line(0, H - 7, W, H - 7);
+  doc.setFont('helvetica', 'bold');
+  doc.setFontSize(3.8);
+  doc.setTextColor(160, 120, 45);
+  doc.text('MEMBER IDENTITY CARD', 3, H - 3.2);
+  doc.setFont('helvetica', 'normal');
+  doc.setTextColor(100, 80, 30);
+  doc.text('Official & Authorized', W - 3, H - 3.2, { align: 'right' });
+}
+
+async function drawBack(doc, m, W, H) {
+  // Background
+  doc.setFillColor(5, 12, 26);
+  doc.rect(0, 0, W, H, 'F');
+
+  // Diagonal crosshatch pattern — very subtle
+  doc.setDrawColor(200, 162, 74);
+  doc.setLineWidth(0.05);
+  for (let i = -H; i < W + H; i += 8) {
+    doc.line(i, 0, i + H, H);
+    doc.line(i + H, 0, i, H);
+  }
+
+  // Semi-transparent overlay to dim pattern
+  doc.setFillColor(5, 12, 26);
+  doc.setGState && doc.setGState(new doc.GState({ opacity: 0.82 }));
+  doc.rect(0, 0, W, H, 'F');
+
+  // Top stripe
+  const stripeColors = [[122,92,24],[200,162,74],[224,185,90],[200,162,74],[139,104,32],[200,162,74],[224,185,90],[122,92,24]];
+  const sw = W / stripeColors.length;
+  stripeColors.forEach(([r,g,b], i) => {
+    doc.setFillColor(r, g, b);
+    doc.rect(i * sw, 0, sw + 0.5, 1.5, 'F');
+  });
+
+  // Central glow circle
+  // (drawn as concentric semi-transparent circles — approximated)
+  doc.setFillColor(8, 16, 30);
+  doc.circle(W/2, H/2, 18, 'F');
+
+  // QR CODE — clean white background, properly sized
+  const qrSize = 26; // mm
+  const qrX = W/2 - qrSize/2;
+  const qrY = H/2 - qrSize/2 - 3;
+
+  // White rounded background for QR
+  doc.setFillColor(255, 255, 255);
+  doc.roundedRect(qrX - 1.5, qrY - 1.5, qrSize + 3, qrSize + 3, 2, 2, 'F');
+
+  // Gold border around QR
+  doc.setDrawColor(200, 162, 74);
+  doc.setLineWidth(0.5);
+  doc.roundedRect(qrX - 1.5, qrY - 1.5, qrSize + 3, qrSize + 3, 2, 2, 'S');
+
+  // Generate QR and embed
+  const qrCanvas = await generateQRCanvas(`https://meherpur-debating-forum/member/${m.mdf_code}`, 200);
+  if (qrCanvas) {
+    const qrImgData = qrCanvas.toDataURL('image/png');
+    doc.addImage(qrImgData, 'PNG', qrX, qrY, qrSize, qrSize);
+  }
+
+  // Scan label
+  doc.setFont('helvetica', 'bold');
+  doc.setFontSize(4);
+  doc.setTextColor(160, 120, 45);
+  const labelY = qrY + qrSize + 5;
+  doc.text('SCAN TO VERIFY MEMBERSHIP', W/2, labelY, { align: 'center' });
+
+  // MDF Code
+  doc.setFont('courier', 'bold');
+  doc.setFontSize(6.5);
+  doc.setTextColor(200, 162, 74);
+  doc.text('MDF-' + m.mdf_code, W/2, labelY + 6, { align: 'center' });
+
+  // Bottom bar
+  doc.setFillColor(10, 18, 32);
+  doc.rect(0, H - 7, W, 7, 'F');
+  doc.setDrawColor(200, 162, 74);
+  doc.setLineWidth(0.2);
+  doc.line(0, H - 7, W, H - 7);
+  doc.setFont('helvetica', 'normal');
+  doc.setFontSize(3.2);
+  doc.setTextColor(120, 90, 35);
+  doc.text('meherpur-debating-forum.com  ·  Return if found', W/2, H - 3.2, { align: 'center' });
+}
+
+// Load image as base64 for PDF embedding
+function loadImageAsBase64(url) {
+  return new Promise((resolve) => {
+    const img = new Image();
+    img.crossOrigin = 'anonymous';
+    img.onload = () => {
+      try {
+        // Create square canvas — crop to 1:1
+        const size = Math.min(img.width, img.height);
+        const canvas = document.createElement('canvas');
+        canvas.width = size; canvas.height = size;
+        const ctx = canvas.getContext('2d');
+        // Center crop
+        const sx = (img.width - size) / 2;
+        const sy = (img.height - size) / 2;
+        ctx.drawImage(img, sx, sy, size, size, 0, 0, size, size);
+        resolve(canvas.toDataURL('image/jpeg', 0.92));
+      } catch { resolve(null); }
+    };
+    img.onerror = () => resolve(null);
+    img.src = url + (url.includes('?') ? '&' : '?') + '_t=' + Date.now();
+  });
+}
+
+function generateQRCanvas(text, size) {
+  return new Promise((resolve) => {
+    const div = document.createElement('div');
+    div.style.cssText = 'position:fixed;left:-9999px;top:0;z-index:-999;';
+    document.body.appendChild(div);
+    try {
+      new QRCode(div, {
+        text,
+        width: size,
+        height: size,
+        colorDark: '#000000',
+        colorLight: '#ffffff',
+        correctLevel: QRCode.CorrectLevel.M
+      });
+      setTimeout(() => {
+        const canvas = div.querySelector('canvas');
+        try { document.body.removeChild(div); } catch {}
+        resolve(canvas || null);
+      }, 400);
+    } catch {
+      try { document.body.removeChild(div); } catch {}
+      resolve(null);
+    }
+  });
+}
+</script>
+</body>
+</html>
