@@ -2413,3 +2413,187 @@ function generateQRCanvas(text, size) {
 </script>
 </body>
 </html>
+
+প্রথমত লগইন পেইজ মোটেও সুবিধার না, লগইন পেইজ স্ট্যাবল না, এটাকে অনেক সুন্দর করতে হবে, এনিমেশনও ভালো দিতে হবে। লগইন পেইজে কিছু টাইপ করতে গেলে ভেঙ্গে আরপার দেখা যায়। এটা ফিক্স করতে হবে
+এখানে সকলের জন্য ১:১ ফটোকার্ডও মেইক করার অপশন চাই! ছবিটা স্ক্রিনের উপরের ২ তৃতীয়াংশ জায়গা জুডে থাকবে, তার নিচে নাম, প্রতিষ্ঠান, এমডিএফ কোড! ব্যাস, অবশ্যই জিনিসটা সেই রকম হতে হবে, উপরে মাঝে ক্লাবের নাম "MEHERPUR DEBATING FORUM" লেখা থাকবে, তার পাশে ক্লাবের লোগো "profile.png", তারপর নিচে দুই তৃতীয়াংশ জায়গা জুড়ে তার ছবি, তারপর নিচে যে জায়গা ফাঁকা থাকবে সেখানে বাম সাইডে ৩ চতুর্থআংশ জায়গা জুডে তার নাম, আর তার প্রতিষ্ঠান এর নাম। আর ডান পাশে যে ১ চতুতুর্থাংশ জায়গা আছে সেখানে ওই মেম্বারের কিউআর কো  "https://meherpur-debating-forum.github.io/mainindex.html?member={mdf_code}" এটা অটোমেটিক জেনারেট হয়ে বসে যাবে, অবশ্যই ভালো হইতে হবে। রেজুলেশন ভালো হইতে হবে।
+একই সাথে এখানে ওয়েবসাইটে শো হওয়া আইডি কার্ডের সাথে ডাউনলোডেড আইডি কার্ডের ফন্টের কোনো মিল নাই! ডাউনলোড দিলে একেবারে ফালতু হয়ে যাচ্ছে! আমাকে যেটা শো করা হবে, সেটাই যেন ডাউনলোড হয়। আমি তোমাকে ছবি দিচ্ছি, সেই এই ভাবেই ডাউনলোড হইতে হবে, কেননা এটাই আমি দেখেছিলাম, এইভাবেই আমকে শো করানো হচ্ছে, আর এটা বেশ ভালো
+এপ্রুভালসে যেন আমাকে প্রত্যেকের একেকটা স্কিল আলাদা আলাদা করে না দেখায়! আমাকে যেন প্রতিজনের কি কি স্কিলস এপ্রুভ করেছি সেটা একসাথেই দেখায়! মানে একটা রো তেই নাম, এমডিএফ কোড, আর স্কিলস, আর এডিট/ডিলেট বাটন দেখায়
+এছাড়াও প্রত্যেক ইউজারের আমাকে স্ট্যাটাস আপডেট করার বাটন দিবে, স্ট্যাটাস অবশ্যই Active/Resigned/Banned/On Vacation এই চারটার মধ্যেই থাকবে!
+এছাড়াও কমিটিতে আমাকে আগে এভেইলেবল কমিটি গুলো দেখাবে, তারপর আমাকে ওই কমিটির জন্য মেম্বার সিলেক্ট করে ফেলতে বলতে হবে।
+এছাড়াও পিসি ভার্শনের জন্য এটা ঠিকঠাক, তবে মোবাইলের জন্য এটা ইউজ করা একটু ডিফিকাল্ট, মোভাইলের জন্য যেন আরো ইউজার ফ্রেন্ডলি হয়, সেদিকেই এবার সর্বোচ্চ খেয়াল রাখবে
+এখানে কোনো ড্রপডাউন ব্রাউজার ডিফল্ট ড্রপ ডাউন রাখবেনা, সিএসএস এর সাথে মিল দেখে কাস্টম ড্রপডাউন রাখবে সবগুলো
+কোনো ইমোজি থাকবেনা, সব কাস্টম এসভিজি আইকন হবে।
+
+পুরো কোডে থাকবে এনিমেশনে ভরা, মনে করো তুমি তোমার সকল ক্রিয়েটিভিটি আমাকে দেখাচ্ছো! দুনিয়ার বেস্ট ওয়েবপেইজ বানাচ্ছো! 
+আমি তোমাকে ফুল স্কেচিমা আবারো দিচ্ছি
+-- =========================
+-- MDF CLUB MANAGEMENT SYSTEM
+-- MEHERPUR DEBATING FORUM
+-- =========================
+
+create extension if not exists pgcrypto;
+
+-- -------------------------
+-- MEMBERS
+-- -------------------------
+create table public.members (
+id uuid not null default gen_random_uuid (),
+mdf_code character varying(5) not null,
+full_name text null,
+father_name text null,
+father_phone character varying(11) null,
+mother_name text null,
+birth_reg_no text null,
+phone character varying(11) not null,
+password text not null,
+class_semester text null,
+institution text null,
+address text null,
+map_location text null,
+blood_group text null,
+approved_skills text[] null default '{}'::text[],
+achievements text[] null default '{}'::text[],
+photo_url text null,
+created_at timestamp with time zone null default now(),
+"Status" text not null default 'Active'::text,
+constraint members_pkey primary key (id),
+constraint members_mdf_code_key unique (mdf_code),
+constraint members_phone_key unique (phone)
+) TABLESPACE pg_default;
+
+-- -------------------------
+-- TEAMS
+-- -------------------------
+create table teams (
+id bigint generated always as identity primary key,
+team_code bigint unique not null,
+team_name text not null,
+team_type text check (team_type in ('ISC','IV')),
+participant_type text check (participant_type in ('Open','Institutional')),
+skill_type text,
+season_start date,
+season_end date,
+created_at timestamptz default now()
+);
+
+-- -------------------------
+-- TEAM MEMBERS
+-- -------------------------
+create table team_members (
+id uuid primary key default gen_random_uuid(),
+team_code bigint references teams(team_code) on delete cascade,
+member_code varchar(5) references members(mdf_code) on delete cascade,
+is_bench boolean default false
+);
+
+-- -------------------------
+-- PARTICIPATIONS
+-- -------------------------
+create table participations (
+id bigint generated always as identity primary key,
+participation_code bigint unique not null,
+tournament_name text not null,
+team_code bigint references teams(team_code) on delete cascade,
+participation_date date
+);
+
+-- -------------------------
+-- ACTIVITIES
+-- -------------------------
+create table activities (
+id uuid primary key default gen_random_uuid(),
+title text not null,
+event_type text check (event_type in ('Online','Offline')),
+venue text,
+engaged_people integer,
+details text,
+image_url text,
+created_at timestamptz default now()
+);
+
+-- -------------------------
+-- EXECUTIVE COMMITTEES
+-- -------------------------
+create table committees (
+id uuid primary key default gen_random_uuid(),
+committee_id varchar(10) unique not null,
+season_start date,
+season_end date,
+is_current boolean default false,
+created_at timestamptz default now()
+);
+
+create table committee_members (
+id uuid primary key default gen_random_uuid(),
+committee_id varchar(10) references committees(committee_id) on delete cascade,
+designation text not null,
+member_code varchar(5) references members(mdf_code),
+rank_order integer default 1
+);
+
+-- -------------------------
+-- CONTACT FORM
+-- -------------------------
+create table contacts (
+id uuid primary key default gen_random_uuid(),
+name text,
+phone varchar(11),
+email text,
+message text,
+created_at timestamptz default now()
+);
+
+-- -------------------------
+-- MEMBER ORDER CONTROL
+-- -------------------------
+create table member_priority (
+id uuid primary key default gen_random_uuid(),
+member_code varchar(5) references members(mdf_code),
+priority integer default 999
+);
+
+-- -------------------------
+-- APPROVALS
+-- -------------------------
+create table approvals (
+id uuid primary key default gen_random_uuid(),
+member_code varchar(5) references members(mdf_code),
+approved_skill text
+);
+
+-- -------------------------
+-- ADMIN USERS
+-- -------------------------
+create table admins (
+id uuid primary key default gen_random_uuid(),
+username text unique not null,
+password text not null
+);
+
+insert into admins (username,password)
+values ('admin','admin123');
+
+-- -------------------------
+-- FUNCTIONS
+-- -------------------------
+
+create or replace function generate_mdf_code()
+returns text as $$
+declare
+chars text := 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+result text := '';
+i integer := 0;
+begin
+for i in 1..5 loop
+result := result || substr(chars, floor(random()*length(chars)+1)::int,1);
+end loop;
+return result;
+end;
+$$ language plpgsql;
+
+-- -------------------------
+-- STORAGE NOTE
+-- create bucket manually:
+-- photo (public)
+-- -------------------------
+এবার আমাকে ফাইনাল মাস্টারপিস কোড দাও
