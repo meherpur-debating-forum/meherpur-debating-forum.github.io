@@ -1,545 +1,286 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
-  viewBox="0 0 900 600" width="900" height="600"
-  role="img" style="background:#060608;">
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" 
+     viewBox="0 0 1280 720" width="100%" height="100%" 
+     role="img" style="background-color: #030305; font-family: sans-serif;">
 
-  <title>MDF Debating Club — Cinematic Logo Reveal</title>
-  <desc>Animated SVG: microphone and speaker emerge from darkness, soundwaves transform into flowing energy, and the MDF debating club logo is revealed with cinematic gold glow.</desc>
+    <title>MDF | Elite Debating Forum Cinematic Reveal</title>
+    <desc>Ultra-premium SVG loading animation featuring the MDF logo with dynamic trace reveals, true vector masking for the debater silhouettes, glowing particles, and HUD ring elements.</desc>
 
-  <defs>
+    <defs>
+        <!-- ========================================== -->
+        <!-- 1. GRADIENTS                               -->
+        <!-- ========================================== -->
+        
+        <!-- Deep Cinematic Vignette Background -->
+        <radialGradient id="bgVignette" cx="50%" cy="50%" r="75%">
+            <stop offset="0%" stop-color="#14110A" />
+            <stop offset="40%" stop-color="#080705" />
+            <stop offset="100%" stop-color="#030305" />
+        </radialGradient>
 
-    <!-- GOLD GRADIENTS -->
-    <linearGradient id="goldH" x1="0%" y1="0%" x2="100%" y2="0%">
-      <stop offset="0%"   stop-color="#8B5E00"/>
-      <stop offset="20%"  stop-color="#C8890A"/>
-      <stop offset="45%"  stop-color="#F5C842"/>
-      <stop offset="60%"  stop-color="#FFE080"/>
-      <stop offset="80%"  stop-color="#D4A017"/>
-      <stop offset="100%" stop-color="#7A4E00"/>
-    </linearGradient>
+        <!-- Ambient Center Glow -->
+        <radialGradient id="centerGlow" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stop-color="#D4AF37" stop-opacity="0.25" />
+            <stop offset="50%" stop-color="#D4AF37" stop-opacity="0.05" />
+            <stop offset="100%" stop-color="#D4AF37" stop-opacity="0" />
+        </radialGradient>
 
-    <linearGradient id="goldV" x1="0%" y1="0%" x2="0%" y2="100%">
-      <stop offset="0%"   stop-color="#FFE080"/>
-      <stop offset="40%"  stop-color="#D4A017"/>
-      <stop offset="100%" stop-color="#8B5E00"/>
-    </linearGradient>
+        <!-- Ultra Premium Gold Gradient (Base Fill) -->
+        <linearGradient id="goldBase" x1="0%" y1="100%" x2="100%" y2="0%">
+            <stop offset="0%" stop-color="#8A6519" />
+            <stop offset="25%" stop-color="#E6C762" />
+            <stop offset="50%" stop-color="#FFF2A8" />
+            <stop offset="75%" stop-color="#D4AF37" />
+            <stop offset="100%" stop-color="#B38B22" />
+        </linearGradient>
 
-    <radialGradient id="goldRadial" cx="40%" cy="35%" r="60%">
-      <stop offset="0%"   stop-color="#FFE8A0"/>
-      <stop offset="50%"  stop-color="#D4A017"/>
-      <stop offset="100%" stop-color="#7A4E00"/>
-    </radialGradient>
+        <!-- Darker Gold for 3D/Contrast Depth -->
+        <linearGradient id="goldDark" x1="0%" y1="0%" x2="0%" y2="100%">
+            <stop offset="0%" stop-color="#FCE181" />
+            <stop offset="60%" stop-color="#C29421" />
+            <stop offset="100%" stop-color="#6B4B0C" />
+        </linearGradient>
 
-    <radialGradient id="glowCenter" cx="50%" cy="50%" r="50%">
-      <stop offset="0%"   stop-color="#D4A017" stop-opacity="0.5"/>
-      <stop offset="60%"  stop-color="#D4A017" stop-opacity="0.08"/>
-      <stop offset="100%" stop-color="#D4A017" stop-opacity="0"/>
-    </radialGradient>
+        <!-- Sheen Sweep Gradient -->
+        <linearGradient id="sheenSweep" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" stop-color="white" stop-opacity="0" />
+            <stop offset="45%" stop-color="#FFF2A8" stop-opacity="0" />
+            <stop offset="50%" stop-color="#FFFFFF" stop-opacity="0.8" />
+            <stop offset="55%" stop-color="#FFF2A8" stop-opacity="0" />
+            <stop offset="100%" stop-color="white" stop-opacity="0" />
+            <animateTransform attributeName="gradientTransform" type="translate" 
+                              values="-1 0; 2 0; -1 0" dur="12s" repeatCount="indefinite" />
+        </linearGradient>
 
-    <radialGradient id="micBodyGrad" cx="35%" cy="30%" r="65%">
-      <stop offset="0%"   stop-color="#FFE8A0"/>
-      <stop offset="40%"  stop-color="#D4A017"/>
-      <stop offset="100%" stop-color="#7A4E00"/>
-    </radialGradient>
+        <!-- ========================================== -->
+        <!-- 2. FILTERS                                 -->
+        <!-- ========================================== -->
+        
+        <filter id="softGlow" x="-20%" y="-20%" width="140%" height="140%">
+            <feGaussianBlur stdDeviation="8" result="blur" />
+            <feMerge>
+                <feMergeNode in="blur" />
+                <feMergeNode in="SourceGraphic" />
+            </feMerge>
+        </filter>
 
-    <radialGradient id="ambientGlow" cx="50%" cy="50%" r="50%">
-      <stop offset="0%"   stop-color="#D4A017" stop-opacity="0.35"/>
-      <stop offset="100%" stop-color="#D4A017" stop-opacity="0"/>
-    </radialGradient>
+        <filter id="intenseGlow" x="-50%" y="-50%" width="200%" height="200%">
+            <feGaussianBlur stdDeviation="16" result="blur" />
+            <feMerge>
+                <feMergeNode in="blur" />
+                <feMergeNode in="blur" />
+                <feMergeNode in="SourceGraphic" />
+            </feMerge>
+        </filter>
 
-    <linearGradient id="shineSwipe" x1="0%" y1="0%" x2="100%" y2="0%">
-      <stop offset="0%"   stop-color="white" stop-opacity="0"/>
-      <stop offset="45%"  stop-color="white" stop-opacity="0"/>
-      <stop offset="50%"  stop-color="white" stop-opacity="0.35"/>
-      <stop offset="55%"  stop-color="white" stop-opacity="0"/>
-      <stop offset="100%" stop-color="white" stop-opacity="0"/>
-      <animateTransform attributeName="gradientTransform" type="translate"
-        values="-1 0;2 0;-1 0" dur="6s" repeatCount="indefinite"/>
-    </linearGradient>
+        <filter id="particleGlow">
+            <feGaussianBlur stdDeviation="2" result="blur" />
+            <feMerge>
+                <feMergeNode in="blur" />
+                <feMergeNode in="SourceGraphic" />
+            </feMerge>
+        </filter>
 
-    <linearGradient id="barFade" x1="0%" y1="0%" x2="100%" y2="0%">
-      <stop offset="0%"   stop-color="#D4A017" stop-opacity="0"/>
-      <stop offset="30%"  stop-color="#F5C842" stop-opacity="0.8"/>
-      <stop offset="50%"  stop-color="#FFE080" stop-opacity="1"/>
-      <stop offset="70%"  stop-color="#F5C842" stop-opacity="0.8"/>
-      <stop offset="100%" stop-color="#D4A017" stop-opacity="0"/>
-    </linearGradient>
+        <!-- ========================================== -->
+        <!-- 3. TRUE VECTOR MASKS                       -->
+        <!-- ========================================== -->
+        <!-- This mask perfectly punches out the debaters and mic grills -->
+        <!-- White = Visible logo, Black = Transparent cutouts -->
+        <mask id="mdfCutoutMask">
+            <!-- Show Everything Base -->
+            <rect x="-500" y="-500" width="3000" height="3000" fill="white" />
+            
+            <!-- Hide Debater 1 (Inside 'M') -->
+            <g transform="translate(10, 0)" fill="black" stroke="black">
+                <polygon points="230,400 255,400 248,340 238,340" />
+                <polygon points="225,340 265,330 270,335 235,345" />
+                <circle cx="210" cy="300" r="14" />
+                <path d="M 195,400 L 210,335 Q 220,315 238,330 L 245,340 L 225,345 Q 215,340 215,355 L 210,400 Z" />
+                <path d="M 215,325 Q 235,325 250,335" fill="none" stroke-width="4" stroke-linecap="round"/>
+                <path d="M 260,330 L 250,310" fill="none" stroke-width="2.5"/>
+                <circle cx="248" cy="308" r="4.5" />
+            </g>
 
-    <linearGradient id="speakerGrad" x1="0%" y1="0%" x2="0%" y2="100%">
-      <stop offset="0%"   stop-color="#F5C842" stop-opacity="0.95"/>
-      <stop offset="100%" stop-color="#A07010" stop-opacity="0.7"/>
-    </linearGradient>
+            <!-- Hide Debater 2 (Inside 'F') -->
+            <g transform="translate(-10, 0)" fill="black" stroke="black">
+                <polygon points="790,400 765,400 772,340 782,340" />
+                <polygon points="795,340 755,330 750,335 785,345" />
+                <circle cx="810" cy="300" r="14" />
+                <path d="M 825,400 L 810,335 Q 800,315 782,330 L 775,340 L 795,345 Q 805,340 805,355 L 810,400 Z" />
+                <path d="M 805,325 Q 785,325 770,335" fill="none" stroke-width="4" stroke-linecap="round"/>
+                <path d="M 760,330 L 770,310" fill="none" stroke-width="2.5"/>
+                <circle cx="772" cy="308" r="4.5" />
+            </g>
 
-    <!-- FILTERS -->
-    <filter id="softGlow" x="-40%" y="-40%" width="180%" height="180%">
-      <feGaussianBlur stdDeviation="6" result="blur"/>
-      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
-    </filter>
+            <!-- Hide Microphone Grilles -->
+            <g stroke="black" stroke-width="4">
+                <line x1="544" y1="235" x2="596" y2="235" />
+                <line x1="544" y1="247" x2="596" y2="247" />
+                <line x1="544" y1="259" x2="596" y2="259" />
+                <line x1="544" y1="271" x2="596" y2="271" />
+            </g>
+            <circle cx="535" cy="260" r="5" fill="black" />
+            <circle cx="605" cy="260" r="5" fill="black" />
+        </mask>
 
-    <filter id="strongGlow" x="-60%" y="-60%" width="220%" height="220%">
-      <feGaussianBlur stdDeviation="14" result="blur"/>
-      <feMerge><feMergeNode in="blur"/><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
-    </filter>
+        <!-- ========================================== -->
+        <!-- 4. LOGO PATH DEFINITIONS                   -->
+        <!-- ========================================== -->
+        <g id="mdf-base-paths">
+            <!-- M -->
+            <path d="M 200 400 L 260 400 L 260 250 L 320 340 L 380 250 L 380 400 L 440 400 L 440 180 L 360 180 L 320 250 L 280 180 L 200 180 Z" />
+            <!-- D -->
+            <path d="M 460 400 L 540 400 C 640 400 680 340 680 290 C 680 240 640 180 540 180 L 460 180 Z M 510 220 L 540 220 C 600 220 630 250 630 290 C 630 330 600 360 540 360 L 510 360 Z" fill-rule="evenodd" />
+            <!-- F -->
+            <path d="M 700 400 L 750 400 L 750 310 L 820 310 L 820 270 L 750 270 L 750 220 L 830 220 L 830 180 L 700 180 Z" />
+            <!-- Arch & Swoosh Elements -->
+            <path d="M 140 420 C 140 220 300 80 850 130 C 500 70 250 150 190 420 Z" />
+            <circle cx="260" cy="115" r="24" />
+            <path d="M 320 90 A 8 8 0 0 1 336 90 L 336 105 A 8 8 0 0 1 320 105 Z" />
+            <path d="M 315 100 A 13 13 0 0 0 341 100" stroke-width="3" fill="none"/>
+            <line x1="328" y1="113" x2="328" y2="125" stroke-width="3" />
+            <!-- Inner D Mic Element -->
+            <path d="M 545 220 A 25 25 0 0 1 595 220 L 595 280 A 25 25 0 0 1 545 280 Z" />
+            <path d="M 535 260 A 35 35 0 0 0 605 260" stroke-width="6" fill="none" stroke-linecap="round"/>
+            <line x1="570" y1="295" x2="570" y2="360" stroke-width="8" />
+            <path d="M 545 360 L 595 360 L 600 380 L 540 380 Z" />
+        </g>
+    </defs>
 
-    <filter id="subtleGlow" x="-20%" y="-20%" width="140%" height="140%">
-      <feGaussianBlur stdDeviation="3" result="blur"/>
-      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
-    </filter>
+    <!-- ====================================================================== -->
+    <!-- SCENE RENDERING BEGINS                                                 -->
+    <!-- ====================================================================== -->
 
-    <filter id="textGlow" x="-10%" y="-30%" width="120%" height="160%">
-      <feGaussianBlur stdDeviation="8" result="blur"/>
-      <feMerge><feMergeNode in="blur"/><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
-    </filter>
+    <!-- Base Background Layer -->
+    <rect width="100%" height="100%" fill="url(#bgVignette)" />
 
-    <filter id="particleBlur">
-      <feGaussianBlur stdDeviation="1.2"/>
-    </filter>
+    <!-- Ambient Center Glow (Breathing) -->
+    <circle cx="640" cy="360" r="450" fill="url(#centerGlow)" filter="url(#intenseGlow)">
+        <animate attributeName="r" values="350; 500; 350" dur="8s" repeatCount="indefinite" />
+        <animate attributeName="opacity" values="0.3; 0.8; 0.3" dur="6s" repeatCount="indefinite" />
+    </circle>
 
-    <!-- CLIP PATHS -->
-    <clipPath id="svgBounds">
-      <rect x="0" y="0" width="900" height="600"/>
-    </clipPath>
+    <!-- ========================================== -->
+    <!-- LAYER 1: AMBIENT PARTICLES & HUD RINGS     -->
+    <!-- ========================================== -->
+    <g id="background-elements">
+        <!-- Global Fade In for Environment -->
+        <animate attributeName="opacity" values="0; 1; 1; 0" keyTimes="0; 0.15; 0.9; 1" dur="12s" repeatCount="indefinite" />
 
-    <clipPath id="logoClip">
-      <rect x="200" y="170" width="500" height="260"/>
-    </clipPath>
+        <!-- Rotating Elite HUD Rings -->
+        <g stroke="url(#goldBase)" fill="none" transform-origin="640 360" opacity="0.3">
+            <circle cx="640" cy="360" r="380" stroke-width="0.5" stroke-dasharray="2 12 60 12">
+                <animateTransform attributeName="transform" type="rotate" from="0 640 360" to="360 640 360" dur="40s" repeatCount="indefinite" />
+            </circle>
+            <circle cx="640" cy="360" r="365" stroke-width="1.5" stroke-dasharray="150 30 10 30" stroke="url(#goldDark)">
+                <animateTransform attributeName="transform" type="rotate" from="360 640 360" to="0 640 360" dur="25s" repeatCount="indefinite" />
+            </circle>
+        </g>
 
-    <!-- MASKS -->
-    <mask id="fadeInMask">
-      <rect x="0" y="0" width="900" height="600" fill="white"/>
-    </mask>
-
-    <mask id="logoRevealMask">
-      <rect x="0" y="0" width="900" height="600" fill="black">
-        <animate attributeName="fill" values="black;black;white;white" dur="9s" keyTimes="0;0.44;0.66;1" repeatCount="indefinite"/>
-      </rect>
-    </mask>
-
-  </defs>
-
-  <!-- ===================== -->
-  <!-- SCENE BACKGROUND      -->
-  <!-- ===================== -->
-  <g clip-path="url(#svgBounds)">
-
-  <!-- Deep dark background gradient -->
-  <rect x="0" y="0" width="900" height="600" fill="#060608"/>
-  <radialGradient id="bgVignette" cx="50%" cy="50%" r="70%">
-    <stop offset="0%"   stop-color="#0E0C14"/>
-    <stop offset="100%" stop-color="#020204"/>
-  </radialGradient>
-  <rect x="0" y="0" width="900" height="600" fill="url(#bgVignette)"/>
-
-  <!-- ===================== -->
-  <!-- AMBIENT PARTICLES     -->
-  <!-- ===================== -->
-  <g opacity="0">
-    <animate attributeName="opacity" values="0;0.6;0.6;0.8;0.8;0" keyTimes="0;0.08;0.5;0.6;0.95;1" dur="9s" repeatCount="indefinite"/>
-
-    <!-- Particle field — 36 tiny glowing dots -->
-    <g filter="url(#particleBlur)">
-      <circle cx="80"  cy="90"  r="1.2" fill="#D4A017" opacity="0.4"><animate attributeName="opacity" values="0.1;0.6;0.1" dur="3.1s" repeatCount="indefinite"/></circle>
-      <circle cx="180" cy="50"  r="1.0" fill="#F5C842" opacity="0.3"><animate attributeName="opacity" values="0.2;0.7;0.2" dur="2.4s" begin="0.3s" repeatCount="indefinite"/></circle>
-      <circle cx="320" cy="30"  r="1.4" fill="#D4A017" opacity="0.5"><animate attributeName="opacity" values="0.1;0.5;0.1" dur="3.7s" begin="0.7s" repeatCount="indefinite"/></circle>
-      <circle cx="520" cy="20"  r="1.0" fill="#FFE080" opacity="0.3"><animate attributeName="opacity" values="0.3;0.8;0.3" dur="2.9s" begin="1.1s" repeatCount="indefinite"/></circle>
-      <circle cx="700" cy="60"  r="1.3" fill="#D4A017" opacity="0.4"><animate attributeName="opacity" values="0.1;0.6;0.1" dur="4.1s" begin="0.5s" repeatCount="indefinite"/></circle>
-      <circle cx="820" cy="110" r="1.1" fill="#F5C842" opacity="0.3"><animate attributeName="opacity" values="0.2;0.5;0.2" dur="3.3s" begin="1.4s" repeatCount="indefinite"/></circle>
-      <circle cx="850" cy="260" r="1.5" fill="#D4A017" opacity="0.4"><animate attributeName="opacity" values="0.1;0.7;0.1" dur="2.8s" begin="0.2s" repeatCount="indefinite"/></circle>
-      <circle cx="860" cy="400" r="1.0" fill="#FFE080" opacity="0.3"><animate attributeName="opacity" values="0.3;0.6;0.3" dur="3.6s" begin="0.9s" repeatCount="indefinite"/></circle>
-      <circle cx="750" cy="520" r="1.2" fill="#D4A017" opacity="0.4"><animate attributeName="opacity" values="0.1;0.5;0.1" dur="4.4s" begin="0.6s" repeatCount="indefinite"/></circle>
-      <circle cx="580" cy="570" r="1.4" fill="#F5C842" opacity="0.3"><animate attributeName="opacity" values="0.2;0.7;0.2" dur="2.7s" begin="1.2s" repeatCount="indefinite"/></circle>
-      <circle cx="380" cy="580" r="1.1" fill="#D4A017" opacity="0.4"><animate attributeName="opacity" values="0.1;0.6;0.1" dur="3.9s" begin="0.4s" repeatCount="indefinite"/></circle>
-      <circle cx="160" cy="540" r="1.3" fill="#FFE080" opacity="0.3"><animate attributeName="opacity" values="0.3;0.5;0.3" dur="3.2s" begin="1.6s" repeatCount="indefinite"/></circle>
-      <circle cx="50"  cy="430" r="1.0" fill="#D4A017" opacity="0.4"><animate attributeName="opacity" values="0.1;0.7;0.1" dur="2.6s" begin="0.8s" repeatCount="indefinite"/></circle>
-      <circle cx="40"  cy="290" r="1.5" fill="#F5C842" opacity="0.3"><animate attributeName="opacity" values="0.2;0.6;0.2" dur="4.2s" begin="0.1s" repeatCount="indefinite"/></circle>
-      <circle cx="240" cy="150" r="1.1" fill="#D4A017" opacity="0.5"><animate attributeName="opacity" values="0.1;0.5;0.1" dur="3.5s" begin="1.0s" repeatCount="indefinite"/></circle>
-      <circle cx="660" cy="180" r="1.2" fill="#FFE080" opacity="0.3"><animate attributeName="opacity" values="0.3;0.8;0.3" dur="2.3s" begin="0.7s" repeatCount="indefinite"/></circle>
-      <circle cx="440" cy="100" r="1.0" fill="#D4A017" opacity="0.4"><animate attributeName="opacity" values="0.1;0.6;0.1" dur="3.8s" begin="1.3s" repeatCount="indefinite"/></circle>
-      <circle cx="135" cy="340" r="1.3" fill="#F5C842" opacity="0.3"><animate attributeName="opacity" values="0.2;0.5;0.2" dur="4.0s" begin="0.3s" repeatCount="indefinite"/></circle>
-    </g>
-  </g>
-
-  <!-- ============================== -->
-  <!-- SCENE 1: MICROPHONE EMERGENCE -->
-  <!-- ============================== -->
-  <g id="scene-mic">
-    <!-- Group fades in then out -->
-    <animate attributeName="opacity" values="0;0;1;1;0;0" keyTimes="0;0.04;0.14;0.38;0.48;1" dur="9s" repeatCount="indefinite"/>
-
-    <!-- Ambient glow behind mic -->
-    <ellipse cx="360" cy="295" rx="120" ry="100" fill="url(#ambientGlow)" opacity="0.6">
-      <animate attributeName="rx" values="80;130;80" dur="3s" repeatCount="indefinite"/>
-      <animate attributeName="opacity" values="0.3;0.7;0.3" dur="3s" repeatCount="indefinite"/>
-    </ellipse>
-
-    <!-- === MICROPHONE BODY === -->
-    <g id="micGroup" filter="url(#softGlow)">
-      <!-- Mic grill ellipse -->
-      <ellipse cx="360" cy="250" rx="44" ry="62" fill="url(#micBodyGrad)"/>
-
-      <!-- Grill horizontal lines -->
-      <g stroke="#FFE080" stroke-width="0.8" stroke-opacity="0.3">
-        <line x1="322" y1="205" x2="398" y2="205"/>
-        <line x1="318" y1="217" x2="402" y2="217"/>
-        <line x1="316" y1="230" x2="404" y2="230"/>
-        <line x1="316" y1="243" x2="404" y2="243"/>
-        <line x1="316" y1="256" x2="404" y2="256"/>
-        <line x1="317" y1="269" x2="403" y2="269"/>
-        <line x1="319" y1="282" x2="401" y2="282"/>
-        <line x1="323" y1="295" x2="397" y2="295"/>
-        <line x1="330" y1="307" x2="390" y2="307"/>
-      </g>
-
-      <!-- Grill vertical lines -->
-      <g stroke="#FFE080" stroke-width="0.8" stroke-opacity="0.2">
-        <line x1="332" y1="193" x2="332" y2="312"/>
-        <line x1="345" y1="189" x2="345" y2="314"/>
-        <line x1="360" y1="188" x2="360" y2="314"/>
-        <line x1="375" y1="189" x2="375" y2="314"/>
-        <line x1="388" y1="193" x2="388" y2="312"/>
-      </g>
-
-      <!-- Mic outline -->
-      <ellipse cx="360" cy="250" rx="44" ry="62" fill="none" stroke="#F5C842" stroke-width="2" stroke-opacity="0.9"/>
-
-      <!-- Neck -->
-      <rect x="352" y="312" width="16" height="44" rx="4" fill="#C8890A"/>
-      <rect x="352" y="312" width="16" height="44" rx="4" fill="none" stroke="#F5C842" stroke-width="1" stroke-opacity="0.6"/>
-
-      <!-- Base stand arm -->
-      <path d="M360 356 Q350 375 330 388" stroke="#D4A017" stroke-width="3" fill="none" stroke-linecap="round"/>
-      <path d="M360 356 Q370 375 390 388" stroke="#D4A017" stroke-width="3" fill="none" stroke-linecap="round"/>
-      <!-- Base horizontal -->
-      <line x1="316" y1="388" x2="404" y2="388" stroke="#D4A017" stroke-width="4" stroke-linecap="round"/>
+        <!-- Ambient Floating Particle Dust -->
+        <g filter="url(#particleGlow)" fill="#FFF2A8">
+            <circle cx="200" cy="600" r="1.5"><animateTransform attributeName="transform" type="translate" values="0 0; 40 -150" dur="6s" repeatCount="indefinite"/><animate attributeName="opacity" values="0; 0.6; 0" dur="6s" repeatCount="indefinite"/></circle>
+            <circle cx="450" cy="680" r="2.5"><animateTransform attributeName="transform" type="translate" values="0 0; -20 -200" dur="8s" repeatCount="indefinite"/><animate attributeName="opacity" values="0; 0.8; 0" dur="8s" repeatCount="indefinite"/></circle>
+            <circle cx="800" cy="550" r="1.0"><animateTransform attributeName="transform" type="translate" values="0 0; -30 -100" dur="5s" repeatCount="indefinite"/><animate attributeName="opacity" values="0; 0.5; 0" dur="5s" repeatCount="indefinite"/></circle>
+            <circle cx="1050" cy="400" r="2.0"><animateTransform attributeName="transform" type="translate" values="0 0; 50 -180" dur="7s" repeatCount="indefinite"/><animate attributeName="opacity" values="0; 0.7; 0" dur="7s" repeatCount="indefinite"/></circle>
+            <circle cx="350" cy="300" r="1.2"><animateTransform attributeName="transform" type="translate" values="0 0; -10 -120" dur="4.5s" repeatCount="indefinite"/><animate attributeName="opacity" values="0; 0.6; 0" dur="4.5s" repeatCount="indefinite"/></circle>
+            <circle cx="950" cy="200" r="1.8"><animateTransform attributeName="transform" type="translate" values="0 0; 25 -140" dur="9s" repeatCount="indefinite"/><animate attributeName="opacity" values="0; 0.9; 0" dur="9s" repeatCount="indefinite"/></circle>
+            <circle cx="640" cy="450" r="2.5"><animateTransform attributeName="transform" type="translate" values="0 0; 0 -250" dur="10s" repeatCount="indefinite"/><animate attributeName="opacity" values="0; 0.4; 0" dur="10s" repeatCount="indefinite"/></circle>
+        </g>
     </g>
 
-    <!-- Mic stand pole -->
-    <rect x="357" y="388" width="6" height="60" rx="3" fill="#A07010"/>
+    <!-- ========================================== -->
+    <!-- LAYER 2: MASTER LOGO GROUP                 -->
+    <!-- ========================================== -->
+    <!-- 
+        Transforms: Center the 710x340 logo block onto the 1280x720 canvas
+        Calculated as: Translate (1280 - (710*1.15))/2 = 231, (720 - (340*1.15))/2 = 164
+    -->
+    <g id="master-logo-scale" transform-origin="640 360">
+        <!-- Cinematic Push-in scale animation -->
+        <animateTransform attributeName="transform" type="scale" values="0.9; 1.05; 1.05" keyTimes="0; 0.8; 1" dur="12s" repeatCount="indefinite" />
 
-    <!-- === SPEAKER SILHOUETTE (beside mic) === -->
-    <g id="speakerFigure" filter="url(#subtleGlow)">
-      <!-- Head -->
-      <circle cx="230" cy="218" r="22" fill="url(#speakerGrad)"/>
-      <!-- Neck -->
-      <rect x="222" y="237" width="16" height="14" rx="4" fill="#D4A017"/>
-      <!-- Torso -->
-      <path d="M205 252 Q198 310 204 370 L256 370 Q262 310 255 252 Z" fill="url(#speakerGrad)"/>
-      <!-- Left arm raised — speaking gesture -->
-      <path d="M206 268 Q180 255 165 235" stroke="#D4A017" stroke-width="14" fill="none" stroke-linecap="round">
-        <animate attributeName="d" values="M206 268 Q180 255 165 235;M206 268 Q178 250 160 228;M206 268 Q180 255 165 235" dur="3s" repeatCount="indefinite"/>
-      </path>
-      <!-- Right arm (relaxed, at podium) -->
-      <path d="M254 268 Q270 280 272 300" stroke="#D4A017" stroke-width="14" fill="none" stroke-linecap="round"/>
-      <!-- Legs -->
-      <path d="M215 370 L208 430" stroke="#A07010" stroke-width="12" fill="none" stroke-linecap="round"/>
-      <path d="M245 370 L252 430" stroke="#A07010" stroke-width="12" fill="none" stroke-linecap="round"/>
+        <!-- Position Wrapper applying the Cutout Mask -->
+        <g transform="translate(180, 120) scale(1.15)" mask="url(#mdfCutoutMask)">
+            
+            <!-- PHASE 1: TRACE REVEAL (0s to 4s) -->
+            <g id="trace-lines" fill="none" stroke="url(#goldBase)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <!-- Fade out trace when fill comes in -->
+                <animate attributeName="opacity" values="0; 1; 1; 0; 0" keyTimes="0; 0.1; 0.35; 0.45; 1" dur="12s" repeatCount="indefinite" />
+                
+                <use href="#mdf-base-paths" stroke-dasharray="2500" stroke-dashoffset="2500" filter="url(#softGlow)">
+                    <animate attributeName="stroke-dashoffset" values="2500; 0; 0; 2500" keyTimes="0; 0.3; 0.9; 1" dur="12s" repeatCount="indefinite" />
+                </use>
+            </g>
+
+            <!-- PHASE 2: GOLD FILL REVEAL (3s to 11s) -->
+            <g id="logo-fill">
+                <!-- Fade in Fill gracefully -->
+                <animate attributeName="opacity" values="0; 0; 0; 1; 1; 0" keyTimes="0; 0.25; 0.35; 0.45; 0.9; 1" dur="12s" repeatCount="indefinite" />
+                
+                <!-- The Core Golden Logo -->
+                <use href="#mdf-base-paths" fill="url(#goldBase)" stroke="url(#goldDark)" stroke-width="0.5" filter="url(#softGlow)" />
+                
+                <!-- Overlay: Ambient Gradient for 3D Lighting -->
+                <use href="#mdf-base-paths" fill="url(#goldDark)" opacity="0.4" style="mix-blend-mode: multiply;" />
+
+                <!-- PHASE 3: LUXURY SHEEN SWEEP (5s to 9s) -->
+                <!-- Because it's inside the masked group, the sheen perfectly respects debater cutouts! -->
+                <g opacity="0">
+                    <animate attributeName="opacity" values="0; 0; 1; 1; 0; 0" keyTimes="0; 0.45; 0.5; 0.8; 0.85; 1" dur="12s" repeatCount="indefinite" />
+                    <!-- Diagonal Light Beam Rect -->
+                    <rect x="-200" y="-100" width="1200" height="800" fill="url(#sheenSweep)" transform="skewX(-25)" />
+                </g>
+            </g>
+        </g>
     </g>
 
-  </g>
+    <!-- ========================================== -->
+    <!-- LAYER 3: CINEMATIC SOUNDWAVES (4s to 8s)   -->
+    <!-- ========================================== -->
+    <g id="pulse-soundwaves" fill="none" stroke="#D4AF37" stroke-linecap="round">
+        <animate attributeName="opacity" values="0; 0; 0; 0.8; 0.2; 0; 0" keyTimes="0; 0.3; 0.35; 0.4; 0.7; 0.8; 1" dur="12s" repeatCount="indefinite" />
+        
+        <!-- Waves emitting from the microphone (Approx right side of logo) -->
+        <g transform="translate(860, 420)" filter="url(#softGlow)">
+            <!-- Wave 1 (Inner) -->
+            <path d="M 0 -30 Q 30 0 0 30" stroke-width="3" opacity="0.9">
+                <animate attributeName="d" values="M 0 -30 Q 30 0 0 30; M 0 -30 Q 45 0 0 30; M 0 -30 Q 30 0 0 30" dur="2s" repeatCount="indefinite" />
+            </path>
+            
+            <!-- Wave 2 (Middle) -->
+            <path d="M 15 -50 Q 60 0 15 50" stroke-width="2" opacity="0.6">
+                <animate attributeName="d" values="M 15 -50 Q 60 0 15 50; M 15 -50 Q 80 0 15 50; M 15 -50 Q 60 0 15 50" dur="2s" begin="0.3s" repeatCount="indefinite" />
+            </path>
 
-  <!-- ============================ -->
-  <!-- SCENE 1B: SOUNDWAVES         -->
-  <!-- ============================ -->
-  <g id="soundwaves">
-    <animate attributeName="opacity" values="0;0;0;1;1;0.8;0;0" keyTimes="0;0.1;0.16;0.22;0.36;0.42;0.5;1" dur="9s" repeatCount="indefinite"/>
-
-    <!-- Soundwave lines — organic, flowing from mic area -->
-    <g stroke-linecap="round" fill="none">
-
-      <!-- Wave 1 — closest, strongest -->
-      <path id="wave1" d="M390 250 Q430 230 470 250 Q510 270 550 248 Q590 226 640 250" stroke="#F5C842" stroke-width="1.8" stroke-opacity="0.9">
-        <animate attributeName="d"
-          values="M390 250 Q430 230 470 250 Q510 270 550 248 Q590 226 640 250;
-                  M390 250 Q430 270 470 250 Q510 230 550 252 Q590 274 640 250;
-                  M390 250 Q430 230 470 250 Q510 270 550 248 Q590 226 640 250"
-          dur="1.4s" repeatCount="indefinite"/>
-        <animate attributeName="stroke-opacity" values="0.9;0.5;0.9" dur="1.4s" repeatCount="indefinite"/>
-      </path>
-
-      <!-- Wave 2 -->
-      <path d="M390 265 Q440 240 490 265 Q540 288 590 262 Q630 240 670 260" stroke="#D4A017" stroke-width="1.4" stroke-opacity="0.7">
-        <animate attributeName="d"
-          values="M390 265 Q440 240 490 265 Q540 288 590 262 Q630 240 670 260;
-                  M390 265 Q440 290 490 265 Q540 242 590 268 Q630 290 670 260;
-                  M390 265 Q440 240 490 265 Q540 288 590 262 Q630 240 670 260"
-          dur="1.7s" begin="0.15s" repeatCount="indefinite"/>
-        <animate attributeName="stroke-opacity" values="0.7;0.3;0.7" dur="1.7s" begin="0.15s" repeatCount="indefinite"/>
-      </path>
-
-      <!-- Wave 3 -->
-      <path d="M390 238 Q445 215 500 238 Q555 260 610 234 Q650 212 690 234" stroke="#FFE080" stroke-width="1.2" stroke-opacity="0.55">
-        <animate attributeName="d"
-          values="M390 238 Q445 215 500 238 Q555 260 610 234 Q650 212 690 234;
-                  M390 238 Q445 261 500 238 Q555 215 610 242 Q650 264 690 234;
-                  M390 238 Q445 215 500 238 Q555 260 610 234 Q650 212 690 234"
-          dur="2.0s" begin="0.3s" repeatCount="indefinite"/>
-        <animate attributeName="stroke-opacity" values="0.55;0.2;0.55" dur="2s" begin="0.3s" repeatCount="indefinite"/>
-      </path>
-
-      <!-- Wave 4 — faint, far -->
-      <path d="M390 278 Q455 255 510 278 Q565 300 620 274" stroke="#C8890A" stroke-width="1.0" stroke-opacity="0.4">
-        <animate attributeName="d"
-          values="M390 278 Q455 255 510 278 Q565 300 620 274;
-                  M390 278 Q455 300 510 278 Q565 256 620 280;
-                  M390 278 Q455 255 510 278 Q565 300 620 274"
-          dur="2.3s" begin="0.5s" repeatCount="indefinite"/>
-        <animate attributeName="stroke-opacity" values="0.4;0.15;0.4" dur="2.3s" begin="0.5s" repeatCount="indefinite"/>
-      </path>
-
-      <!-- Wave 5 — very faint outer -->
-      <path d="M390 222 Q460 196 528 222 Q596 248 660 218" stroke="#D4A017" stroke-width="0.8" stroke-opacity="0.3">
-        <animate attributeName="d"
-          values="M390 222 Q460 196 528 222 Q596 248 660 218;
-                  M390 222 Q460 248 528 222 Q596 196 660 224;
-                  M390 222 Q460 196 528 222 Q596 248 660 218"
-          dur="2.6s" begin="0.7s" repeatCount="indefinite"/>
-        <animate attributeName="stroke-opacity" values="0.3;0.1;0.3" dur="2.6s" begin="0.7s" repeatCount="indefinite"/>
-      </path>
-
-      <!-- Glowing particles riding waves -->
-      <circle r="2.5" fill="#FFE8A0" filter="url(#particleBlur)">
-        <animateMotion dur="1.8s" repeatCount="indefinite" path="M390 250 Q430 230 470 250 Q510 270 550 248 Q590 226 640 250"/>
-        <animate attributeName="opacity" values="0;1;0.8;0" dur="1.8s" repeatCount="indefinite"/>
-      </circle>
-      <circle r="2.0" fill="#F5C842" filter="url(#particleBlur)">
-        <animateMotion dur="2.2s" begin="0.6s" repeatCount="indefinite" path="M390 238 Q445 215 500 238 Q555 260 610 234 Q650 212 690 234"/>
-        <animate attributeName="opacity" values="0;0.8;0.6;0" dur="2.2s" begin="0.6s" repeatCount="indefinite"/>
-      </circle>
-      <circle r="1.8" fill="#D4A017" filter="url(#particleBlur)">
-        <animateMotion dur="1.6s" begin="0.3s" repeatCount="indefinite" path="M390 265 Q440 240 490 265 Q540 288 590 262 Q630 240 670 260"/>
-        <animate attributeName="opacity" values="0;0.7;0.5;0" dur="1.6s" begin="0.3s" repeatCount="indefinite"/>
-      </circle>
-    </g>
-  </g>
-
-  <!-- ================================ -->
-  <!-- SCENE 2: DEBATE ENERGY / SWIRLS  -->
-  <!-- ================================ -->
-  <g id="energySwirl">
-    <animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0;0.22;0.3;0.36;0.42;0.52;0.6;1" dur="9s" repeatCount="indefinite"/>
-
-    <!-- Rotating swirl lines that assemble into logo -->
-    <g transform="translate(450,300)" fill="none" stroke-linecap="round">
-
-      <!-- Swirl arm 1 -->
-      <path stroke="#F5C842" stroke-width="1.5" stroke-opacity="0.7"
-        d="M0,0 Q60,-80 140,-40 Q200,0 160,80 Q120,150 40,120">
-        <animateTransform attributeName="transform" type="rotate" from="0" to="360" dur="4s" repeatCount="indefinite"/>
-        <animate attributeName="stroke-opacity" values="0.7;0.3;0.7" dur="2s" repeatCount="indefinite"/>
-      </path>
-
-      <!-- Swirl arm 2 -->
-      <path stroke="#D4A017" stroke-width="1.2" stroke-opacity="0.5"
-        d="M0,0 Q-70,-60 -130,-20 Q-180,30 -150,100 Q-110,160 -30,140">
-        <animateTransform attributeName="transform" type="rotate" from="120" to="480" dur="5s" repeatCount="indefinite"/>
-        <animate attributeName="stroke-opacity" values="0.5;0.2;0.5" dur="2.5s" begin="0.5s" repeatCount="indefinite"/>
-      </path>
-
-      <!-- Swirl arm 3 -->
-      <path stroke="#FFE080" stroke-width="1.0" stroke-opacity="0.4"
-        d="M0,0 Q20,90 80,110 Q150,120 170,50 Q180,-30 110,-60">
-        <animateTransform attributeName="transform" type="rotate" from="240" to="600" dur="6s" repeatCount="indefinite"/>
-        <animate attributeName="stroke-opacity" values="0.4;0.15;0.4" dur="3s" begin="1s" repeatCount="indefinite"/>
-      </path>
-
-      <!-- Inner tight swirl -->
-      <path stroke="#F5C842" stroke-width="0.8" stroke-opacity="0.6"
-        d="M0,0 Q30,-40 60,-20 Q80,10 60,40 Q30,60 0,40 Q-30,20 -20,-10 Q-10,-30 0,0">
-        <animateTransform attributeName="transform" type="rotate" from="0" to="-360" dur="3s" repeatCount="indefinite"/>
-      </path>
-
-      <!-- Energy particles on swirls -->
-      <circle r="3" fill="#FFE8A0">
-        <animateMotion dur="4s" repeatCount="indefinite" path="M0,0 Q60,-80 140,-40 Q200,0 160,80 Q120,150 40,120 Q-30,100 0,0"/>
-        <animate attributeName="opacity" values="0;1;1;0" dur="4s" repeatCount="indefinite"/>
-        <animateTransform attributeName="transform" type="rotate" from="0" to="360" dur="4s" repeatCount="indefinite"/>
-      </circle>
-      <circle r="2.5" fill="#D4A017">
-        <animateMotion dur="5s" begin="1.5s" repeatCount="indefinite" path="M0,0 Q-70,-60 -130,-20 Q-180,30 -150,100 Q-110,160 -30,140 Q40,120 0,0"/>
-        <animate attributeName="opacity" values="0;0.9;0.9;0" dur="5s" begin="1.5s" repeatCount="indefinite"/>
-        <animateTransform attributeName="transform" type="rotate" from="120" to="480" dur="5s" repeatCount="indefinite"/>
-      </circle>
-      <circle r="2" fill="#F5C842">
-        <animateMotion dur="6s" begin="3s" repeatCount="indefinite" path="M0,0 Q20,90 80,110 Q150,120 170,50 Q180,-30 110,-60 Q40,-100 0,0"/>
-        <animate attributeName="opacity" values="0;0.8;0.8;0" dur="6s" begin="3s" repeatCount="indefinite"/>
-        <animateTransform attributeName="transform" type="rotate" from="240" to="600" dur="6s" repeatCount="indefinite"/>
-      </circle>
-
+            <!-- Wave 3 (Outer) -->
+            <path d="M 30 -70 Q 90 0 30 70" stroke-width="1" opacity="0.3">
+                <animate attributeName="d" values="M 30 -70 Q 90 0 30 70; M 30 -70 Q 115 0 30 70; M 30 -70 Q 90 0 30 70" dur="2s" begin="0.6s" repeatCount="indefinite" />
+            </path>
+        </g>
     </g>
 
-    <!-- Converging lines toward logo center -->
-    <g stroke="#D4A017" stroke-width="0.6" stroke-opacity="0.4" fill="none">
-      <line x1="100" y1="100" x2="450" y2="300"><animate attributeName="stroke-opacity" values="0;0.5;0" dur="1.5s" repeatCount="indefinite"/></line>
-      <line x1="800" y1="100" x2="450" y2="300"><animate attributeName="stroke-opacity" values="0;0.5;0" dur="1.5s" begin="0.2s" repeatCount="indefinite"/></line>
-      <line x1="100" y1="500" x2="450" y2="300"><animate attributeName="stroke-opacity" values="0;0.5;0" dur="1.5s" begin="0.4s" repeatCount="indefinite"/></line>
-      <line x1="800" y1="500" x2="450" y2="300"><animate attributeName="stroke-opacity" values="0;0.5;0" dur="1.5s" begin="0.6s" repeatCount="indefinite"/></line>
-      <line x1="450" y1="50"  x2="450" y2="300"><animate attributeName="stroke-opacity" values="0;0.5;0" dur="1.5s" begin="0.1s" repeatCount="indefinite"/></line>
-      <line x1="450" y1="550" x2="450" y2="300"><animate attributeName="stroke-opacity" values="0;0.5;0" dur="1.5s" begin="0.3s" repeatCount="indefinite"/></line>
-    </g>
-  </g>
-
-  <!-- ================================ -->
-  <!-- SCENE 3+4: LOGO REVEAL          -->
-  <!-- ================================ -->
-  <g id="logoReveal">
-    <animate attributeName="opacity" values="0;0;0;0;0;0.3;0.7;1;1;1;1;0" keyTimes="0;0.3;0.36;0.44;0.52;0.58;0.62;0.67;0.72;0.85;0.94;1" dur="9s" repeatCount="indefinite"/>
-
-    <!-- Background ambient glow for logo -->
-    <ellipse cx="450" cy="300" rx="280" ry="160" fill="url(#glowCenter)" opacity="0.7">
-      <animate attributeName="rx" values="240;290;240" dur="4s" repeatCount="indefinite"/>
-      <animate attributeName="ry" values="140;170;140" dur="4s" repeatCount="indefinite"/>
-      <animate attributeName="opacity" values="0.5;0.85;0.5" dur="4s" repeatCount="indefinite"/>
-    </ellipse>
-
-    <!-- ============================================ -->
-    <!-- THE "i" FIGURE — left of M                 -->
-    <!-- ============================================ -->
-    <g id="iMark" filter="url(#softGlow)">
-      <!-- i circle head -->
-      <circle cx="218" cy="195" r="14" fill="url(#goldRadial)"/>
-      <!-- i stem — left arm raised upward forming the arc -->
-      <line x1="218" y1="212" x2="218" y2="370" stroke="url(#goldV)" stroke-width="14" stroke-linecap="round"/>
-      <!-- Base foot of i -->
-      <line x1="200" y1="368" x2="238" y2="368" stroke="#D4A017" stroke-width="6" stroke-linecap="round"/>
+    <!-- ========================================== -->
+    <!-- LAYER 4: BOTTOM PRESTIGE ANCHOR            -->
+    <!-- ========================================== -->
+    <!-- A minimal glowing line to ground the logo like high-end esports banners -->
+    <g id="prestige-line">
+        <animate attributeName="opacity" values="0; 0; 0; 0; 0.6; 1; 0.8; 0" keyTimes="0; 0.4; 0.45; 0.5; 0.55; 0.7; 0.9; 1" dur="12s" repeatCount="indefinite" />
+        
+        <!-- Expanding Line -->
+        <line x1="640" y1="580" x2="640" y2="580" stroke="url(#goldBase)" stroke-width="1.5" filter="url(#softGlow)">
+            <animate attributeName="x1" values="640; 400; 400; 640" keyTimes="0; 0.5; 0.9; 1" dur="12s" repeatCount="indefinite" />
+            <animate attributeName="x2" values="640; 880; 880; 640" keyTimes="0; 0.5; 0.9; 1" dur="12s" repeatCount="indefinite" />
+        </line>
+        
+        <!-- Tiny anchor dots at the center -->
+        <circle cx="630" cy="580" r="1.5" fill="#FFF2A8" />
+        <circle cx="650" cy="580" r="1.5" fill="#FFF2A8" />
     </g>
 
-    <!-- ============================================ -->
-    <!-- THE ARC sweeping from i head over MDF       -->
-    <!-- ============================================ -->
-    <g id="arcSweep" filter="url(#subtleGlow)">
-      <!-- Main arc path -->
-      <path d="M218 195 Q340 80 620 145"
-        stroke="url(#goldH)" stroke-width="3" fill="none" stroke-linecap="round"
-        stroke-dasharray="700" stroke-dashoffset="700">
-        <animate attributeName="stroke-dashoffset" values="700;0;0;700" keyTimes="0;0.3;0.9;1" dur="9s" repeatCount="indefinite"/>
-      </path>
-      <!-- Arc glow trail -->
-      <path d="M218 195 Q340 80 620 145"
-        stroke="#FFE080" stroke-width="1.2" fill="none" stroke-linecap="round" stroke-opacity="0.4"
-        stroke-dasharray="700" stroke-dashoffset="700">
-        <animate attributeName="stroke-dashoffset" values="700;0;0;700" keyTimes="0;0.32;0.9;1" dur="9s" repeatCount="indefinite"/>
-      </path>
-      <!-- Mic icon at top of arc -->
-      <circle cx="240" cy="178" r="3" fill="#F5C842" filter="url(#particleBlur)"/>
-    </g>
+    <!-- Global Fade Overlay to ensure perfect looping -->
+    <rect width="100%" height="100%" fill="#030305" pointer-events="none">
+        <animate attributeName="opacity" values="1; 0; 0; 0; 1" keyTimes="0; 0.08; 0.5; 0.92; 1" dur="12s" repeatCount="indefinite" />
+    </rect>
 
-    <!-- ============================================ -->
-    <!-- LETTER M                                    -->
-    <!-- ============================================ -->
-    <g id="letterM" filter="url(#softGlow)">
-      <path d="M238 210 L238 370 L270 370 L270 268 L310 340 L350 268 L350 370 L382 370 L382 210 L350 210 L310 292 L270 210 Z"
-        fill="url(#goldH)" stroke="#F5C842" stroke-width="0.5" stroke-opacity="0.4"/>
-
-      <!-- Sub-silhouette: small speaker at podium inside M -->
-      <g transform="translate(268,295)" opacity="0.55">
-        <!-- tiny podium -->
-        <path d="M-14,0 L-10,30 L10,30 L14,0 Z" fill="#7A4E00" stroke="#D4A017" stroke-width="0.5"/>
-        <line x1="-16" y1="0" x2="16" y2="0" stroke="#D4A017" stroke-width="2"/>
-        <!-- tiny head -->
-        <circle cx="0" cy="-22" r="7" fill="#8B5E00"/>
-        <!-- tiny body -->
-        <path d="M-7,-14 Q-8,4 -5,18 L5,18 Q8,4 7,-14 Z" fill="#8B5E00"/>
-        <!-- tiny arm up -->
-        <path d="M-7,-4 Q-18,-8 -20,-14" stroke="#8B5E00" stroke-width="4" fill="none" stroke-linecap="round"/>
-      </g>
-    </g>
-
-    <!-- ============================================ -->
-    <!-- LETTER D                                    -->
-    <!-- ============================================ -->
-    <g id="letterD" filter="url(#softGlow)">
-      <path d="M394 210 L394 370 L446 370 Q530 370 530 290 Q530 210 446 210 Z M424 240 L446 240 Q498 240 498 290 Q498 340 446 340 L424 340 Z"
-        fill="url(#goldH)" stroke="#F5C842" stroke-width="0.5" stroke-opacity="0.4"/>
-
-      <!-- Vintage mic silhouette inside D -->
-      <g transform="translate(462,290)" opacity="0.5" filter="url(#subtleGlow)">
-        <!-- Mic grill -->
-        <ellipse cx="0" cy="-28" rx="16" ry="24" fill="none" stroke="#D4A017" stroke-width="1.5"/>
-        <!-- Grill lines -->
-        <line x1="-14" y1="-36" x2="14" y2="-36" stroke="#D4A017" stroke-width="0.7"/>
-        <line x1="-15" y1="-28" x2="15" y2="-28" stroke="#D4A017" stroke-width="0.7"/>
-        <line x1="-15" y1="-20" x2="15" y2="-20" stroke="#D4A017" stroke-width="0.7"/>
-        <line x1="-14" y1="-12" x2="14" y2="-12" stroke="#D4A017" stroke-width="0.7"/>
-        <!-- Neck & base -->
-        <line x1="-3" y1="-4" x2="-3" y2="8"  stroke="#D4A017" stroke-width="2.5"/>
-        <line x1="3"  y1="-4" x2="3"  y2="8"  stroke="#D4A017" stroke-width="2.5"/>
-        <path d="M0 8 Q-6 14 -10 18 M0 8 Q6 14 10 18" stroke="#D4A017" stroke-width="2" fill="none"/>
-        <line x1="-12" y1="18" x2="12" y2="18" stroke="#D4A017" stroke-width="2.5" stroke-linecap="round"/>
-      </g>
-    </g>
-
-    <!-- ============================================ -->
-    <!-- LETTER F                                    -->
-    <!-- ============================================ -->
-    <g id="letterF" filter="url(#softGlow)">
-      <path d="M543 210 L543 370 L574 370 L574 305 L650 305 L650 278 L574 278 L574 240 L670 240 L670 210 Z"
-        fill="url(#goldH)" stroke="#F5C842" stroke-width="0.5" stroke-opacity="0.4"/>
-
-      <!-- Sub-silhouette: small figure with book/reading inside F -->
-      <g transform="translate(608,310)" opacity="0.5">
-        <!-- Head -->
-        <circle cx="0" cy="-36" r="9" fill="#8B5E00"/>
-        <!-- Body -->
-        <path d="M-8,-26 Q-9,-2 -6,18 L6,18 Q9,-2 8,-26 Z" fill="#8B5E00"/>
-        <!-- Both arms (holding book/speaking) -->
-        <path d="M-8,-12 Q-24,-8 -28,-4" stroke="#8B5E00" stroke-width="5" fill="none" stroke-linecap="round"/>
-        <path d="M8,-12  Q24,-8  28,-4"  stroke="#8B5E00" stroke-width="5" fill="none" stroke-linecap="round"/>
-      </g>
-    </g>
-
-    <!-- ============================================ -->
-    <!-- LOGO SHINE SWEEP (Scene 4 only)             -->
-    <!-- ============================================ -->
-    <g id="shineSweep">
-      <!-- Shine only visible after full reveal -->
-      <rect x="200" y="195" width="490" height="180" fill="url(#shineSwipe)" opacity="0.6"/>
-    </g>
-
-    <!-- ============================================ -->
-    <!-- PRESTIGE BOTTOM BAR                         -->
-    <!-- ============================================ -->
-    <g id="prestigeBar">
-      <animate attributeName="opacity" values="0;0;0;0;0;0;0.5;1;1;1;0.8;0" keyTimes="0;0.3;0.36;0.44;0.52;0.6;0.68;0.73;0.8;0.9;0.94;1" dur="9s" repeatCount="indefinite"/>
-      <line x1="280" y1="400" x2="620" y2="400" stroke="url(#barFade)" stroke-width="1">
-        <animate attributeName="x1" values="450;280;280;450" keyTimes="0;0.2;0.8;1" dur="9s" repeatCount="indefinite"/>
-        <animate attributeName="x2" values="450;620;620;450" keyTimes="0;0.2;0.8;1" dur="9s" repeatCount="indefinite"/>
-      </line>
-    </g>
-
-    <!-- ============================================ -->
-    <!-- FINAL PULSE RINGS                           -->
-    <!-- ============================================ -->
-    <g id="pulseRings">
-      <animate attributeName="opacity" values="0;0;0;0;0;0;0;0.8;0.8;0.8;0;0" keyTimes="0;0.3;0.36;0.44;0.52;0.6;0.68;0.73;0.82;0.88;0.94;1" dur="9s" repeatCount="indefinite"/>
-      <!-- Outer ring breathing -->
-      <ellipse cx="450" cy="295" rx="270" ry="150" fill="none" stroke="#D4A017" stroke-width="0.6" stroke-opacity="0.3">
-        <animate attributeName="rx" values="260;280;260" dur="3s" repeatCount="indefinite"/>
-        <animate attributeName="ry" values="145;160;145" dur="3s" repeatCount="indefinite"/>
-        <animate attributeName="stroke-opacity" values="0.3;0.12;0.3" dur="3s" repeatCount="indefinite"/>
-      </ellipse>
-      <!-- Inner ring -->
-      <ellipse cx="450" cy="295" rx="220" ry="125" fill="none" stroke="#F5C842" stroke-width="0.5" stroke-opacity="0.2">
-        <animate attributeName="rx" values="215;225;215" dur="3s" begin="0.5s" repeatCount="indefinite"/>
-        <animate attributeName="ry" values="120;130;120" dur="3s" begin="0.5s" repeatCount="indefinite"/>
-        <animate attributeName="stroke-opacity" values="0.2;0.08;0.2" dur="3s" begin="0.5s" repeatCount="indefinite"/>
-      </ellipse>
-    </g>
-
-    <!-- ============================================ -->
-    <!-- CINEMATIC VIGNETTE OVERLAY                  -->
-    <!-- ============================================ -->
-    <radialGradient id="vignette" cx="50%" cy="50%" r="70%">
-      <stop offset="0%"   stop-color="transparent"/>
-      <stop offset="100%" stop-color="rgba(6,6,8,0.65)"/>
-    </radialGradient>
-    <rect x="0" y="0" width="900" height="600" fill="url(#vignette)" pointer-events="none"/>
-
-  </g>
-
-  <!-- Global fade for loop restart -->
-  <rect x="0" y="0" width="900" height="600" fill="#060608">
-    <animate attributeName="opacity" values="1;0;0;0;0;0;0;0;0;0;0.3;1" keyTimes="0;0.04;0.1;0.2;0.4;0.6;0.8;0.88;0.92;0.95;0.98;1" dur="9s" repeatCount="indefinite"/>
-  </rect>
-
-  </g>
 </svg>
