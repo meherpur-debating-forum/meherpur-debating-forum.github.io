@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>404 — This Motion Has Been Withdrawn</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --purple-deep:#4e4066;
+    --purple-mid:#6f5b92;
+    --purple-light:#7d6aa5;
+    --gold:#ffc541;
+    --gold-deep:#f4b73b;
+    --gold-warm:#f9c358;
+    --coral:#fa976c;
+    --coral-deep:#f78d5e;
+    --brown:#b65c32;
+    --bg:#faf7f2;
+    --ink:#2e2640;
+    --ink-soft:#5b5470;
+  }
+
+  *{ box-sizing:border-box; }
+
+  html,body{
+    margin:0;
+    padding:0;
+    height:100%;
+    overflow-x:hidden;
+    background:var(--bg);
+    color:var(--ink);
+    font-family:'Inter',system-ui,sans-serif;
+  }
+
+  .page{
+    min-height:100vh;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    padding:2.5rem 1.5rem 3.5rem;
+    text-align:center;
+  }
+
+  .stage{
+    width:100%;
+    max-width:760px;
+    margin:0 auto;
+  }
+
+  .stage svg{
+    display:block;
+    width:100%;
+    height:auto;
+  }
+
+  .content{
+    max-width:560px;
+    margin-top:-1.5rem;
+  }
+
+  .eyebrow{
+    text-transform:uppercase;
+    letter-spacing:.16em;
+    font-size:.78rem;
+    font-weight:600;
+    color:var(--purple-mid);
+    margin:0 0 .85rem;
+  }
+
+  h1{
+    font-family:'Fraunces',Georgia,serif;
+    font-weight:700;
+    font-size:clamp(1.7rem, 4.2vw, 2.5rem);
+    line-height:1.18;
+    color:var(--purple-deep);
+    margin:0 0 .9rem;
+  }
+
+  .lede{
+    font-size:1rem;
+    line-height:1.65;
+    color:var(--ink-soft);
+    margin:0 0 2.1rem;
+  }
+
+  .btn-home{
+    display:inline-flex;
+    align-items:center;
+    gap:.55rem;
+    background:var(--purple-deep);
+    color:#fff;
+    text-decoration:none;
+    font-weight:600;
+    font-size:.95rem;
+    padding:.85rem 1.75rem;
+    border-radius:999px;
+    box-shadow:0 10px 22px -10px rgba(78,64,102,.55);
+    transition:transform .18s ease, box-shadow .18s ease, background-color .18s ease;
+  }
+
+  .btn-home svg{
+    width:16px;
+    height:16px;
+    flex-shrink:0;
+    transition:transform .18s ease;
+  }
+
+  .btn-home:hover{
+    background:var(--purple-mid);
+    transform:translateY(-2px);
+    box-shadow:0 14px 26px -10px rgba(78,64,102,.6);
+  }
+
+  .btn-home:hover svg{ transform:translateX(3px); }
+
+  .btn-home:focus-visible{
+    outline:3px solid var(--gold);
+    outline-offset:3px;
+  }
+
+  @media (max-width:640px){
+    .page{ padding:1.75rem 1.25rem 3rem; }
+    .stage{ max-width:420px; }
+    .content{ margin-top:-.5rem; }
+    .lede{ font-size:.94rem; margin-bottom:1.8rem; }
+  }
+
+  /* ---------- illustration palette (kept from source artwork) ---------- */
+  .cls-1{ fill:#ffc541; }
+  .cls-2{ fill:#4e4066; }
+  .cls-3{ fill:#6f5b92; }
+  .cls-4{ fill:#f78d5e; }
+  .cls-5{ fill:#fa976c; }
+  .cls-6,.cls-7,.cls-8{ fill:#b65c32; }
+  .cls-7{ opacity:.4; }
+  .cls-9{ fill:#f4b73b; }
+  .cls-11{ fill:#f9c358; }
+  .cls-12{ fill:#9b462c; }
+  .cls-13{ fill:#aa512e; }
+  .cls-14{ fill:#7d6aa5; }
+
+  /* stroke utilities for the speaker figure */
+  .stroke-purple{ stroke:#6f5b92; fill:none; stroke-linecap:round; }
+  .stroke-gold{ stroke:#ffc541; stroke-width:3; fill:none; stroke-linecap:round; }
+
+  /* ---------- shared / unchanged animations ---------- */
+  .clock-hand-1{ animation:clock-rotate 3s linear infinite; transform-origin:bottom; transform-box:fill-box; }
+  .clock-hand-2{ animation:clock-rotate 6s linear infinite; transform-origin:bottom; transform-box:fill-box; transform:rotate(130.4deg); }
+  @keyframes clock-rotate{ 100%{ transform:rotate(360deg); } }
+
+  .circle{ animation:circle-anim ease infinite; transform-origin:center; transform-box:fill-box; }
+  .circle.c1{ animation-duration:2s; }
+  .circle.c2{ animation-duration:3s; }
+  .circle.c3{ animation-duration:1s; }
+  .circle.c4{ animation-duration:1s; }
+  .circle.c5{ animation-duration:2s; }
+  .circle.c6{ animation-duration:3s; }
+  @keyframes circle-anim{ 50%{ transform:scale(.2) rotateX(360deg) rotateY(360deg); } }
+
+  .four,#ou{ animation:four-anim cubic-bezier(.39,.575,.565,1) infinite; }
+  .four.a{ transform-origin:bottom left; animation-duration:3s; transform-box:fill-box; }
+  .four.b{ transform-origin:bottom right; animation-duration:3s; transform-box:fill-box; }
+  #ou{ animation-duration:6s; transform-origin:center; transform-box:fill-box; }
+  @keyframes four-anim{ 50%{ transform:scale(.98); } }
+
+  /* ---------- re-themed prop animations ---------- */
+  #mic-stand{ animation:mic-sway 6s linear infinite; transform-origin:center; transform-box:fill-box; }
+  @keyframes mic-sway{ 25%{ transform:translateY(10px) rotate(5deg); } 75%{ transform:rotate(-5deg); } }
+
+  #paper-note{ animation:paper-flutter 3s linear infinite; transform-origin:center; transform-box:fill-box; }
+  @keyframes paper-flutter{ 25%{ transform:rotate(10deg) translateY(5px); } 75%{ transform:rotate(-10deg); } }
+
+  #pen{ animation:pen-write 3s cubic-bezier(.455,.03,.515,.955) infinite; transform-origin:top left; transform-box:fill-box; }
+  @keyframes pen-write{ 50%{ transform:rotate(-6deg); } }
+
+  #podium-top{ animation:podium-flip 2s linear infinite; transform-origin:right top; transform-box:fill-box; }
+  @keyframes podium-flip{ 50%{ transform:rotate(-5deg); } }
+
+  #desk{ animation:desk-wobble 3s linear infinite; transform-origin:top; transform-box:fill-box; }
+  @keyframes desk-wobble{ 50%{ transform:rotate(4deg); } }
+
+  /* ---------- walking speaker ---------- */
+  #speaker-walk{ animation:walker-slide 6s ease infinite; }
+  @keyframes walker-slide{
+    0%{ transform:translateX(-1300px); }
+    50%{ transform:translateX(0); animation-timing-function:cubic-bezier(.47,0,.745,.715); }
+    100%{ transform:translateX(1300px); }
+  }
+
+  .figure-body{ animation:body-bob .8s ease-in-out infinite; transform-origin:center; transform-box:fill-box; }
+  @keyframes body-bob{ 0%,100%{ transform:translateY(0); } 50%{ transform:translateY(-5px); } }
+
+  .leg-left,.leg-right{ transform-origin:top center; transform-box:fill-box; animation:leg-swing .8s ease-in-out infinite; }
+  .leg-left{ animation-delay:0s; }
+  .leg-right{ animation-delay:.4s; }
+  @keyframes leg-swing{ 0%,100%{ transform:rotate(20deg); } 50%{ transform:rotate(-20deg); } }
+
+  .arm-back{ transform-origin:top; transform-box:fill-box; animation:arm-swing .8s ease-in-out infinite; }
+  @keyframes arm-swing{ 0%,100%{ transform:rotate(-15deg); } 50%{ transform:rotate(15deg); } }
+
+  .speech-wave{ transform-origin:left center; transform-box:fill-box; opacity:0; animation:speak 1.2s ease-in-out infinite; }
+  .speech-wave:nth-of-type(1){ animation-delay:0s; }
+  .speech-wave:nth-of-type(2){ animation-delay:.2s; }
+  .speech-wave:nth-of-type(3){ animation-delay:.4s; }
+  @keyframes speak{ 0%{ opacity:0; transform:scale(.6); } 30%{ opacity:1; transform:scale(1); } 70%{ opacity:.6; } 100%{ opacity:0; transform:scale(.6); } }
+
+  @media (prefers-reduced-motion: reduce){
+    *,*::before,*::after{ animation:none !important; transition:none !important; }
+  }
+</style>
+</head>
+<body>
+<main class="page">
+
+  <div class="stage" aria-hidden="true">
+    <svg viewBox="0 0 1920 1080" xmlns="http://www.w3.org/2000/svg">
+      <title>Illustration: a speaker walking and talking into a microphone, beside a podium, desk, notes and a debate timer</title>
+
+      <!-- background dots / lines -->
+      <g id="back-fig">
+        <path class="cls-1" d="M600.87,872H156a4,4,0,0,0-3.78,4.19h0a4,4,0,0,0,3.78,4.19H600.87a4,4,0,0,0,3.78-4.19h0A4,4,0,0,0,600.87,872Z"/>
+        <rect class="cls-1" x="680.91" y="871.98" width="513.38" height="8.39" rx="4.19" ry="4.19"/>
+        <path class="cls-1" d="M1480,876.17h0c0,2.32,2.37,4.19,5.3,4.19h350.61c2.93,0,5.3-1.88,5.3-4.19h0c0-2.32-2.37-4.19-5.3-4.19H1485.26C1482.33,872,1480,873.86,1480,876.17Z"/>
+        <rect class="cls-1" x="492.21" y="920.64" width="249.8" height="8.39" rx="4.19" ry="4.19"/>
+        <path class="cls-1" d="M1549.14,924.84h0a4.19,4.19,0,0,0-4.19-4.19H1067.46a14.66,14.66,0,0,1,.35,3.21v1A4.19,4.19,0,0,0,1072,929h472.94A4.19,4.19,0,0,0,1549.14,924.84Z"/>
+        <path class="cls-1" d="M865.5,924.84h0a4.19,4.19,0,0,0,4.19,4.19h82.37a12.28,12.28,0,0,1-.19-2v-2.17a4.19,4.19,0,0,0-4.19-4.19h-78A4.19,4.19,0,0,0,865.5,924.84Z"/>
+        <rect class="cls-1" x="915.6" y="981.47" width="54.72" height="8.39" rx="4.19" ry="4.19"/>
+        <path class="cls-1" d="M730.33,985.67h0c0,2.32,4.23,4.19,9.44,4.19h104.3c5.22,0,9.44-1.88,9.44-4.19h0c0-2.32-4.23-4.19-9.44-4.19H739.78C734.56,981.47,730.33,983.35,730.33,985.67Z"/>
+        <rect class="cls-1" x="997.06" y="981.47" width="78.11" height="8.39" rx="4.19" ry="4.19"/>
+        <g id="round-conf">
+          <path class="cls-1 circle c1" d="M536.41,155.14a17.77,17.77,0,1,0,17.77,17.77A17.77,17.77,0,0,0,536.41,155.14Zm0,28.68a10.9,10.9,0,1,1,10.9-10.9A10.9,10.9,0,0,1,536.41,183.81Z"/>
+          <path class="cls-1 circle c2" d="M1345.09,82.44a17.77,17.77,0,1,0,17.77,17.77A17.77,17.77,0,0,0,1345.09,82.44Zm0,28.68a10.9,10.9,0,1,1,10.9-10.9A10.9,10.9,0,0,1,1345.09,111.12Z"/>
+          <path class="cls-1 circle c3" d="M70.12,363A17.77,17.77,0,1,0,87.89,380.8,17.77,17.77,0,0,0,70.12,363Zm0,28.68A10.9,10.9,0,1,1,81,380.8,10.9,10.9,0,0,1,70.12,391.7Z"/>
+          <path class="cls-1 circle c4" d="M170.47,751.82a17.77,17.77,0,1,0,17.77,17.77A17.77,17.77,0,0,0,170.47,751.82Zm0,28.68a10.9,10.9,0,1,1,10.9-10.9A10.9,10.9,0,0,1,170.47,780.5Z"/>
+          <path class="cls-1 circle c5" d="M1457.34,762.73a17.77,17.77,0,1,0,17.77,17.77A17.77,17.77,0,0,0,1457.34,762.73Zm0,28.68a10.9,10.9,0,1,1,10.9-10.9A10.9,10.9,0,0,1,1457.34,791.4Z"/>
+          <path class="cls-1 circle c6" d="M1829.15,407.49a17.77,17.77,0,1,0,17.77,17.77A17.77,17.77,0,0,0,1829.15,407.49Zm0,28.68a10.9,10.9,0,1,1,10.9-10.9A10.9,10.9,0,0,1,1829.15,436.17Z"/>
+        </g>
+      </g>
+
+      <!-- 404 lettering -->
+      <g id="fortyfour">
+        <g class="four a">
+          <rect class="cls-2" x="233.74" y="391.14" width="120.71" height="466.29" rx="57.1" ry="57.1" transform="translate(918.39 330.19) rotate(90)"/>
+          <rect class="cls-3" x="333.83" y="475.1" width="120.71" height="396.88" rx="60.36" ry="60.36"/>
+          <rect class="cls-3" x="197.13" y="122.89" width="120.71" height="604.75" rx="60.36" ry="60.36" transform="translate(290.49 -70.78) rotate(35)"/>
+        </g>
+        <g class="four b">
+          <rect class="cls-2" x="1558.84" y="391.91" width="120.71" height="466.29" rx="57.1" ry="57.1" transform="translate(2244.26 -994.14) rotate(90)"/>
+          <rect class="cls-3" x="1658.92" y="475.87" width="120.71" height="396.88" rx="60.36" ry="60.36"/>
+          <rect class="cls-3" x="1522.22" y="123.66" width="120.71" height="604.75" rx="60.36" ry="60.36" transform="translate(530.57 -830.68) rotate(35)"/>
+        </g>
+        <path class="cls-3" id="ou" d="M956.54,168.2c-194.34,0-351.89,157.55-351.89,351.89S762.19,872,956.54,872s351.89-157.55,351.89-351.89S1150.88,168.2,956.54,168.2Zm0,584.49c-128.46,0-232.6-104.14-232.6-232.6s104.14-232.6,232.6-232.6,232.6,104.14,232.6,232.6S1085,752.69,956.54,752.69Z"/>
+      </g>
+
+      <!-- standing microphone (was: umbrella) -->
+      <g id="mic-stand">
+        <circle class="cls-4" cx="1187.53" cy="240.3" r="7.66"/>
+        <rect class="cls-3" x="1170" y="262" width="14" height="186" rx="7"/>
+        <path class="cls-1" d="M1128,450 Q1177,424 1226,450 Q1177,468 1128,450 Z"/>
+        <rect class="cls-9" x="1167" y="256" width="20" height="16" rx="4"/>
+        <ellipse class="cls-5" cx="1177" cy="228" rx="34" ry="44" transform="rotate(-12 1177 228)"/>
+        <ellipse class="cls-8" cx="1177" cy="228" rx="24" ry="32" transform="rotate(-12 1177 228)" opacity=".45"/>
+        <circle class="cls-7" cx="1163" cy="212" r="3"/>
+        <circle class="cls-7" cx="1179" cy="206" r="3"/>
+        <circle class="cls-7" cx="1193" cy="217" r="3"/>
+        <circle class="cls-7" cx="1167" cy="228" r="3"/>
+        <circle class="cls-7" cx="1184" cy="232" r="3"/>
+        <circle class="cls-7" cx="1196" cy="243" r="3"/>
+        <circle class="cls-7" cx="1172" cy="246" r="3"/>
+        <circle class="cls-7" cx="1188" cy="250" r="3"/>
+      </g>
+
+      <!-- notepad page (was: pillow) -->
+      <g id="paper-note">
+        <rect class="cls-1" x="600" y="515" width="150" height="118" rx="8"/>
+        <path class="cls-9" d="M716,515 L750,515 L750,549 Z"/>
+        <rect class="cls-7" x="618" y="548" width="100" height="6" rx="3" opacity=".55"/>
+        <rect class="cls-7" x="618" y="566" width="112" height="6" rx="3" opacity=".55"/>
+        <rect class="cls-7" x="618" y="584" width="84" height="6" rx="3" opacity=".55"/>
+        <rect class="cls-7" x="618" y="602" width="96" height="6" rx="3" opacity=".55"/>
+      </g>
+
+      <!-- pen (was: cup) -->
+      <g id="pen">
+        <g transform="rotate(42 1207 700)">
+          <rect class="cls-5" x="1165" y="690" width="120" height="20" rx="10"/>
+          <rect class="cls-8" x="1165" y="690" width="28" height="20" rx="10"/>
+          <path class="cls-3" d="M1285,690 L1309,698 L1285,710 Z"/>
+          <rect class="cls-1" x="1198" y="694" width="44" height="4" rx="2"/>
+        </g>
+      </g>
+
+      <!-- debate timer (kept as a stopwatch — fits the format perfectly) -->
+      <g id="clock">
+        <circle class="cls-5" cx="847.7" cy="247.59" r="74.66" transform="translate(-32.91 314.05) rotate(-20.6)"/>
+        <circle class="cls-1" cx="847.7" cy="247.59" r="63.44" transform="translate(-32.91 314.05) rotate(-20.6)"/>
+        <rect class="cls-8" x="836" y="160" width="10" height="14" rx="3"/>
+        <rect class="cls-8" x="852" y="160" width="10" height="14" rx="3"/>
+        <rect class="cls-3 clock-hand-1" x="845" y="189.5" width="6.04" height="58" rx="3.02" ry="3.02"/>
+        <rect class="cls-3 clock-hand-2" x="845" y="209.5" width="6.04" height="38" rx="3.02" ry="3.02"/>
+        <circle class="cls-3" cx="847.7" cy="247.59" r="3" transform="translate(-32.91 314.05) rotate(-20.6)"/>
+      </g>
+
+      <!-- podium / dais (was: box) -->
+      <g id="podium">
+        <path class="cls-5" d="M600,386 L770,352 L745,426 L615,426 Z"/>
+        <rect class="cls-7" x="640" y="392" width="90" height="6" rx="3" opacity=".5"/>
+        <rect class="cls-7" x="650" y="406" width="70" height="6" rx="3" opacity=".5"/>
+        <g id="podium-top">
+          <path class="cls-8" d="M580,360 L760,330 L770,352 L600,386 Z"/>
+          <rect class="cls-1" x="612" y="340" width="66" height="10" rx="3" transform="rotate(-12 645 345)"/>
+        </g>
+      </g>
+
+      <!-- speaker's desk (was: rucksack) -->
+      <g id="desk">
+        <rect class="cls-5" x="1180" y="520" width="14" height="78" rx="4" transform="rotate(6 1187 559)"/>
+        <rect class="cls-5" x="1266" y="520" width="14" height="78" rx="4" transform="rotate(-6 1273 559)"/>
+        <rect class="cls-13" x="1182" y="494" width="96" height="26" rx="6"/>
+        <rect class="cls-12" x="1218" y="503" width="24" height="6" rx="3"/>
+        <rect class="cls-8" x="1170" y="476" width="120" height="18" rx="6"/>
+      </g>
+
+      <!-- walking speaker, microphone in hand (was: bike) -->
+      <g id="speaker-walk">
+        <g transform="translate(860,628)">
+          <g class="figure-body">
+            <ellipse class="cls-1" cx="131" cy="246" rx="58" ry="10" opacity=".22"/>
+            <path class="arm-back stroke-purple" d="M100,78 Q88,108 94,138" stroke-width="16"/>
+            <g class="leg-left">
+              <rect class="cls-14" x="106" y="160" width="20" height="76" rx="10"/>
+              <ellipse class="cls-7" cx="116" cy="238" rx="16" ry="8"/>
+            </g>
+            <g class="leg-right">
+              <rect class="cls-14" x="138" y="160" width="20" height="76" rx="10"/>
+              <ellipse class="cls-7" cx="148" cy="238" rx="16" ry="8"/>
+            </g>
+            <rect class="cls-3" x="96" y="60" width="66" height="102" rx="28"/>
+            <path class="cls-1" d="M124,68 L138,68 L133,118 L129,118 Z"/>
+            <rect class="cls-5" x="120" y="48" width="16" height="16"/>
+            <circle class="cls-5" cx="130" cy="28" r="24"/>
+            <path class="arm-front stroke-purple" d="M158,74 Q174,48 186,32" stroke-width="16"/>
+            <circle class="cls-5" cx="187" cy="30" r="9"/>
+            <g transform="translate(187,30) rotate(-25)">
+              <rect class="cls-9" x="-6" y="-28" width="12" height="22" rx="6"/>
+              <rect class="cls-1" x="-4" y="-7" width="8" height="20" rx="4"/>
+            </g>
+            <path class="speech-wave stroke-gold" d="M206,16 Q216,24 206,34"/>
+            <path class="speech-wave stroke-gold" d="M216,9 Q231,23 216,41"/>
+            <path class="speech-wave stroke-gold" d="M226,2 Q245,22 226,46"/>
+          </g>
+        </g>
+      </g>
+    </svg>
+  </div>
+
+  <div class="content">
+    <p class="eyebrow">Error 404</p>
+    <h1>This Motion Has Been&nbsp;Withdrawn</h1>
+    <p class="lede">The page you're looking for isn't on the floor. It may have been moved, renamed, or never proposed at all.</p>
+    <a class="btn-home" href="/index.html">
+      <span>Back to Home</span>
+      <svg viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <path d="M3 8H13M13 8L9 4M13 8L9 12" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </a>
+  </div>
+
+</main>
+</body>
+</html>
