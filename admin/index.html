@@ -1222,14 +1222,36 @@
                     const CANVAS_H = 1350;
                     const cardW = 54;
                     const cardH = 85.6;
-                    const topMargin = 15;
-                    const leftMargin = 15;
-                    const gap = 10;
+
+                    // --- Grid packing: fit as many front+back pairs per A4 landscape page as possible ---
+                    const PAGE_W = 297, PAGE_H = 210;
+                    const pageMarginX = 10, pageMarginY = 10;
+                    const cardGap = 6;   // gap between a member's front & back card
+                    const colGap = 8;    // gap between adjacent pairs, horizontally
+                    const rowGap = 8;    // gap between rows, vertically
+
+                    const pairW = cardW * 2 + cardGap;
+                    const pairH = cardH;
+                    const availW = PAGE_W - pageMarginX * 2;
+                    const availH = PAGE_H - pageMarginY * 2;
+                    const cols = Math.max(1, Math.floor((availW + colGap) / (pairW + colGap)));
+                    const rows = Math.max(1, Math.floor((availH + rowGap) / (pairH + rowGap)));
+                    const perPage = cols * rows;
+
+                    const gridW = cols * pairW + (cols - 1) * colGap;
+                    const gridH = rows * pairH + (rows - 1) * rowGap;
+                    const startX = pageMarginX + (availW - gridW) / 2;
+                    const startY = pageMarginY + (availH - gridH) / 2;
 
                     for (let i = 0; i < selectedMembersData.length; i++) {
                         const m = selectedMembersData[i];
+                        const posInPage = i % perPage;
+                        if (i > 0 && posInPage === 0) pdf.addPage();
 
-                        if (i > 0) pdf.addPage();
+                        const row = Math.floor(posInPage / cols);
+                        const col = posInPage % cols;
+                        const slotX = startX + col * (pairW + colGap);
+                        const slotY = startY + row * (pairH + rowGap);
 
                         // ===================== FRONT CANVAS =====================
                         const frontCanvas = document.createElement('canvas');
@@ -1244,80 +1266,69 @@
                         const fZoneLeft = 85;
                         const fZoneRight = CANVAS_W - 85;
                         const fZoneW = fZoneRight - fZoneLeft;
-                        const fZoneH = fZoneBottom - fZoneTop;
-
-                        // Black fade overlay so golden text/photo stay legible over any photo background
-                        const fFade = fCtx.createLinearGradient(0, fZoneTop - 50, 0, fZoneBottom + 30);
-                        fFade.addColorStop(0, 'rgba(0,0,0,0)');
-                        fFade.addColorStop(0.18, 'rgba(0,0,0,0.6)');
-                        fFade.addColorStop(0.8, 'rgba(0,0,0,0.8)');
-                        fFade.addColorStop(1, 'rgba(0,0,0,0.3)');
-                        fCtx.fillStyle = fFade;
-                        fCtx.fillRect(fZoneLeft - 25, fZoneTop - 50, fZoneW + 50, fZoneH + 80);
 
                         let userImg = null;
                         if (m.photo_url) userImg = await loadImage(m.photo_url);
 
                         const photoSize = 420;
                         const photoX = (CANVAS_W - photoSize) / 2;
-                        const photoY = fZoneTop + 40;
-                        const photoCx = photoX + photoSize / 2;
-                        const photoCy = photoY + photoSize / 2;
+                        const photoY = fZoneTop + 30;
 
-                        // Golden ring behind photo
+                        // Golden square frame behind the photo
+                        const frameSize = photoSize + 24;
+                        const frameX = photoX - 12;
+                        const frameY = photoY - 12;
                         fCtx.save();
-                        fCtx.beginPath();
-                        fCtx.arc(photoCx, photoCy, photoSize / 2 + 12, 0, Math.PI * 2);
-                        const ringGrad = fCtx.createLinearGradient(photoX, photoY, photoX + photoSize, photoY + photoSize);
+                        drawRoundRectPath(fCtx, frameX, frameY, frameSize, frameSize, 18);
+                        const ringGrad = fCtx.createLinearGradient(frameX, frameY, frameX + frameSize, frameY + frameSize);
                         ringGrad.addColorStop(0, '#FFF6D6');
                         ringGrad.addColorStop(0.5, '#E6C468');
                         ringGrad.addColorStop(1, '#A9822E');
                         fCtx.fillStyle = ringGrad;
-                        fCtx.shadowColor = 'rgba(0,0,0,0.65)';
-                        fCtx.shadowBlur = 22;
+                        fCtx.shadowColor = 'rgba(0,0,0,0.6)';
+                        fCtx.shadowBlur = 20;
                         fCtx.fill();
                         fCtx.restore();
 
-                        // Dark separator ring (helps against red photo backgrounds bleeding into gold)
+                        // Square photo itself (gently rounded corners), clipped
                         fCtx.save();
-                        fCtx.beginPath();
-                        fCtx.arc(photoCx, photoCy, photoSize / 2 + 4, 0, Math.PI * 2);
-                        fCtx.fillStyle = '#0b0f1a';
-                        fCtx.fill();
-                        fCtx.restore();
-
-                        // Photo itself, clipped to circle
-                        fCtx.save();
-                        fCtx.beginPath();
-                        fCtx.arc(photoCx, photoCy, photoSize / 2, 0, Math.PI * 2);
+                        drawRoundRectPath(fCtx, photoX, photoY, photoSize, photoSize, 10);
                         fCtx.clip();
                         if (userImg) {
                             fCtx.fillStyle = '#000';
                             fCtx.fillRect(photoX, photoY, photoSize, photoSize);
                             fCtx.drawImage(userImg, photoX, photoY, photoSize, photoSize);
-                            // Slight dark wash to tame a red background and unify tone
-                            fCtx.fillStyle = 'rgba(0,0,0,0.14)';
-                            fCtx.fillRect(photoX, photoY, photoSize, photoSize);
                         } else {
                             fCtx.fillStyle = '#1e293b';
                             fCtx.fillRect(photoX, photoY, photoSize, photoSize);
                             fCtx.fillStyle = '#E6C468';
                             fCtx.font = 'bold 150px "Content-En", sans-serif';
                             fCtx.textAlign = 'center';
-                            fCtx.fillText((m.full_name || 'MDF')[0], photoCx, photoCy + 55);
+                            fCtx.fillText((m.full_name || 'MDF')[0], photoX + photoSize / 2, photoY + photoSize / 2 + 55);
                         }
                         fCtx.restore();
 
-                        // Golden text block beneath the photo
+                        // Black backdrop behind the text block only (not the photo / whole zone)
                         const textCx = CANVAS_W / 2;
-                        let ty = photoY + photoSize + 70;
-                        drawGoldenText(fCtx, m.full_name || '', textCx, ty, 50, true);
-                        ty += 56;
-                        drawGoldenText(fCtx, `MDF ID: ${m.mdf_code || ''}`, textCx, ty, 34, true);
-                        ty += 44;
-                        drawGoldenText(fCtx, `Phone: ${m.phone || 'N/A'}`, textCx, ty, 30, false);
-                        ty += 40;
-                        drawGoldenText(fCtx, `Blood Group: ${m.blood_group || 'N/A'}`, textCx, ty, 30, false);
+                        const textBoxTop = photoY + photoSize + 37;
+                        const textBoxBottom = Math.min(fZoneBottom - 10, textBoxTop + 196);
+                        const textBoxWidth = fZoneW - 80;
+                        const textBoxX = textCx - textBoxWidth / 2;
+                        fCtx.save();
+                        drawRoundRectPath(fCtx, textBoxX, textBoxTop, textBoxWidth, textBoxBottom - textBoxTop, 20);
+                        fCtx.fillStyle = 'rgba(0,0,0,0.68)';
+                        fCtx.fill();
+                        fCtx.restore();
+
+                        // Golden text lines on top of the black backdrop
+                        let ty = textBoxTop + 55;
+                        drawGoldenText(fCtx, m.full_name || '', textCx, ty, 46, true);
+                        ty += 48;
+                        drawGoldenText(fCtx, `MDF ID: ${m.mdf_code || ''}`, textCx, ty, 32, true);
+                        ty += 42;
+                        drawGoldenText(fCtx, `Phone: ${m.phone || 'N/A'}`, textCx, ty, 28, false);
+                        ty += 38;
+                        drawGoldenText(fCtx, `Blood Group: ${m.blood_group || 'N/A'}`, textCx, ty, 28, false);
 
                         // ===================== BACK CANVAS =====================
                         const backCanvas = document.createElement('canvas');
@@ -1381,8 +1392,8 @@
                             bCtx.drawImage(qrCanvas, qrBoxX + 35, qrBoxY + 35, qrInnerSize, qrInnerSize); 
                         }
 
-                        pdf.addImage(frontCanvas.toDataURL('image/jpeg', 1.0), 'JPEG', leftMargin, topMargin, cardW, cardH);
-                        pdf.addImage(backCanvas.toDataURL('image/jpeg', 1.0), 'JPEG', leftMargin + cardW + gap, topMargin, cardW, cardH);
+                        pdf.addImage(frontCanvas.toDataURL('image/jpeg', 1.0), 'JPEG', slotX, slotY, cardW, cardH);
+                        pdf.addImage(backCanvas.toDataURL('image/jpeg', 1.0), 'JPEG', slotX + cardW + cardGap, slotY, cardW, cardH);
                     }
 
                     pdf.save(`MDF_ID_Cards.pdf`);
