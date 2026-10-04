@@ -1208,6 +1208,24 @@
                 ctx.shadowOffsetY = 0;
             };
 
+            const drawGoldenLabelValue = (ctx, label, value, labelX, colonX, valueX, y, size) => {
+                ctx.textAlign = 'left';
+                ctx.font = `bold ${size}px "Content-En", sans-serif`;
+                ctx.shadowColor = 'rgba(0,0,0,0.85)';
+                ctx.shadowBlur = 6;
+                ctx.shadowOffsetY = 2;
+                const grad = ctx.createLinearGradient(labelX, y - size, valueX + 320, y);
+                grad.addColorStop(0, '#FFF6D6');
+                grad.addColorStop(0.5, '#E6C468');
+                grad.addColorStop(1, '#A9822E');
+                ctx.fillStyle = grad;
+                ctx.fillText(label, labelX, y);
+                ctx.fillText(':', colonX, y);
+                ctx.fillText(String(value), valueX, y);
+                ctx.shadowBlur = 0;
+                ctx.shadowOffsetY = 0;
+            };
+
             const generatePDF = async () => {
                 if (selectedCodes.length === 0) return alert("মেম্বার নির্বাচন করুন।");
                 setIsGenerating(true);
@@ -1310,25 +1328,33 @@
 
                         // Black backdrop behind the text block only (not the photo / whole zone)
                         const textCx = CANVAS_W / 2;
-                        const textBoxTop = photoY + photoSize + 37;
-                        const textBoxBottom = Math.min(fZoneBottom - 10, textBoxTop + 196);
-                        const textBoxWidth = fZoneW - 80;
+                        const textBoxTop = photoY + photoSize + 18;
+                        const lineGap = 44;
+                        const fontSize = 29;
+                        const infoLines = [
+                            { label: 'Name', value: m.full_name || '' },
+                            { label: 'MDF CODE', value: m.mdf_code || '' },
+                            { label: 'Mobile', value: m.phone || 'N/A' },
+                            { label: 'Blood', value: m.blood_group || 'N/A' }
+                        ];
+                        const textBoxHeight = Math.min(fZoneBottom - 10 - textBoxTop, infoLines.length * lineGap + 28);
+                        const textBoxWidth = fZoneW - 40;
                         const textBoxX = textCx - textBoxWidth / 2;
                         fCtx.save();
-                        drawRoundRectPath(fCtx, textBoxX, textBoxTop, textBoxWidth, textBoxBottom - textBoxTop, 20);
+                        drawRoundRectPath(fCtx, textBoxX, textBoxTop, textBoxWidth, textBoxHeight, 20);
                         fCtx.fillStyle = 'rgba(0,0,0,0.68)';
                         fCtx.fill();
                         fCtx.restore();
 
-                        // Golden text lines on top of the black backdrop
-                        let ty = textBoxTop + 55;
-                        drawGoldenText(fCtx, m.full_name || '', textCx, ty, 46, true);
-                        ty += 48;
-                        drawGoldenText(fCtx, `MDF ID: ${m.mdf_code || ''}`, textCx, ty, 32, true);
-                        ty += 42;
-                        drawGoldenText(fCtx, `Phone: ${m.phone || 'N/A'}`, textCx, ty, 28, false);
-                        ty += 38;
-                        drawGoldenText(fCtx, `Blood Group: ${m.blood_group || 'N/A'}`, textCx, ty, 28, false);
+                        // Golden "Label : Value" lines, all the same size, aligned on the colon
+                        const labelX = textBoxX + 30;
+                        const colonX = textBoxX + 205;
+                        const valueX = colonX + 20;
+                        let ty = textBoxTop + 44;
+                        infoLines.forEach(line => {
+                            drawGoldenLabelValue(fCtx, line.label, line.value, labelX, colonX, valueX, ty, fontSize);
+                            ty += lineGap;
+                        });
 
                         // ===================== BACK CANVAS =====================
                         const backCanvas = document.createElement('canvas');
